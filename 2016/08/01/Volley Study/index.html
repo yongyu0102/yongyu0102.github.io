@@ -12,13 +12,13 @@
 <meta property="og:url" content="http://yoursite.com/2016/08/01/Volley Study/index.html">
 <meta property="og:site_name" content="一个写代码的地方">
 <meta property="og:description" content="Volley学习笔记之简单使用及部分源码详解一、使用背景简介现在大多数手机App几乎都离不开网络技术，需要手机端与网络服务端进行数据交互，Android系统中主要提供了两种方式来进行HTTP通信，HttpURLConnection和HttpClient，在初学Android的时候，这两个类是我们最开始学着使用的，但是在使用过程中需要调取各种API，进行封，然后请求到的结果需要自己去解析，最后再将解">
-<meta property="og:image" content="http://yoursite.com/C:\Users\zhangpeng\Desktop\20140511114837375.png">
+<meta property="og:image" content="http://yoursite.com/images/operating principle.png">
 <meta property="og:image" content="http://yoursite.com/C:\Users\zhangpeng\Desktop\QQ截图20160802000321.png">
-<meta property="og:updated_time" content="2016-08-01T16:03:44.768Z">
+<meta property="og:updated_time" content="2016-08-01T16:23:43.918Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="一个写代码的地方">
 <meta name="twitter:description" content="Volley学习笔记之简单使用及部分源码详解一、使用背景简介现在大多数手机App几乎都离不开网络技术，需要手机端与网络服务端进行数据交互，Android系统中主要提供了两种方式来进行HTTP通信，HttpURLConnection和HttpClient，在初学Android的时候，这两个类是我们最开始学着使用的，但是在使用过程中需要调取各种API，进行封，然后请求到的结果需要自己去解析，最后再将解">
-<meta name="twitter:image" content="http://yoursite.com/C:\Users\zhangpeng\Desktop\20140511114837375.png">
+<meta name="twitter:image" content="http://yoursite.com/images/operating principle.png">
   
     <link rel="alternative" href="/atom.xml" title="一个写代码的地方" type="application/atom+xml">
   
@@ -83,7 +83,7 @@
 						<li>Links</li>
 						
 						
-						<li>Über</li>
+						<li>About</li>
 						
 					</ul>
 				</div>
@@ -264,7 +264,7 @@
 </ol>
 <p>相信不想只做代码搬运工的你在使用过程中也会有这些甚至更多疑问，笔者在使用过程中一直好奇这些，否则在项目中只是简单调用人家已经封装好的几行代码，总感觉自己是一个搬运工，不知其所以然，所以现在决定，静下心来，去尝试分析一下Volley源码，以此记录分享。</p>
 <h2 id="五、源码分析"><a href="#五、源码分析" class="headerlink" title="五、源码分析"></a>五、源码分析</h2><p>首先我们来看看Volley官方给出的一张Volley工作流程图 </p>
-<p><img src="C:\Users\zhangpeng\Desktop\20140511114837375.png" alt="20140511114837375"></p>
+<p><img src="/images/operating principle.png" alt="“Volley工作原理如”"></p>
 <p>下面将这张图翻译如下：</p>
 <p><img src="C:\Users\zhangpeng\Desktop\QQ截图20160802000321.png" alt="QQ截图20160802000321"></p>
 <p>通过上面这张图我们可以对Volley工作流程有一个大概的印象，下面我们根据这张流程图以及Volley使用过程来结源码进行分析：</p>
