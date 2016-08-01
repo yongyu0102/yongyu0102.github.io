@@ -13,8 +13,8 @@
 <meta property="og:site_name" content="一个写代码的地方">
 <meta property="og:description" content="Volley学习笔记之简单使用及部分源码详解一、使用背景简介现在大多数手机App几乎都离不开网络技术，需要手机端与网络服务端进行数据交互，Android系统中主要提供了两种方式来进行HTTP通信，HttpURLConnection和HttpClient，在初学Android的时候，这两个类是我们最开始学着使用的，但是在使用过程中需要调取各种API，进行封，然后请求到的结果需要自己去解析，最后再将解">
 <meta property="og:image" content="http://yoursite.com/images/operating principle.png">
-<meta property="og:image" content="http://yoursite.com/C:\Users\zhangpeng\Desktop\QQ截图20160802000321.png">
-<meta property="og:updated_time" content="2016-08-01T16:23:43.918Z">
+<meta property="og:image" content="http://yoursite.com/images/operating principle-cn.png">
+<meta property="og:updated_time" content="2016-08-01T16:26:31.730Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="一个写代码的地方">
 <meta name="twitter:description" content="Volley学习笔记之简单使用及部分源码详解一、使用背景简介现在大多数手机App几乎都离不开网络技术，需要手机端与网络服务端进行数据交互，Android系统中主要提供了两种方式来进行HTTP通信，HttpURLConnection和HttpClient，在初学Android的时候，这两个类是我们最开始学着使用的，但是在使用过程中需要调取各种API，进行封，然后请求到的结果需要自己去解析，最后再将解">
@@ -266,7 +266,7 @@
 <h2 id="五、源码分析"><a href="#五、源码分析" class="headerlink" title="五、源码分析"></a>五、源码分析</h2><p>首先我们来看看Volley官方给出的一张Volley工作流程图 </p>
 <p><img src="/images/operating principle.png" alt="“Volley工作原理如”"></p>
 <p>下面将这张图翻译如下：</p>
-<p><img src="C:\Users\zhangpeng\Desktop\QQ截图20160802000321.png" alt="QQ截图20160802000321"></p>
+<p><img src="/images/operating principle-cn.png" alt="“Volley工作原理如”"></p>
 <p>通过上面这张图我们可以对Volley工作流程有一个大概的印象，下面我们根据这张流程图以及Volley使用过程来结源码进行分析：</p>
 <p>首先从我们使用的入口Volley.newRequestQueue(context)方法来来作为我们分析的切入点，代码如下：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> * 使用volley的入口，一般默认调用这个方法即可创建一个默认的网络请求列队，启动一个请求队列RequestQueue，</div><div class="line"> * 只需要往这个RequestQueue不断 add Request 即可发起请求</div><div class="line"> * <span class="doctag">@param</span> context用于创建缓存文件夹</div><div class="line"> * <span class="doctag">@return</span> 返回 instance.</div><div class="line"> */</div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> RequestQueue <span class="title">newRequestQueue</span><span class="params">(Context context)</span> </span>&#123;</div><div class="line">    <span class="keyword">return</span> newRequestQueue(context, <span class="keyword">null</span>);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
