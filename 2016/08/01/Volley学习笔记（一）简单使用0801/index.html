@@ -10,12 +10,21 @@
     <meta name="author" content="John Doe">
   
   
-  <meta property="og:type" content="website">
+    <meta name="description" content="Volley学习笔记之简单使用及部分源码详解一、使用背景简介现在大多数手机App几乎都离不开网络技术，需要手机端与网络服务端进行数据交互，Android系统中主要提供了两种方式来进行HTTP通信，HttpURLConnection和HttpClient，在初学Android的时候，这两个类是我们最开始学着使用的，但是在使用过程中需要调取各种API，进行封，然后请求到的结果需要自己去解析，最后再将解">
+  
+  <meta name="description" content="Volley学习笔记之简单使用及部分源码详解一、使用背景简介现在大多数手机App几乎都离不开网络技术，需要手机端与网络服务端进行数据交互，Android系统中主要提供了两种方式来进行HTTP通信，HttpURLConnection和HttpClient，在初学Android的时候，这两个类是我们最开始学着使用的，但是在使用过程中需要调取各种API，进行封，然后请求到的结果需要自己去解析，最后再将解">
+<meta property="og:type" content="article">
 <meta property="og:title" content="Hexo">
-<meta property="og:url" content="http://yoursite.com/index.html">
+<meta property="og:url" content="http://yoursite.com/2016/08/01/Volley学习笔记（一）简单使用0801/index.html">
 <meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="Volley学习笔记之简单使用及部分源码详解一、使用背景简介现在大多数手机App几乎都离不开网络技术，需要手机端与网络服务端进行数据交互，Android系统中主要提供了两种方式来进行HTTP通信，HttpURLConnection和HttpClient，在初学Android的时候，这两个类是我们最开始学着使用的，但是在使用过程中需要调取各种API，进行封，然后请求到的结果需要自己去解析，最后再将解">
+<meta property="og:image" content="http://yoursite.com/C:\Users\FZT\Desktop\1679464-1cb843b089873964.png">
+<meta property="og:image" content="http://yoursite.com/C:\Users\FZT\Desktop\QQ截图20160728162634.png">
+<meta property="og:updated_time" content="2016-08-01T14:39:48.433Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Hexo">
+<meta name="twitter:description" content="Volley学习笔记之简单使用及部分源码详解一、使用背景简介现在大多数手机App几乎都离不开网络技术，需要手机端与网络服务端进行数据交互，Android系统中主要提供了两种方式来进行HTTP通信，HttpURLConnection和HttpClient，在初学Android的时候，这两个类是我们最开始学着使用的，但是在使用过程中需要调取各种API，进行封，然后请求到的结果需要自己去解析，最后再将解">
+<meta name="twitter:image" content="http://yoursite.com/C:\Users\FZT\Desktop\1679464-1cb843b089873964.png">
   
   
   <link rel="stylesheet" href="/css/style.css">
@@ -45,13 +54,7 @@
   </nav>
   <div class="clearfix"></div>
 </header>
-    <div class="content">
-
-
-
-
-  
-    <article class="post">
+    <div class="content"><article class="post">
   <header>
     
       <div class="icon"></div>
@@ -63,7 +66,7 @@
     
     
   
-    <h1 class="title"><a href="/2016/08/01/Volley学习笔记（一）简单使用0801/"></a></h1>
+    <h1 class="title"></h1>
   
 
   </header>
@@ -174,7 +177,7 @@
 
     
   </div>
-  <footer class="end-sep">
+  <footer>
     
       
       
@@ -184,93 +187,11 @@
 </article>
 
 
-  
-    <article class="photo">
-  <header>
-    
-      <div class="icon"></div>
-      <a href="/2016/07/25/新建文章/">
-  <time datetime="2016-07-24T16:27:02.061Z">
-    2016-07-25
-  </time>
-</a>
-    
-    
-  
-    <h1 class="title"><a href="/2016/07/25/新建文章/"></a></h1>
-  
-
-  </header>
-  
-  <div class="entry">
-    
-      <h2 id="title-我的相册"><a href="#title-我的相册" class="headerlink" title="title: 我的相册"></a>title: 我的相册</h2><p>date: 2085-01-16 07:33:44<br>tags: [hexo]<br>以上是摘要<br>
-    
+<section id="comment">
+  <h1 class="title">Comments</h1>
+  <div class="ds-thread" data-title="">
   </div>
-  <footer class="end-sep">
-    
-      
-        <div class="alignleft">
-          <a href="/2016/07/25/新建文章/#more" class="more-link">Read More</a>
-        </div>
-      
-      
-    
-    <div class="clearfix"></div>
-  </footer>
-</article>
-
-
-  
-    <article class="post">
-  <header>
-    
-      <div class="icon"></div>
-      <a href="/2016/07/24/hello-world/">
-  <time datetime="2016-07-24T03:01:12.857Z">
-    2016-07-24
-  </time>
-</a>
-    
-    
-  
-    <h1 class="title"><a href="/2016/07/24/hello-world/">Hello World</a></h1>
-  
-
-  </header>
-  
-  <div class="entry">
-    
-      <p>Welcome to <a href="https://hexo.io/" target="_blank" rel="external">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="external">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="external">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="external">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo new <span class="string">"My New Post"</span></div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="external">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo server</div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="external">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo generate</div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="external">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo deploy</div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="external">Deployment</a></p>
-
-    
-  </div>
-  <footer class="end-sep">
-    
-      
-      
-    
-    <div class="clearfix"></div>
-  </footer>
-</article>
-
-
-  
-
-  <nav id="pagination">
-  
-  
-  <div class="clearfix"></div>
-</nav>
-
+</section>
 </div>
   </div>
   <footer id="footer"><div class="copyright">
