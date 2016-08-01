@@ -199,10 +199,10 @@
 
       <div class="body-wrap">
   
-    <article id="post-Volley学习笔记（一）简单使用0801" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-Volley Study" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a href="/2016/08/01/Volley学习笔记（一）简单使用0801/" class="article-date">
+      <a href="/2016/08/01/Volley Study/" class="article-date">
   	<time datetime="2016-08-01T14:41:25.127Z" itemprop="datePublished">2016-08-01</time>
 </a>
     </div>
@@ -224,10 +224,18 @@
 <p>(4). 支持指定请求的优先级。</p>
 <p>(4). 高并发网络连接。</p>
 </li>
-<li><p>使用下载地址：</p>
+<li><p>使用下载地址：<a href="https://android.googlesource.com/platform/frameworks/volley" target="_blank" rel="external">https://android.googlesource.com/platform/frameworks/volley</a></p>
+<p>可以使用git 下载命令 git clone  <a href="https://android.googlesource.com/platform/frameworks/volley" target="_blank" rel="external">https://android.googlesource.com/platform/frameworks/volley</a></p>
+<ul>
+<li>编译jar：<br><code>android update project -p . ant jar</code></li>
+</ul>
 </li>
 </ul>
-<p>  可以使用git 下载命令 git clone  <a href="https://android.googlesource.com/platform/frameworks/volley" target="_blank" rel="external">https://android.googlesource.com/platform/frameworks/volley</a></p>
+<ul>
+<li><p>添加volley.jar到你的项目中</p>
+<p><strong>不过已经有人将volley的代码放到github上了：</strong><br><a href="https://github.com/mcxiaoke/android-volley" target="_blank" rel="external">https://github.com/mcxiaoke/android-volley</a>，你可以使用更加简单的方式来使用volley</p>
+</li>
+</ul>
 <h2 id="三、简单使用"><a href="#三、简单使用" class="headerlink" title="三、简单使用"></a>三、简单使用</h2><p>使用Volley框架实现网络数据请求主要有以下三个步骤：</p>
 <ol>
 <li>创建RequestQueue对象，定义网络请求队列，RequestQueue内部的设计就是非常合适高并发的，因此我们不必为每一次HTTP请求都创建一个RequestQueue对象，避免非常浪费资源的，一般全局使用一个就可以。</li>
@@ -250,9 +258,10 @@
 <li>内部是如何各种继承，组合封装最后几行代码就可以实现请求功能，但是使用拓展性又那么强。</li>
 </ol>
 <p>相信不想只做代码搬运工的你在使用过程中也会有这些甚至更多疑问，笔者在使用过程中一直好奇这些，否则在项目中只是简单调用人家已经封装好的几行代码，总感觉自己是一个搬运工，不知其所以然，所以现在决定，静下心来，去尝试分析一下Volley源码，以此记录分享。</p>
-<h2 id="五、源码分析"><a href="#五、源码分析" class="headerlink" title="五、源码分析"></a>五、源码分析</h2><p>首先我们来看看Volley官方给出的一张Volley工作流程图 <img src="C:\Users\FZT\Desktop\1679464-1cb843b089873964.png" alt="1679464-1cb843b089873964"></p>
+<h2 id="五、源码分析"><a href="#五、源码分析" class="headerlink" title="五、源码分析"></a>五、源码分析</h2><p>首先我们来看看Volley官方给出的一张Volley工作流程图 </p>
+<p><img src="C:\Users\zhangpeng\Desktop\20140511114837375.png" alt="20140511114837375"></p>
 <p>下面将这张图翻译如下：</p>
-<p><img src="C:\Users\FZT\Desktop\QQ截图20160728162634.png" alt="QQ截图20160728162634"></p>
+<p><img src="C:\Users\zhangpeng\Desktop\QQ截图20160802000321.png" alt="QQ截图20160802000321"></p>
 <p>通过上面这张图我们可以对Volley工作流程有一个大概的印象，下面我们根据这张流程图以及Volley使用过程来结源码进行分析：</p>
 <p>首先从我们使用的入口Volley.newRequestQueue(context)方法来来作为我们分析的切入点，代码如下：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> * 使用volley的入口，一般默认调用这个方法即可创建一个默认的网络请求列队，启动一个请求队列RequestQueue，</div><div class="line"> * 只需要往这个RequestQueue不断 add Request 即可发起请求</div><div class="line"> * <span class="doctag">@param</span> context用于创建缓存文件夹</div><div class="line"> * <span class="doctag">@return</span> 返回 instance.</div><div class="line"> */</div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> RequestQueue <span class="title">newRequestQueue</span><span class="params">(Context context)</span> </span>&#123;</div><div class="line">    <span class="keyword">return</span> newRequestQueue(context, <span class="keyword">null</span>);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
@@ -315,67 +324,6 @@
 <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> * 封装执行HttpURLConnection网络请求，返回HttpResponse对象</div><div class="line"> * <span class="doctag">@param</span> request the request to perform</div><div class="line"> * <span class="doctag">@param</span> additionalHeaders 附加的请求头文件信息</div><div class="line"> */</div><div class="line"><span class="meta">@Override</span></div><div class="line"><span class="function"><span class="keyword">public</span> HttpResponse <span class="title">performRequest</span><span class="params">(Request&lt;?&gt; request, Map&lt;String, String&gt; additionalHeaders)</span></span></div><div class="line">        <span class="keyword">throws</span> IOException, AuthFailureError &#123;</div><div class="line">    <span class="comment">//获取网络请求url</span></div><div class="line">    String url = request.getUrl();</div><div class="line">    <span class="comment">//new 一个map对象</span></div><div class="line">    HashMap&lt;String, String&gt; map = <span class="keyword">new</span> HashMap&lt;String, String&gt;();</div><div class="line">    <span class="comment">//将请求header信息添加进去</span></div><div class="line">    map.putAll(request.getHeaders());</div><div class="line">    map.putAll(additionalHeaders);</div><div class="line">    <span class="keyword">if</span> (mUrlRewriter != <span class="keyword">null</span>) &#123;</div><div class="line">        String rewritten = mUrlRewriter.rewriteUrl(url);</div><div class="line">        <span class="keyword">if</span> (rewritten == <span class="keyword">null</span>) &#123;</div><div class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> IOException(<span class="string">"URL blocked by rewriter: "</span> + url);</div><div class="line">        &#125;</div><div class="line">        <span class="comment">//获取到url</span></div><div class="line">        url = rewritten;</div><div class="line">    &#125;</div><div class="line">    <span class="comment">//解析url</span></div><div class="line">    URL parsedUrl = <span class="keyword">new</span> URL(url);</div><div class="line">    <span class="comment">//创建HttpURLConnection网络请求连接</span></div><div class="line">    HttpURLConnection connection = openConnection(parsedUrl, request);</div><div class="line">    <span class="keyword">for</span> (String headerName : map.keySet()) &#123;</div><div class="line">        <span class="comment">//添加请求头信息</span></div><div class="line">        connection.addRequestProperty(headerName, map.get(headerName));</div><div class="line">    &#125;</div><div class="line">    <span class="comment">//设置连接参数，主要设置各种请求类型</span></div><div class="line">    setConnectionParametersForRequest(connection, request);</div><div class="line">  ........</div><div class="line">    <span class="comment">//解析请求body请求体</span></div><div class="line">    response.setEntity(entityFromConnection(connection));</div><div class="line">    <span class="keyword">for</span> (Entry&lt;String, List&lt;String&gt;&gt; header : connection.getHeaderFields().entrySet()) &#123;</div><div class="line">        <span class="keyword">if</span> (header.getKey() != <span class="keyword">null</span>) &#123;</div><div class="line">            <span class="comment">//解析请求header添加请求头</span></div><div class="line">            Header h = <span class="keyword">new</span> BasicHeader(header.getKey(), header.getValue().get(<span class="number">0</span>));</div><div class="line">            response.addHeader(h);</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">  <span class="comment">//请求结果返回</span></div><div class="line">    <span class="keyword">return</span> response;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p>这段代码中我们终于看见了我们熟悉的HttpURLConnection对象，并进行了一系列的参数设置，解析返回数据返回HttpResponse对象。到这里负责执行网络请求部分的内容我们也梳理结束。</p>
 <p>至此，关于volley的学习笔记到此结束，如有理解错误地方，还请指教！！</p>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-
-
-  
-    <article id="post-hello-world" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2016/07/24/hello-world/" class="article-date">
-  	<time datetime="2016-07-24T03:01:12.857Z" itemprop="datePublished">2016-07-24</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/07/24/hello-world/">Hello World</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>Welcome to <a href="https://hexo.io/" target="_blank" rel="external">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="external">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="external">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="external">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo new <span class="string">"My New Post"</span></div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="external">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo server</div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="external">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo generate</div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="external">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo deploy</div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="external">Deployment</a></p>
 
       
     </div>

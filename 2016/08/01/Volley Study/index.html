@@ -9,16 +9,16 @@
   <meta name="description" content="Volley学习笔记之简单使用及部分源码详解一、使用背景简介现在大多数手机App几乎都离不开网络技术，需要手机端与网络服务端进行数据交互，Android系统中主要提供了两种方式来进行HTTP通信，HttpURLConnection和HttpClient，在初学Android的时候，这两个类是我们最开始学着使用的，但是在使用过程中需要调取各种API，进行封，然后请求到的结果需要自己去解析，最后再将解">
 <meta property="og:type" content="article">
 <meta property="og:title" content="一个写代码的地方">
-<meta property="og:url" content="http://yoursite.com/2016/08/01/Volley学习笔记（一）简单使用0801/index.html">
+<meta property="og:url" content="http://yoursite.com/2016/08/01/Volley Study/index.html">
 <meta property="og:site_name" content="一个写代码的地方">
 <meta property="og:description" content="Volley学习笔记之简单使用及部分源码详解一、使用背景简介现在大多数手机App几乎都离不开网络技术，需要手机端与网络服务端进行数据交互，Android系统中主要提供了两种方式来进行HTTP通信，HttpURLConnection和HttpClient，在初学Android的时候，这两个类是我们最开始学着使用的，但是在使用过程中需要调取各种API，进行封，然后请求到的结果需要自己去解析，最后再将解">
-<meta property="og:image" content="http://yoursite.com/C:\Users\FZT\Desktop\1679464-1cb843b089873964.png">
-<meta property="og:image" content="http://yoursite.com/C:\Users\FZT\Desktop\QQ截图20160728162634.png">
-<meta property="og:updated_time" content="2016-08-01T14:39:48.433Z">
+<meta property="og:image" content="http://yoursite.com/C:\Users\zhangpeng\Desktop\20140511114837375.png">
+<meta property="og:image" content="http://yoursite.com/C:\Users\zhangpeng\Desktop\QQ截图20160802000321.png">
+<meta property="og:updated_time" content="2016-08-01T16:03:44.768Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="一个写代码的地方">
 <meta name="twitter:description" content="Volley学习笔记之简单使用及部分源码详解一、使用背景简介现在大多数手机App几乎都离不开网络技术，需要手机端与网络服务端进行数据交互，Android系统中主要提供了两种方式来进行HTTP通信，HttpURLConnection和HttpClient，在初学Android的时候，这两个类是我们最开始学着使用的，但是在使用过程中需要调取各种API，进行封，然后请求到的结果需要自己去解析，最后再将解">
-<meta name="twitter:image" content="http://yoursite.com/C:\Users\FZT\Desktop\1679464-1cb843b089873964.png">
+<meta name="twitter:image" content="http://yoursite.com/C:\Users\zhangpeng\Desktop\20140511114837375.png">
   
     <link rel="alternative" href="/atom.xml" title="一个写代码的地方" type="application/atom+xml">
   
@@ -204,10 +204,10 @@
 	</div>
 </nav>
 
-      <div class="body-wrap"><article id="post-Volley学习笔记（一）简单使用0801" class="article article-type-post" itemscope itemprop="blogPost">
+      <div class="body-wrap"><article id="post-Volley Study" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a href="/2016/08/01/Volley学习笔记（一）简单使用0801/" class="article-date">
+      <a href="/2016/08/01/Volley Study/" class="article-date">
   	<time datetime="2016-08-01T14:41:25.127Z" itemprop="datePublished">2016-08-01</time>
 </a>
     </div>
@@ -229,10 +229,18 @@
 <p>(4). 支持指定请求的优先级。</p>
 <p>(4). 高并发网络连接。</p>
 </li>
-<li><p>使用下载地址：</p>
+<li><p>使用下载地址：<a href="https://android.googlesource.com/platform/frameworks/volley" target="_blank" rel="external">https://android.googlesource.com/platform/frameworks/volley</a></p>
+<p>可以使用git 下载命令 git clone  <a href="https://android.googlesource.com/platform/frameworks/volley" target="_blank" rel="external">https://android.googlesource.com/platform/frameworks/volley</a></p>
+<ul>
+<li>编译jar：<br><code>android update project -p . ant jar</code></li>
+</ul>
 </li>
 </ul>
-<p>  可以使用git 下载命令 git clone  <a href="https://android.googlesource.com/platform/frameworks/volley" target="_blank" rel="external">https://android.googlesource.com/platform/frameworks/volley</a></p>
+<ul>
+<li><p>添加volley.jar到你的项目中</p>
+<p><strong>不过已经有人将volley的代码放到github上了：</strong><br><a href="https://github.com/mcxiaoke/android-volley" target="_blank" rel="external">https://github.com/mcxiaoke/android-volley</a>，你可以使用更加简单的方式来使用volley</p>
+</li>
+</ul>
 <h2 id="三、简单使用"><a href="#三、简单使用" class="headerlink" title="三、简单使用"></a>三、简单使用</h2><p>使用Volley框架实现网络数据请求主要有以下三个步骤：</p>
 <ol>
 <li>创建RequestQueue对象，定义网络请求队列，RequestQueue内部的设计就是非常合适高并发的，因此我们不必为每一次HTTP请求都创建一个RequestQueue对象，避免非常浪费资源的，一般全局使用一个就可以。</li>
@@ -255,9 +263,10 @@
 <li>内部是如何各种继承，组合封装最后几行代码就可以实现请求功能，但是使用拓展性又那么强。</li>
 </ol>
 <p>相信不想只做代码搬运工的你在使用过程中也会有这些甚至更多疑问，笔者在使用过程中一直好奇这些，否则在项目中只是简单调用人家已经封装好的几行代码，总感觉自己是一个搬运工，不知其所以然，所以现在决定，静下心来，去尝试分析一下Volley源码，以此记录分享。</p>
-<h2 id="五、源码分析"><a href="#五、源码分析" class="headerlink" title="五、源码分析"></a>五、源码分析</h2><p>首先我们来看看Volley官方给出的一张Volley工作流程图 <img src="C:\Users\FZT\Desktop\1679464-1cb843b089873964.png" alt="1679464-1cb843b089873964"></p>
+<h2 id="五、源码分析"><a href="#五、源码分析" class="headerlink" title="五、源码分析"></a>五、源码分析</h2><p>首先我们来看看Volley官方给出的一张Volley工作流程图 </p>
+<p><img src="C:\Users\zhangpeng\Desktop\20140511114837375.png" alt="20140511114837375"></p>
 <p>下面将这张图翻译如下：</p>
-<p><img src="C:\Users\FZT\Desktop\QQ截图20160728162634.png" alt="QQ截图20160728162634"></p>
+<p><img src="C:\Users\zhangpeng\Desktop\QQ截图20160802000321.png" alt="QQ截图20160802000321"></p>
 <p>通过上面这张图我们可以对Volley工作流程有一个大概的印象，下面我们根据这张流程图以及Volley使用过程来结源码进行分析：</p>
 <p>首先从我们使用的入口Volley.newRequestQueue(context)方法来来作为我们分析的切入点，代码如下：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> * 使用volley的入口，一般默认调用这个方法即可创建一个默认的网络请求列队，启动一个请求队列RequestQueue，</div><div class="line"> * 只需要往这个RequestQueue不断 add Request 即可发起请求</div><div class="line"> * <span class="doctag">@param</span> context用于创建缓存文件夹</div><div class="line"> * <span class="doctag">@return</span> 返回 instance.</div><div class="line"> */</div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> RequestQueue <span class="title">newRequestQueue</span><span class="params">(Context context)</span> </span>&#123;</div><div class="line">    <span class="keyword">return</span> newRequestQueue(context, <span class="keyword">null</span>);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
@@ -327,16 +336,6 @@
   </div>
   
     
-<nav id="article-nav">
-  
-  
-    <a href="/2016/07/24/hello-world/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">Hello World</div>
-      <strong class="article-nav-caption">></strong>
-    </a>
-  
-</nav>
-
   
 </article>
 
@@ -366,7 +365,7 @@
 
 <div class="duoshuo">
 	<!-- 多说评论框 start -->
-	<div class="ds-thread" data-thread-key="Volley学习笔记（一）简单使用0801" data-title="" data-url="http://yoursite.com/2016/08/01/Volley学习笔记（一）简单使用0801/"></div>
+	<div class="ds-thread" data-thread-key="Volley Study" data-title="" data-url="http://yoursite.com/2016/08/01/Volley Study/"></div>
 	<!-- 多说评论框 end -->
 	<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
 	<script type="text/javascript">
