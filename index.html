@@ -71,12 +71,12 @@
 					<div class="tips-arrow"></div>
 					<ul class="tips-inner">
 						<li>Menu</li>
-						<li>Tags</li>
+						<li>Тэги</li>
 						
 						<li>Links</li>
 						
 						
-						<li>Über</li>
+						<li>О сайте</li>
 						
 					</ul>
 				</div>
@@ -212,9 +212,21 @@
       <input type="hidden" class="isFancy" />
     
     
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/08/01/Volley Study/">Volley学习笔记之简单使用及部分源码详解</a>
+    </h1>
+  
+
+      </header>
+      
+    
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="Volley学习笔记之简单使用及部分源码详解"><a href="#Volley学习笔记之简单使用及部分源码详解" class="headerlink" title="Volley学习笔记之简单使用及部分源码详解"></a>Volley学习笔记之简单使用及部分源码详解</h1><h2 id="一、使用背景简介"><a href="#一、使用背景简介" class="headerlink" title="一、使用背景简介"></a>一、使用背景简介</h2><p>现在大多数手机App几乎都离不开网络技术，需要手机端与网络服务端进行数据交互，Android系统中主要提供了两种方式来进行HTTP通信，HttpURLConnection和HttpClient，在初学Android的时候，这两个类是我们最开始学着使用的，但是在使用过程中需要调取各种API，进行封，然后请求到的结果需要自己去解析，最后再将解析到的数据进行封装存到数据库，整个过程，相当复杂，而且重复性很高，于是针对这种情况，网络上就有大神封装了各种第三方使用库供我们使用，将这些流程封装组合包装优化，使得整个流程得以简化，只需简单配置，几行代码就完成整个过程。今天我们介绍的Volley 就是其中一个优秀第三方框架。笔者所在公司目前项目使用的就是Volley ，所以在使用的同时决定写一系列笔记分析，从学会简单使用，到最后的Volley源码分析一系列循序渐进的流程来理解Volley的实现原理。</p>
+        <p>转载请附原文链接：<a href="http://yongyu.itscoder.com/2016/08/01/Volley%20Study/" target="_blank" rel="external">Volley学习笔记之简单使用及部分源码详解</a></p>
+<h2 id="一、使用背景简介"><a href="#一、使用背景简介" class="headerlink" title="一、使用背景简介"></a>一、使用背景简介</h2><p>现在大多数手机App几乎都离不开网络技术，需要手机端与网络服务端进行数据交互，Android系统中主要提供了两种方式来进行HTTP通信，HttpURLConnection和HttpClient，在初学Android的时候，这两个类是我们最开始学着使用的，但是在使用过程中需要调取各种API，进行封，然后请求到的结果需要自己去解析，最后再将解析到的数据进行封装存到数据库，整个过程，相当复杂，而且重复性很高，于是针对这种情况，网络上就有大神封装了各种第三方使用库供我们使用，将这些流程封装组合包装优化，使得整个流程得以简化，只需简单配置，几行代码就完成整个过程。今天我们介绍的Volley 就是其中一个优秀第三方框架。笔者所在公司目前项目使用的就是Volley ，所以在使用的同时决定写一系列笔记分析，从学会简单使用，到最后的Volley源码分析一系列循序渐进的流程来理解Volley的实现原理。</p>
 <h2 id="二、Volley简介"><a href="#二、Volley简介" class="headerlink" title="二、Volley简介"></a>二、Volley简介</h2><p>Volley 是 Google在 Google I/O 2013 大会上 推出的 Android 异步网络请求和图片加载框架。</p>
 <ul>
 <li><p>主要作用 ：实现异步网络请求、图片加载、本地数据缓存功能框架。</p>
@@ -233,7 +245,7 @@
 </ul>
 <ul>
 <li><p>添加volley.jar到你的项目中</p>
-<p><strong>不过已经有人将volley的代码放到github上了：</strong><br><a href="https://github.com/mcxiaoke/android-volley" target="_blank" rel="external">https://github.com/mcxiaoke/android-volley</a>，你可以使用更加简单的方式来使用volley</p>
+<p>  <strong>不过已经有人将volley的代码放到github上了：</strong><br>  <a href="https://github.com/mcxiaoke/android-volley" target="_blank" rel="external">https://github.com/mcxiaoke/android-volley</a>，你可以使用更加简单的方式来使用volley</p>
 </li>
 </ul>
 <h2 id="三、简单使用"><a href="#三、简单使用" class="headerlink" title="三、简单使用"></a>三、简单使用</h2><p>使用Volley框架实现网络数据请求主要有以下三个步骤：</p>
@@ -332,6 +344,10 @@
       
       
       
+	<div class="article-category tagcloud">
+	<a class="article-category-link" href="/categories/Android源码学习/">Android源码学习</a>
+	</div>
+
 
       
       <div class="clearfix"></div>
