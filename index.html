@@ -71,12 +71,12 @@
 					<div class="tips-arrow"></div>
 					<ul class="tips-inner">
 						<li>Menu</li>
-						<li>Тэги</li>
+						<li>Tags</li>
 						
 						<li>Links</li>
 						
 						
-						<li>О сайте</li>
+						<li>About</li>
 						
 					</ul>
 				</div>
@@ -225,7 +225,8 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>转载请附原文链接：<a href="http://yongyu.itscoder.com/2016/08/01/Volley%20Study/" target="_blank" rel="external">Volley学习笔记之简单使用及部分源码详解</a></p>
+        <p>转载请附原文链接：<a href="http://yongyu.itscoder.com/2016/08/01/Volley%20Study/" target="_blank" rel="external">Volley学习笔记之简单使用及部分源码详解</a> </p>
+<p><a href="http://yongyu.itscoder.com/2016/08/01/Volley%20Study/undefinedhttp://yongyu.itscoder.com/2016/08/01/Volley%20Study/" target="_blank" rel="external">http://yongyu.itscoder.com/2016/08/01/Volley%20Study/undefinedhttp://yongyu.itscoder.com/2016/08/01/Volley%20Study/</a></p>
 <h2 id="一、使用背景简介"><a href="#一、使用背景简介" class="headerlink" title="一、使用背景简介"></a>一、使用背景简介</h2><p>现在大多数手机App几乎都离不开网络技术，需要手机端与网络服务端进行数据交互，Android系统中主要提供了两种方式来进行HTTP通信，HttpURLConnection和HttpClient，在初学Android的时候，这两个类是我们最开始学着使用的，但是在使用过程中需要调取各种API，进行封，然后请求到的结果需要自己去解析，最后再将解析到的数据进行封装存到数据库，整个过程，相当复杂，而且重复性很高，于是针对这种情况，网络上就有大神封装了各种第三方使用库供我们使用，将这些流程封装组合包装优化，使得整个流程得以简化，只需简单配置，几行代码就完成整个过程。今天我们介绍的Volley 就是其中一个优秀第三方框架。笔者所在公司目前项目使用的就是Volley ，所以在使用的同时决定写一系列笔记分析，从学会简单使用，到最后的Volley源码分析一系列循序渐进的流程来理解Volley的实现原理。</p>
 <h2 id="二、Volley简介"><a href="#二、Volley简介" class="headerlink" title="二、Volley简介"></a>二、Volley简介</h2><p>Volley 是 Google在 Google I/O 2013 大会上 推出的 Android 异步网络请求和图片加载框架。</p>
 <ul>
@@ -271,9 +272,9 @@
 </ol>
 <p>相信不想只做代码搬运工的你在使用过程中也会有这些甚至更多疑问，笔者在使用过程中一直好奇这些，否则在项目中只是简单调用人家已经封装好的几行代码，总感觉自己是一个搬运工，不知其所以然，所以现在决定，静下心来，去尝试分析一下Volley源码，以此记录分享。</p>
 <h2 id="五、源码分析"><a href="#五、源码分析" class="headerlink" title="五、源码分析"></a>五、源码分析</h2><p>首先我们来看看Volley官方给出的一张Volley工作流程图 </p>
-<p><img src="/images/operating principle.png" alt="“Volley工作原理如”"></p>
+<p><img src="https://github.com/yongyu0102/yongyu0102.github.io/blob/master/images/operating%20principle.png?raw=true" alt="“Volley工作原理如”"></p>
 <p>下面将这张图翻译如下：</p>
-<p><img src="/images/operating principle-cn.png" alt="“Volley工作原理如”"></p>
+<p><img src="https://github.com/yongyu0102/yongyu0102.github.io/blob/master/images/operating%20principle-cn.png?raw=true" alt="“Volley工作原理如”"></p>
 <p>通过上面这张图我们可以对Volley工作流程有一个大概的印象，下面我们根据这张流程图以及Volley使用过程来结源码进行分析：</p>
 <p>首先从我们使用的入口Volley.newRequestQueue(context)方法来来作为我们分析的切入点，代码如下：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> * 使用volley的入口，一般默认调用这个方法即可创建一个默认的网络请求列队，启动一个请求队列RequestQueue，</div><div class="line"> * 只需要往这个RequestQueue不断 add Request 即可发起请求</div><div class="line"> * <span class="doctag">@param</span> context用于创建缓存文件夹</div><div class="line"> * <span class="doctag">@return</span> 返回 instance.</div><div class="line"> */</div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> RequestQueue <span class="title">newRequestQueue</span><span class="params">(Context context)</span> </span>&#123;</div><div class="line">    <span class="keyword">return</span> newRequestQueue(context, <span class="keyword">null</span>);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
