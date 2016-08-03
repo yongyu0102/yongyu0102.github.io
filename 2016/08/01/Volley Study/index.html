@@ -7,23 +7,23 @@
   <title>Volley学习笔记之简单使用及部分源码详解 | 一个写代码的地方</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="转载请附原文链接：Volley学习笔记之简单使用及部分源码详解 
-http://yongyu.itscoder.com/2016/08/01/Volley%20Study/
-一、使用背景简介现在大多数手机App几乎都离不开网络技术，需要手机端与网络服务端进行数据交互，Android系统中主要提供了两种方式来进行HTTP通信，HttpURLConnection和HttpClient，在初学Andro">
+地址：http://yongyu.itscoder.com/2016/08/01/Volley%20Study/
+一、使用背景简介现在大多数手机App几乎都离不开网络技术，需要手机端与网络服务端进行数据交互，Android系统中主要提供了两种方式来进行HTTP通信，HttpURLConnection和HttpClient，在初学An">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Volley学习笔记之简单使用及部分源码详解">
 <meta property="og:url" content="http://yoursite.com/2016/08/01/Volley Study/index.html">
 <meta property="og:site_name" content="一个写代码的地方">
 <meta property="og:description" content="转载请附原文链接：Volley学习笔记之简单使用及部分源码详解 
-http://yongyu.itscoder.com/2016/08/01/Volley%20Study/
-一、使用背景简介现在大多数手机App几乎都离不开网络技术，需要手机端与网络服务端进行数据交互，Android系统中主要提供了两种方式来进行HTTP通信，HttpURLConnection和HttpClient，在初学Andro">
+地址：http://yongyu.itscoder.com/2016/08/01/Volley%20Study/
+一、使用背景简介现在大多数手机App几乎都离不开网络技术，需要手机端与网络服务端进行数据交互，Android系统中主要提供了两种方式来进行HTTP通信，HttpURLConnection和HttpClient，在初学An">
 <meta property="og:image" content="https://github.com/yongyu0102/yongyu0102.github.io/blob/master/images/operating%20principle.png?raw=true">
 <meta property="og:image" content="https://github.com/yongyu0102/yongyu0102.github.io/blob/master/images/operating%20principle-cn.png?raw=true">
-<meta property="og:updated_time" content="2016-08-03T13:53:55.912Z">
+<meta property="og:updated_time" content="2016-08-03T14:00:53.751Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Volley学习笔记之简单使用及部分源码详解">
 <meta name="twitter:description" content="转载请附原文链接：Volley学习笔记之简单使用及部分源码详解 
-http://yongyu.itscoder.com/2016/08/01/Volley%20Study/
-一、使用背景简介现在大多数手机App几乎都离不开网络技术，需要手机端与网络服务端进行数据交互，Android系统中主要提供了两种方式来进行HTTP通信，HttpURLConnection和HttpClient，在初学Andro">
+地址：http://yongyu.itscoder.com/2016/08/01/Volley%20Study/
+一、使用背景简介现在大多数手机App几乎都离不开网络技术，需要手机端与网络服务端进行数据交互，Android系统中主要提供了两种方式来进行HTTP通信，HttpURLConnection和HttpClient，在初学An">
 <meta name="twitter:image" content="https://github.com/yongyu0102/yongyu0102.github.io/blob/master/images/operating%20principle.png?raw=true">
   
     <link rel="alternative" href="/atom.xml" title="一个写代码的地方" type="application/atom+xml">
@@ -89,7 +89,7 @@ http://yongyu.itscoder.com/2016/08/01/Volley%20Study/
 						<li>Links</li>
 						
 						
-						<li>Über</li>
+						<li>About</li>
 						
 					</ul>
 				</div>
@@ -248,7 +248,7 @@ http://yongyu.itscoder.com/2016/08/01/Volley%20Study/
     <div class="article-entry" itemprop="articleBody">
       
         <p>转载请附原文链接：<a href="http://yongyu.itscoder.com/2016/08/01/Volley%20Study/" target="_blank" rel="external">Volley学习笔记之简单使用及部分源码详解</a> </p>
-<p><a href="http://yongyu.itscoder.com/2016/08/01/Volley%20Study/" target="_blank" rel="external">http://yongyu.itscoder.com/2016/08/01/Volley%20Study/</a></p>
+<p>地址：<a href="http://yongyu.itscoder.com/2016/08/01/Volley%20Study/" target="_blank" rel="external">http://yongyu.itscoder.com/2016/08/01/Volley%20Study/</a></p>
 <h2 id="一、使用背景简介"><a href="#一、使用背景简介" class="headerlink" title="一、使用背景简介"></a>一、使用背景简介</h2><p>现在大多数手机App几乎都离不开网络技术，需要手机端与网络服务端进行数据交互，Android系统中主要提供了两种方式来进行HTTP通信，HttpURLConnection和HttpClient，在初学Android的时候，这两个类是我们最开始学着使用的，但是在使用过程中需要调取各种API，进行封，然后请求到的结果需要自己去解析，最后再将解析到的数据进行封装存到数据库，整个过程，相当复杂，而且重复性很高，于是针对这种情况，网络上就有大神封装了各种第三方使用库供我们使用，将这些流程封装组合包装优化，使得整个流程得以简化，只需简单配置，几行代码就完成整个过程。今天我们介绍的Volley 就是其中一个优秀第三方框架。笔者所在公司目前项目使用的就是Volley ，所以在使用的同时决定写一系列笔记分析，从学会简单使用，到最后的Volley源码分析一系列循序渐进的流程来理解Volley的实现原理。</p>
 <h2 id="二、Volley简介"><a href="#二、Volley简介" class="headerlink" title="二、Volley简介"></a>二、Volley简介</h2><p>Volley 是 Google在 Google I/O 2013 大会上 推出的 Android 异步网络请求和图片加载框架。</p>
 <ul>
