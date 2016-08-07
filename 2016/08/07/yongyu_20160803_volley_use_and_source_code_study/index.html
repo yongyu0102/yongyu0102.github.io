@@ -94,7 +94,7 @@
 一、使用背景简介现在大多数手机 App 几乎都离不开网络技术，需要手机端与网络服务端进行数据交互，Android 系统中主要提供了两种方式来进行HTTP通信，HttpURLConnection 和 HttpClient，在初学 Android 的时候，这两个类是我们最开始学着使用的，但是在使用过程中需要调取各种API，进行封，然后请">
 <meta property="og:image" content="https://github.com/yongyu0102/yongyu0102.github.io/blob/master/images/operating_principle.png?raw=true">
 <meta property="og:image" content="https://github.com/yongyu0102/yongyu0102.github.io/blob/master/images/operating%20principle-cn.png?raw=true">
-<meta property="og:updated_time" content="2016-08-07T14:52:00.835Z">
+<meta property="og:updated_time" content="2016-08-07T14:56:10.253Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Volley学习笔记之简单使用及部分源码详解">
 <meta name="twitter:description" content="转载请附原文链接：Volley学习笔记之简单使用及部分源码详解 
@@ -308,7 +308,7 @@
       
 
       
-        <p>转载请附原文链接：<a href="http://yongyu.itscoder.com/2016/08/01/Volley%20Study/" target="_blank" rel="external">Volley学习笔记之简单使用及部分源码详解</a> </p>
+        <p>转载请附原文链接：<a href="http://yongyu.itscoder.com/2016/08/07/yongyu_20160803_volley_use_and_source_code_study/" target="_blank" rel="external">Volley学习笔记之简单使用及部分源码详解</a> </p>
 <h2 id="一、使用背景简介"><a href="#一、使用背景简介" class="headerlink" title="一、使用背景简介"></a>一、使用背景简介</h2><p>现在大多数手机 App 几乎都离不开网络技术，需要手机端与网络服务端进行数据交互，Android 系统中主要提供了两种方式来进行HTTP通信，HttpURLConnection 和 HttpClient，在初学 Android 的时候，这两个类是我们最开始学着使用的，但是在使用过程中需要调取各种API，进行封，然后请求到的结果需要自己去解析，最后再将解析到的数据进行封装存到数据库，整个过程，相当复杂，而且重复性很高，于是针对这种情况，网络上就有大神封装了各种第三方框架供我们使用，将这些复杂冗余操作进行组合优化，使得整个编写过程得以简化，只需简单配置几行代码就可以完成整个流程操作。今天我们介绍的 Volley  就是其中一个优秀第三方框架。笔者所在公司目前项目使用的就是Volley ，所以在使用的同时决定写一系列笔记分析，从学会简单使用，到最后的 Volley 源码分析一系列循序渐进的流程来理解Volley的实现原理。</p>
 <h2 id="二、Volley简介"><a href="#二、Volley简介" class="headerlink" title="二、Volley简介"></a>二、Volley简介</h2><p>Volley 是 Google在 Google I/O 2013 大会上 推出的 Android 异步网络请求和图片加载框架。</p>
 <ul>
