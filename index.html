@@ -238,6 +238,176 @@
             
               
                 
+                <a class="post-title-link" href="/2016/08/10/yongyu_20160810_View3.1 basic_knowledge/" itemprop="url">
+                  Android 开发艺术探索第3章 3.1View 基础知识读书笔记
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-08-10T23:53:03+08:00" content="2016-08-10">
+              2016-08-10
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Android-View/" itemprop="url" rel="index">
+                    <span itemprop="name">Android View</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/08/10/yongyu_20160810_View3.1 basic_knowledge/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/08/10/yongyu_20160810_View3.1 basic_knowledge/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="3-1-View-基础知识"><a href="#3-1-View-基础知识" class="headerlink" title="3.1 View 基础知识"></a>3.1 View 基础知识</h1><p>主要介绍内容：View 的位置参数、MotionEvent 和 TouchSlop对象、VelocityTracker, GestureDetector 和 Scroller对象。</p>
+<h2 id="3-11-什么是-View"><a href="#3-11-什么是-View" class="headerlink" title="3.11 什么是 View"></a>3.11 什么是 View</h2><p>View 是Android中所有控件的基类，例如Button和TextView、ViewGroup 等常见控件他们的基类都是View，View是一种界面层的控件的一种抽象，代表了一个控件。View 本身可以是单个控件也可以是由多个控件组成的一组控件，通过这种关系就形成了View 树的结构，与Web前端中的DOM树概念相似。</p>
+<h2 id="3-1-2-View的位置参数"><a href="#3-1-2-View的位置参数" class="headerlink" title="3.1.2 View的位置参数"></a>3.1.2 View的位置参数</h2><p>View 的位置主要有四个顶点决定的， top（左上角纵坐标）、left（左上角横坐标）、right（右下角横坐标）、bottom（右下角纵坐标），这些顶点的坐标是相对于 View 的父容器来说，是一种相对坐标。</p>
+<h2 id=""><a href="#" class="headerlink" title=""></a><img src="D:\Android\hexo\source\images\QQ截图20160809215225.png" alt="QQ截图20160809215225"></h2><p>根据上图View的坐标位置关系可以得出以下view的宽度（width)和高度（height)：</p>
+<p>View的宽高和坐标关系：width = right - left，height = top - bottom。</p>
+<p>view 源码中他们对应于mLeft、mRight、mTop、mBottom这四个成员变量，获取方式如下：</p>
+<p>Left=getLeft() 、Right=getRight() 、Top=getTop() 、Bottom=getBottom() </p>
+<p>从Android 3.0开始，view增加了：x、y、translationX、translationY 四个参数，这几个参数也是相对于父容器的坐标。x和y是左上角的坐标（偏移前或者偏移后左上角坐标，即当前坐标），而translationX和translationY是view左上角相对于父容器的偏移量(偏移坐标），默认值都是0。View 也提供了相应的方法，通过这几个坐标可以得到如下换算关系：</p>
+<p>x = left + translationX  其中：x为左上角偏移后当前横坐标，left为view原始位置横坐标即可以通过getLeft（）获取，translationX  为view相对于父容器偏移横坐标。</p>
+<p>y = top + translationY  其中y为左上角偏移后当前纵坐标，left为view原始位置纵坐标可以通过getTop（）获取，translationY 为view相对于父容器偏移纵坐标。</p>
+<p>注意：在 View 平移的过程中， top 和 left 表示的是原始左上角的位置信息， 其值并不会发生变化， 改变的是 x, y, traslationX 和 translation Y 。</p>
+<h2 id="3-1-3-MotionEvent-和-TouchSlop"><a href="#3-1-3-MotionEvent-和-TouchSlop" class="headerlink" title="3.1.3 MotionEvent 和 TouchSlop"></a>3.1.3 MotionEvent 和 TouchSlop</h2><ol>
+<li>MotionEvent 是指用户手指触摸屏幕产生的一系列事件 分为  ACTION_DOWN（手指刚接触屏幕）, ACTION_MOVE（手指在屏幕上滑动）, ACTION_UP（手指从屏幕上松开瞬间）。</li>
+<li>点击屏幕后松开，事件序列 DOWN-&gt;UP点击屏幕滑动一会再松开，事件序列为 DOWN-&gt;MOVE-&gt;…-&gt;MOVE-&gt;UP。</li>
+<li>getX/getY获取相对当前View左上角的x和y坐标；getRawX/getRawY获取相对手机屏幕左上角的x和y坐标。</li>
+<li>TouchSlop 是系统能识别滑动的最小距离，是系统常量，与设备有关，不同设备，值可能不同，当手指在屏幕上滑动，小于这个距离，系统不认为你在进行滑动操作；可通过ViewConfiguration.get（getContext()).getScaledTouchSlop()方法来获取;可以利用此参数进行一些滑动过滤，当未达到此值的时候可以认为未达到滑距离的临界值。 </li>
+</ol>
+<h2 id="3-1-4-VelocityTracker-、GestureDetector-和Scroller"><a href="#3-1-4-VelocityTracker-、GestureDetector-和Scroller" class="headerlink" title="3.1.4 VelocityTracker  、GestureDetector 和Scroller"></a>3.1.4 VelocityTracker  、GestureDetector 和Scroller</h2><ol>
+<li><p>VelocityTracker 用于追踪手指在滑动过程中的速度。如在View的onTouchEvent方法中追踪当前单击事件的速度方法如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//获取VelocityTracker对象</span></div><div class="line">VelocityTracker velocityTracker = VelocityTracker.obtain(); </div><div class="line"><span class="comment">//将事件event添加进去</span></div><div class="line">velocityTracker.addMovement(event); </div><div class="line"><span class="comment">//获取当前滑动速度计算方法</span></div><div class="line"><span class="comment">//这里的速度是指一段时间内手指滑动过的像素数</span></div><div class="line"><span class="comment">//获取速度前需输入计算速度参数时间间隔单位ms，即计算在1000ms内手指滑动过的像素数</span></div><div class="line">velocityTracker.computeCurrentVelocity(<span class="number">1000</span>);  </div><div class="line"><span class="comment">//获取x轴速度</span></div><div class="line"><span class="keyword">int</span> xVelocity = (<span class="keyword">int</span>)velocityTracker.getXVelocity(); </div><div class="line"><span class="comment">//获取y轴速度</span></div><div class="line"><span class="keyword">int</span> yVelocity = (<span class="keyword">int</span>)velocityTracker.getYVelocity();</div></pre></td></tr></table></figure>
+<p>注意：这里的速度可以为负数，手指从右向左滑动，水平方向速度即为负数，计算公式为：</p>
+<p>速度 = （终点位置 - 起点位置）/ 时间段</p>
+<p>计算得到的速度即为在给定时间间隔内水平方向或者竖直方向所滑动的像素数。</p>
+<p>最后如果不在使用，需要调用clear进行清除和回收：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//重置和回收</span></div><div class="line">mVelocityTracker.clear(); <span class="comment">//一般在MotionEvent.ACTION_UP的时候调用</span></div><div class="line">mVelocityTracker.recycle(); <span class="comment">//一般在onDetachedFromWindow中调用</span></div></pre></td></tr></table></figure>
+</li>
+<li><p>GestureDetector</p>
+<p>用于辅助检测用户的单击、滑动、长按、双击等行为；下面笔者写一个小的demo如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">GestureActivity</span> <span class="keyword">extends</span> <span class="title">AppCompatActivity</span>  <span class="keyword">implements</span> <span class="title">GestureDetector</span>.<span class="title">OnGestureListener</span>,<span class="title">GestureDetector</span>.<span class="title">OnDoubleTapListener</span></span>&#123;</div><div class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> String TAG =<span class="string">"GestureActivity"</span> ;</div><div class="line">    <span class="keyword">private</span> GestureDetector gestureDetector;</div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onCreate</span><span class="params">(Bundle savedInstanceState)</span> </span>&#123;</div><div class="line">        <span class="keyword">super</span>.onCreate(savedInstanceState);</div><div class="line">        setContentView(R.layout.activity_main);</div><div class="line">        <span class="comment">//创建GestureDetector对象,并设置OnGestureListener监听</span></div><div class="line">        <span class="comment">//第一个this参数为context，第二个参数为OnGestureListener</span></div><div class="line">        gestureDetector =<span class="keyword">new</span> GestureDetector(<span class="keyword">this</span>,<span class="keyword">this</span>);</div><div class="line">        <span class="comment">//设置双击监听</span></div><div class="line">        gestureDetector.setOnDoubleTapListener(<span class="keyword">this</span>);</div><div class="line">        <span class="comment">//解决长按屏幕无法拖拽的现象</span></div><div class="line">        gestureDetector.setIsLongpressEnabled(<span class="keyword">false</span>);</div><div class="line">    &#125;</div><div class="line">    <span class="comment">//重写Activity 的onTouchEvent将MotionEvent事件设置给gestureDetector</span></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">onTouchEvent</span><span class="params">(MotionEvent event)</span> </span>&#123;</div><div class="line">        <span class="comment">//接管目标 View 的 onTouchEvent 方法</span></div><div class="line">        gestureDetector.onTouchEvent(event);</div><div class="line">        <span class="comment">//返回事件处理结果</span></div><div class="line">        <span class="keyword">return</span> <span class="keyword">super</span>.onTouchEvent(event);</div><div class="line">    &#125;</div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">onDown</span><span class="params">(MotionEvent e)</span> </span>&#123;</div><div class="line">        <span class="comment">//手指轻轻触摸屏幕的瞬间，根据需要处理相应事件</span></div><div class="line">        Log.d(TAG,<span class="string">"onDown"</span>+e.toString());</div><div class="line">        <span class="keyword">return</span> <span class="keyword">false</span>;</div><div class="line">    &#125;</div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onShowPress</span><span class="params">(MotionEvent e)</span> </span>&#123;</div><div class="line">        <span class="comment">//手指轻触屏幕，尚未松开或者拖动，根据需要处理相应事件</span></div><div class="line">        Log.d(TAG,<span class="string">"onShowPress"</span>+e.toString());</div><div class="line">    &#125;</div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">onSingleTapUp</span><span class="params">(MotionEvent e)</span> </span>&#123;</div><div class="line">        <span class="comment">//手指松开，根据需要处理相应事件</span></div><div class="line">        Log.d(TAG,<span class="string">"onSingleTapUp"</span>+e.toString());</div><div class="line">        <span class="keyword">return</span> <span class="keyword">false</span>;</div><div class="line">    &#125;</div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">onScroll</span><span class="params">(MotionEvent e1, MotionEvent e2, <span class="keyword">float</span> distanceX, <span class="keyword">float</span> distanceY)</span> </span>&#123;</div><div class="line">        <span class="comment">//手指按下屏幕并拖动，根据需要处理相应事件</span></div><div class="line">        Log.d(TAG,<span class="string">"onScroll"</span>);</div><div class="line">        <span class="keyword">return</span> <span class="keyword">false</span>;</div><div class="line">    &#125;</div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onLongPress</span><span class="params">(MotionEvent e)</span> </span>&#123;</div><div class="line">        <span class="comment">//手指长按，根据需要处理相应事件</span></div><div class="line">        Log.d(TAG,<span class="string">"onLongPress"</span>+e.toString());</div><div class="line">    &#125;</div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">onFling</span><span class="params">(MotionEvent e1, MotionEvent e2, <span class="keyword">float</span> velocityX, <span class="keyword">float</span> velocityY)</span> </span>&#123;</div><div class="line">        <span class="comment">// 用户按下触摸屏，快速移动后松开，根据需要处理相应事件</span></div><div class="line">        Log.d(TAG,<span class="string">"onFling"</span>);</div><div class="line">        <span class="keyword">return</span> <span class="keyword">false</span>;</div><div class="line">    &#125;</div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">onSingleTapConfirmed</span><span class="params">(MotionEvent e)</span> </span>&#123;</div><div class="line">        <span class="comment">//单击行为；根据需要处理事件</span></div><div class="line">        <span class="keyword">return</span> <span class="keyword">false</span>;</div><div class="line">    &#125;</div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">onDoubleTap</span><span class="params">(MotionEvent e)</span> </span>&#123;</div><div class="line">        <span class="comment">//表示双击行为，在双击的期间,根据需要处理事件</span></div><div class="line">        <span class="keyword">return</span> <span class="keyword">false</span>;</div><div class="line">    &#125;</div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">onDoubleTapEvent</span><span class="params">(MotionEvent e)</span> </span>&#123;</div><div class="line">       <span class="comment">// 双击，由两次连续的单击组成，根据需要处理事件</span></div><div class="line">        <span class="keyword">return</span> <span class="keyword">false</span>;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>本例子中是将手势监听设置给了整个Activity，你也可以根据实际需求设置给某个view，同样是在onTouchEvent方法中设置。</p>
+<p><strong>OnGestureListener 接口的方法</strong></p>
+<p>onDown : 手指轻轻触摸屏幕的瞬间，由一个 ACTION_DOWN 触发；</p>
+<p>onShowPress : 手指轻触屏幕，尚未松开或者拖动， 由一个 ACTION_DOWN 触发；</p>
+<p>onSingTapUp : 手指松开，由 ACTION_DOWN 触发， 这是单击行为；</p>
+<p>onScroll: 手指按下屏幕并拖动，由一个 ACTION_DOWN , 多个 ACTION_MOVE 触发， 这是拖动行为；</p>
+<p>onLongPress: 用户长久地按着屏幕不放，即长按；</p>
+<p>onFling: 用户按下触摸屏，快速移动后松开，由一个 ACTION_DWON、多个 ACTION_MOVE 和一个 ACTION_UP 触发，快速滑动行为；</p>
+<p><strong>OnDoubleTapListener 接口中的方法</strong></p>
+<p>onDoubleTap: 双击，由两次连续的单击组成，不能和 onSingleTapConfirmed 共存；</p>
+<p>onSingleTapConfirmed: 单击行为；</p>
+<p>onDoubleEvent: 表示双击行为，在双击的期间， ACTION_DOWN、ACTION_MOVE、ACTION_UP 都不会触发此回调。</p>
+<p>在实际开发中可以不使用 GestureDetector ，完全可以在View的 onTouchEvent 方法中根据MotionEvent类型以及滑动速度等条件实现所需的监听，作者建议：如果只是监听滑动相关的推荐在onTouchEvent中实现，如果需要监听双击，使用GeststureDetector。</p>
+</li>
+<li><p>Scroller</p>
+<p>用来实现View的弹性滑动，View的scrollTo/scrollBy是瞬间完成的，Scroller本身并不能实现view的滑动，使用Scroller配合View的computeScroll方法配合使用达到弹性滑动的效果，它不断地让view重绘，而每一次重绘距滑动起始时间会有一个时间间隔，通过这个时间间隔Scroller就可以得出view的当前的滑动位置，知道了滑动位置就可以通过scrollTo方法来完成view的滑动。就这样，view的每一次重绘都会导致view进行小幅度的滑动，而多次的小幅度滑动就组成了弹性滑动，这就是Scroller的工作原理，下面3.2节会详细介绍，典型固定代码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">Scroller mScroller = <span class="keyword">new</span> Scroller(mContext);</div><div class="line"><span class="comment">// 缓慢滚动到指定的位置  </span></div><div class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">smoothScrollTo</span><span class="params">(<span class="keyword">int</span> destX, <span class="keyword">int</span> destY)</span></span>&#123;</div><div class="line">    <span class="keyword">int</span> scrollX = getScrollX();</div><div class="line">    <span class="keyword">int</span> deltaX = destX - scrollX;</div><div class="line">    <span class="comment">// 以 1000ms 内滑向 destX， 效果是慢慢滑动  </span></div><div class="line">    mScroller.startScroll(scrollX, destY, deltaX , <span class="number">0</span>, <span class="number">1000</span>);</div><div class="line">    <span class="comment">// View 的重绘  </span></div><div class="line">    invalidate();</div><div class="line">&#125;</div><div class="line"><span class="meta">@Override</span></div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">computeScroll</span><span class="params">()</span> </span>&#123;</div><div class="line">    <span class="comment">// 重写 computeScroll 方法，并在内部完成平滑滚动的逻辑  </span></div><div class="line">    <span class="keyword">if</span> (mScroller.computeScrollOffset())&#123;</div><div class="line">        scrollTo(mScroller.getCurrX(), mScroller.getCurrY());</div><div class="line">        <span class="comment">// 再次进行重绘  </span></div><div class="line">        postInvalidate();</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>至此关于View的基础知识基本结束，如有笔误，或者理解错误的地方，望多多指导！！</p>
+<p>​</p>
+<p>​</p>
+</li>
+</ol>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
                 <a class="post-title-link" href="/2016/08/07/yongyu_20160803_volley_use_and_source_code_study/" itemprop="url">
                   Volley学习笔记之简单使用及部分源码详解
                 </a>
@@ -489,7 +659,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">1</span>
+              <span class="site-state-item-count">2</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -497,7 +667,7 @@
           
             <div class="site-state-item site-state-categories">
               
-                <span class="site-state-item-count">1</span>
+                <span class="site-state-item-count">2</span>
                 <span class="site-state-item-name">分类</span>
               
             </div>
@@ -506,7 +676,7 @@
           
             <div class="site-state-item site-state-tags">
               
-                <span class="site-state-item-count">1</span>
+                <span class="site-state-item-count">2</span>
                 <span class="site-state-item-name">标签</span>
               
             </div>
