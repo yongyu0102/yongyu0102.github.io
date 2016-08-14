@@ -1,0 +1,665 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Android、View," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="3.2 View 的滑动3.1节中介绍了View的基础知识，有了这些基础知识和概念，我们就可以根据需要对 View 做一些操作，在Android设备上，最常见的一个操作就是滑动，如此可见滑动是很重要的知识，只有具备了滑动的基础知识才能做出更复杂炫酷的滑动效果，复杂的效果是由不同的滑动基础组成，通常View 的滑动可以由三种方式：使用scrollTo或scrollBy、通过动画给View 添加平移效">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android 开发艺术探索第3章 3.2-3.3 View 滑动和弹性滑动读书笔记">
+<meta property="og:url" content="http://yoursite.com/2016/08/14/view_to_scroll/index.html">
+<meta property="og:site_name" content="一个写代码的地方">
+<meta property="og:description" content="3.2 View 的滑动3.1节中介绍了View的基础知识，有了这些基础知识和概念，我们就可以根据需要对 View 做一些操作，在Android设备上，最常见的一个操作就是滑动，如此可见滑动是很重要的知识，只有具备了滑动的基础知识才能做出更复杂炫酷的滑动效果，复杂的效果是由不同的滑动基础组成，通常View 的滑动可以由三种方式：使用scrollTo或scrollBy、通过动画给View 添加平移效">
+<meta property="og:image" content="http://yoursite.com/D:\Android\hexo\source\images\view_scroll.png">
+<meta property="og:updated_time" content="2016-08-14T14:04:56.626Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Android 开发艺术探索第3章 3.2-3.3 View 滑动和弹性滑动读书笔记">
+<meta name="twitter:description" content="3.2 View 的滑动3.1节中介绍了View的基础知识，有了这些基础知识和概念，我们就可以根据需要对 View 做一些操作，在Android设备上，最常见的一个操作就是滑动，如此可见滑动是很重要的知识，只有具备了滑动的基础知识才能做出更复杂炫酷的滑动效果，复杂的效果是由不同的滑动基础组成，通常View 的滑动可以由三种方式：使用scrollTo或scrollBy、通过动画给View 添加平移效">
+<meta name="twitter:image" content="http://yoursite.com/D:\Android\hexo\source\images\view_scroll.png">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2016/08/14/view_to_scroll/"/>
+
+  <title> Android 开发艺术探索第3章 3.2-3.3 View 滑动和弹性滑动读书笔记 | 一个写代码的地方 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">一个写代码的地方</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">记录你的学习</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Android 开发艺术探索第3章 3.2-3.3 View 滑动和弹性滑动读书笔记
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-08-14T21:53:40+08:00" content="2016-08-14">
+              2016-08-14
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Android-View-学习/" itemprop="url" rel="index">
+                    <span itemprop="name">Android View 学习</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/08/14/view_to_scroll/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/08/14/view_to_scroll/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="3-2-View-的滑动"><a href="#3-2-View-的滑动" class="headerlink" title="3.2 View 的滑动"></a>3.2 View 的滑动</h2><p>3.1节中介绍了View的基础知识，有了这些基础知识和概念，我们就可以根据需要对 View 做一些操作，在Android设备上，最常见的一个操作就是滑动，如此可见滑动是很重要的知识，只有具备了滑动的基础知识才能做出更复杂炫酷的滑动效果，复杂的效果是由不同的滑动基础组成，通常View 的滑动可以由三种方式：使用scrollTo或scrollBy、通过动画给View 添加平移效果实现滑动、通过改变 View 的布局参数 LayoutParams 实现滑动，下面进行逐一分析。</p>
+<h3 id="3-2-1-使用scrollTo或scrollBy进行滑动"><a href="#3-2-1-使用scrollTo或scrollBy进行滑动" class="headerlink" title="3.2.1 使用scrollTo或scrollBy进行滑动"></a>3.2.1 使用scrollTo或scrollBy进行滑动</h3><p>Android 中 View 为我们提供了两个专门的方法 scrollTo或scrollBy 来实现  View 的滑动，scrollTo 是滑动到某一坐标，是绝对滑动，View 调用的时候只能进行一次滑动，比如将 View 从 A 点滑动到 B 点；而scrollBy是滑动一段距离，是相对滑动，可以进行连续滑动，View 每次进行调用的时候都会将 View 滑动指定的距离。下面看一下源码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line">  * 绝对滑动</div><div class="line">  * <span class="doctag">@param</span> x 指定水平方向滑动像素</div><div class="line">  * <span class="doctag">@param</span> y 指定竖直方向滑动像素</div><div class="line">  */</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">scrollTo</span><span class="params">(<span class="keyword">int</span> x, <span class="keyword">int</span> y)</span> </span>&#123;</div><div class="line">      <span class="comment">//位置发生了改变</span></div><div class="line">        <span class="keyword">if</span> (mScrollX != x || mScrollY != y) &#123;</div><div class="line">            <span class="keyword">int</span> oldX = mScrollX;</div><div class="line">            <span class="keyword">int</span> oldY = mScrollY;</div><div class="line">            mScrollX = x;</div><div class="line">            mScrollY = y;d</div><div class="line">          <span class="comment">//使父视图清出子view，作用是重新创建显示的内容</span></div><div class="line">          <span class="comment">//主要应用场景是view 的渐变度改变，滑动，旋转等</span></div><div class="line">            invalidateParentCaches();</div><div class="line">          <span class="comment">//使View内容进行滑动</span></div><div class="line">            onScrollChanged(mScrollX, mScrollY, oldX, oldY);	</div><div class="line">          <span class="comment">//触发scrollbars进行绘制		              	      </span></div><div class="line">          <span class="comment">//如果正在动画播放完毕返回</span></div><div class="line">          <span class="comment">//ture 否则返回false</span></div><div class="line">            <span class="keyword">if</span> (!awakenScrollBars()) &#123;</div><div class="line">              <span class="comment">//在动画期间（下一个动画开始)，使view重新绘制</span></div><div class="line">                postInvalidateOnAnimation();</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"><span class="comment">/**</span></div><div class="line">  * 进行相对滑动</div><div class="line">  * <span class="doctag">@param</span> x  指定水平方向滑动像素</div><div class="line">  * <span class="doctag">@param</span> y 指定竖直方向滑动像素</div><div class="line">  */</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">scrollBy</span><span class="params">(<span class="keyword">int</span> x, <span class="keyword">int</span> y)</span> </span>&#123;</div><div class="line">        scrollTo(mScrollX + x, mScrollY + y);</div><div class="line">    &#125;</div></pre></td></tr></table></figure>
+<p>通过源码可以看出实际上scrollBy调用了scrollTo方法，实现了基于当前位置的相对滑动。其中 mScrollX 、mScrollY 这两个参数表示View内容的偏移量，单位为px，可以通过getScrollX 和 getScrollY 得到，mScrollX  是等于View的左边缘和View内容左边缘在水平方向的距离，并且当View内容左边缘在View左边缘的右侧的时候，mScrollX为负，反之为正,View边缘是指 View 的位置，由四个顶点组成，而 View内容边缘是指 View 的内容边缘；同理，mScrollY是等于View的上边缘和View内容上边缘在数值方向的距离，并且 View 内容上边缘在View上边缘下侧的时候，mScrollY为负，反之为正；scrollTo或scrollBy只能改变 View内容的位置不能改变View 在布局中的位置（即View的布局参数比如Top、Left、X、Y等不会改变），即不能改变 View 本身的位置，对于一个View来说，其本身是一个容器，而View内容是容器里面的东西，对于一个ViewGroup来说，那么它的内容是它的所有子View。</p>
+<p>为了方便理解，下面用几幅图描述mScrollX、mScrollY和View内容的关系：</p>
+<p><img src="D:\Android\hexo\source\images\view_scroll.png" alt="view_scroll"></p>
+<h3 id="3-2-2-使用动画"><a href="#3-2-2-使用动画" class="headerlink" title="3.2.2 使用动画"></a>3.2.2 使用动画</h3><p>使用动画来移动view主要是操作view的translationX和translationY属性，既可以使用传统的view动画，也可以使用属性动画，使用后者需要考虑兼容性问题，如果要兼容Android 3.0以下版本系统的话推荐使用开元动画库<a href="http://nineoldandroids.com/" target="_blank" rel="external">nineoldandroids</a>。采用 View 动画 示例代码如下，此动画可以使 View在100ms内从原始位置向右下角移动100个像素。在项目的res目录中，创建一个名为anim的目录，创建动画资源文件 translation.xml 代码如下：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">&lt;?xml version="1.0" encoding="utf-8"?&gt;</div><div class="line">&lt;set xmlns:android="http://schemas.android.com/apk/res/android"</div><div class="line">    android:fillAfter="true"&gt;</div><div class="line">    &lt;translate</div><div class="line">        android:duration="100"</div><div class="line">        android:fromXDelta="0"</div><div class="line">        android:fromYDelta="0"</div><div class="line">        android:toXDelta="100"</div><div class="line">        android:toYDelta="100" /&gt;</div><div class="line">&lt;/set&gt;</div></pre></td></tr></table></figure>
+<p>java 代码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">Animation animation = AnimationUtils.loadAnimation(<span class="keyword">this</span>,R.anim.translation);</div><div class="line"><span class="comment">//开始动画平移</span></div><div class="line">targetView.startAnimation(animation);</div></pre></td></tr></table></figure>
+<p>注意，使用这种方式进行平移，View动画只是对View的影像做操作，它并不能真正改变View的位置参数，如果这个View设置了点击事件，点击动画后的新位置无法触发点击事件的，点击原来的位置可以出发事件，这这是因为View本身位置其实没有变化造成，解决方案是通过在目标位置创建一个一模一样的隐藏的view，设置同样的点击事件，当view移动到目标位置后，隐藏被移动的view，显示目标位置view，这样就可以达到点击效果。使用属性动画没有此问题，但3.0之前系统无属性动画，这个时候可以使用动画兼容库<a href="http://nineoldandroids.com/" target="_blank" rel="external">nineoldandroids</a>来实现属性动画，尽管如此，使用动画兼容库在3.0以后手机上实现属性动画本质上还是View动画。在100ms内将view向右平移100个像素代码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">ObjectAnimator animator = ObjectAnimator.ofFloat(view, <span class="string">"translationX"</span>, <span class="number">0.0f</span>, <span class="number">100.0f</span>);</div><div class="line">animator.setDuration(<span class="number">100</span>).start();</div></pre></td></tr></table></figure>
+<p>fFloat()方法的第一个参数表示动画操作的对象（可以是任意对象），第二个参数表示操作对象的属性名字（只要是对象有的属性都可以）,第三个参数之后就是动画过渡值。过度值可以有一个到N个，如果是一个值的话默认这个值是动画过渡值的结束值。如果有N个值，动画就在这N个值之间过渡。</p>
+<h3 id="3-2-3-改变布局参数"><a href="#3-2-3-改变布局参数" class="headerlink" title="3.2.3 改变布局参数"></a>3.2.3 改变布局参数</h3><p>改变布局参数实现滑动，即改变LayoutParams,如想将一个View右平移100px，只需要将该View的LayoutParams里的marginLeft增加100px即可。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) view.getLayoutParams();  <span class="comment">//获取view的布局参数</span></div><div class="line">params.leftMargin += <span class="number">100</span>;     <span class="comment">//修改leftMargin的值，相当于xml布局文件中的margin_left的值</span></div><div class="line">view.setLayoutParams(params);  <span class="comment">//将新的params值设置进view</span></div><div class="line"><span class="comment">//或者调用   view.requestLayout();</span></div></pre></td></tr></table></figure>
+<p>作者还提供了另一种思路是：可以在目标View 旁边放置一个宽度为0的view，当需要移动目标view 的时候，只需要给旁边的view设定需要移动的宽度即可，这样目标view自然就会被挤到目标位置。</p>
+<p>针对以上三种view滑动总结如下：</p>
+<ol>
+<li>scrollTo/scrollBy:只适合对view的内容的滑动</li>
+<li>属性动画：操作简单，功能强大，能实现复杂的动画效果，不建议用于有交互的View。</li>
+<li>改变布局参数:适用于交互性强的View。</li>
+</ol>
+<p>根据以上三种滑动原理我们选择一种来实现一个可以在全屏进行滑动的view，实现原理是通过重写view 的TouchEvent方法，处理ACTION_MOVE方法，那么我们选择哪一种方式合适呢？第一种scrollBy方式，由于scrollBy是能实现view的内容滑动，而view本身没有滑动，所以所以不能满足需求，而属性动画和改变view布局方式，都可以满足，下面是选择较为简单方式，通过动画动画兼容库<a href="http://nineoldandroids.com/" target="_blank" rel="external">nineoldandroids</a>方式实现，代码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TestButton</span> <span class="keyword">extends</span> <span class="title">TextView</span> </span>&#123;</div><div class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> String TAG = <span class="string">"TestButton"</span>;</div><div class="line"><span class="keyword">private</span> <span class="keyword">int</span> mScaledTouchSlop;</div><div class="line"><span class="comment">// 分别记录上次滑动的坐标</span></div><div class="line"><span class="keyword">private</span> <span class="keyword">int</span> mLastX = <span class="number">0</span>;</div><div class="line"><span class="keyword">private</span> <span class="keyword">int</span> mLastY = <span class="number">0</span>;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">public</span> <span class="title">TestButton</span><span class="params">(Context context)</span> </span>&#123;</div><div class="line">    <span class="keyword">this</span>(context, <span class="keyword">null</span>);</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">public</span> <span class="title">TestButton</span><span class="params">(Context context, AttributeSet attrs)</span> </span>&#123;</div><div class="line">    <span class="keyword">super</span>(context, attrs);</div><div class="line">    init();</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">public</span> <span class="title">TestButton</span><span class="params">(Context context, AttributeSet attrs, <span class="keyword">int</span> defStyle)</span> </span>&#123;</div><div class="line">    <span class="keyword">super</span>(context, attrs, defStyle);</div><div class="line">    init();</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">init</span><span class="params">()</span> </span>&#123;</div><div class="line">    mScaledTouchSlop = ViewConfiguration.get(getContext())</div><div class="line">            .getScaledTouchSlop();</div><div class="line">    Log.d(TAG, <span class="string">"sts:"</span> + mScaledTouchSlop);</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="meta">@SuppressLint</span>(<span class="string">"ClickableViewAccessibility"</span>)</div><div class="line"><span class="meta">@Override</span></div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">onTouchEvent</span><span class="params">(MotionEvent event)</span> </span>&#123;</div><div class="line">  <span class="comment">//获取当前点击事件在屏幕中的坐标，注意：不是相对view本身坐标，不能用getX 和getY</span></div><div class="line">    <span class="keyword">int</span> x = (<span class="keyword">int</span>) event.getRawX();</div><div class="line">    <span class="keyword">int</span> y = (<span class="keyword">int</span>) event.getRawY();</div><div class="line">    <span class="keyword">switch</span> (event.getAction()) &#123;</div><div class="line">        <span class="comment">//按下手势，无需处理</span></div><div class="line">    <span class="keyword">case</span> MotionEvent.ACTION_DOWN: &#123;</div><div class="line">        <span class="keyword">break</span>;</div><div class="line">    &#125;</div><div class="line">        <span class="comment">//在此处理滑动事件</span></div><div class="line">    <span class="keyword">case</span> MotionEvent.ACTION_MOVE: &#123;</div><div class="line">      <span class="comment">//计算滑动距离</span></div><div class="line">        <span class="keyword">int</span> deltaX = x - mLastX;</div><div class="line">        <span class="keyword">int</span> deltaY = y - mLastY;</div><div class="line">        Log.d(TAG, <span class="string">"move, deltaX:"</span> + deltaX + <span class="string">" deltaY:"</span> + deltaY);</div><div class="line">      <span class="comment">//就算偏移距离</span></div><div class="line">        <span class="keyword">int</span> translationX = (<span class="keyword">int</span>)ViewHelper.getTranslationX(<span class="keyword">this</span>) + deltaX;</div><div class="line">        <span class="keyword">int</span> translationY = (<span class="keyword">int</span>)ViewHelper.getTranslationY(<span class="keyword">this</span>) + deltaY;</div><div class="line">      <span class="comment">//进行滑动</span></div><div class="line">        ViewHelper.setTranslationX(<span class="keyword">this</span>, translationX);</div><div class="line">        ViewHelper.setTranslationY(<span class="keyword">this</span>, translationY);</div><div class="line">        <span class="keyword">break</span>;</div><div class="line">    &#125;</div><div class="line">        <span class="comment">//抬起手势无需处理</span></div><div class="line">    <span class="keyword">case</span> MotionEvent.ACTION_UP: &#123;</div><div class="line">        <span class="keyword">break</span>;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">default</span>:</div><div class="line">        <span class="keyword">break</span>;</div><div class="line">    &#125;</div><div class="line">	<span class="comment">//记录滑动后坐标</span></div><div class="line">    mLastX = x;</div><div class="line">    mLastY = y;</div><div class="line">  <span class="comment">//事件消费，返回false，无法滑动，后面会讲到view的事件分发机制有关。</span></div><div class="line">    <span class="keyword">return</span> <span class="keyword">true</span>;</div><div class="line"> &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="3-3-弹性滑动"><a href="#3-3-弹性滑动" class="headerlink" title="3.3 弹性滑动"></a>3.3 弹性滑动</h2><p>实现弹性滑动的原理是：将一次大的滑动分成若干次小的滑动，并在一个时间段内完成。可以通过scroller、Handler#postDelayed 以及Thread#Sleep来完成，下面逐一介绍。</p>
+<h3 id="3-3-1-使用Scroller"><a href="#3-3-1-使用Scroller" class="headerlink" title="3.3.1 使用Scroller"></a>3.3.1 使用Scroller</h3><p>在3.1.4章节介绍过通过Scroller实现滑动的典型代码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line">Scroller mScroller = <span class="keyword">new</span> Scroller(mContext);</div><div class="line"><span class="comment">// 缓慢滚动到指定的位置  </span></div><div class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">smoothScrollTo</span><span class="params">(<span class="keyword">int</span> destX, <span class="keyword">int</span> destY)</span></span>&#123;</div><div class="line">    <span class="keyword">int</span> scrollX = getScrollX();</div><div class="line">    <span class="keyword">int</span> deltaX = destX - scrollX;</div><div class="line">    <span class="comment">// 以 1000ms 内滑向 destX， 效果是慢慢滑动  </span></div><div class="line">    mScroller.startScroll(scrollX, destY, deltaX , <span class="number">0</span>, <span class="number">1000</span>);</div><div class="line">    <span class="comment">// View 的重绘  </span></div><div class="line">    invalidate();</div><div class="line">&#125;</div><div class="line">  <span class="comment">// 重写 computeScroll 方法，并在内部完成平滑滚动的逻辑  </span></div><div class="line"><span class="meta">@Override</span></div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">computeScroll</span><span class="params">()</span> </span>&#123;</div><div class="line">	<span class="comment">//判断view是在指定时间内是否完成滑动</span></div><div class="line">    <span class="keyword">if</span> (mScroller.computeScrollOffset())&#123;</div><div class="line">      <span class="comment">//通过mScroller获取当前位置，实现滑动</span></div><div class="line">        scrollTo(mScroller.getCurrX(), mScroller.getCurrY());</div><div class="line">        <span class="comment">// 再次进行重绘  </span></div><div class="line">        postInvalidate();</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>下面分析一下Scroller是如何实现弹性滑动的，上面代码我们调用了mScroller.startScroll(scrollX, destY, deltaX , 0, 1000);方法，下面一起来看一下源码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> * <span class="doctag">@param</span> startX 水平方向开始滑动像素. 正值代表内容向左滑动.</div><div class="line"> * <span class="doctag">@param</span> startY 竖直方向开始滑动像素. 正值代表内容向上滑动</div><div class="line"> * <span class="doctag">@param</span> dx 水平方向滑动距离. 正值代表内容向左滑动</div><div class="line"> * <span class="doctag">@param</span> dy 竖直方向滑动距离，正值代表向上滑动</div><div class="line"> * <span class="doctag">@param</span> duration 滑动时间.</div><div class="line"> */</div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">startScroll</span><span class="params">(<span class="keyword">int</span> startX, <span class="keyword">int</span> startY, <span class="keyword">int</span> dx, <span class="keyword">int</span> dy, <span class="keyword">int</span> duration)</span> </span>&#123;</div><div class="line">    mMode = SCROLL_MODE;</div><div class="line">  <span class="comment">//滑动是否完成标志</span></div><div class="line">    mFinished = <span class="keyword">false</span>;</div><div class="line">  <span class="comment">//滑动时间</span></div><div class="line">    mDuration = duration;</div><div class="line">  <span class="comment">//获取当前时间</span></div><div class="line">    mStartTime = AnimationUtils.currentAnimationTimeMillis();</div><div class="line">  <span class="comment">//水平方向滑动起点</span></div><div class="line">    mStartX = startX;</div><div class="line">  <span class="comment">//竖直方向滑动起点</span></div><div class="line">    mStartY = startY;</div><div class="line">  <span class="comment">//滑动终点</span></div><div class="line">    mFinalX = startX + dx;</div><div class="line">    mFinalY = startY + dy;</div><div class="line">  <span class="comment">//水平方向要滑动距离</span></div><div class="line">    mDeltaX = dx;</div><div class="line">  <span class="comment">//竖直方向要滑动距离</span></div><div class="line">    mDeltaY = dy;</div><div class="line">  <span class="comment">//滑动时间的倒数</span></div><div class="line">    mDurationReciprocal = <span class="number">1.0f</span> / (<span class="keyword">float</span>) mDuration;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>注意以上滑动是实现view的内容滑动，而且可以看到startScroll方法竟然没有做任何滑动的事情，只是将要进行滑动的参数传递进来并进行了保存，因此仅仅调用startScroll方法是无法实现滑动的，而正在使view 进行滑动的关键代码是invalidate()，为什么呢？因为调用invalidate()方法后会使 view进行重新绘制，这样就会调用view的 draw 方法，view 的draw方法又会去调用computeScroll() 方法，computeScroll方法在view 内部是一个空方法，需要我们自己去实现，上面典型代码中我们调用scrollTo方法，因此实现了view 的滑动，接着又调用postInvalidate（）方法，使view进行第二次重新绘制，这样绘制过程又和第一次一样重新走一遍，这样反复调用就完成了view 的滑动；那么什么时候完成停止绘制呢?判断条件就是mScroller.computeScrollOffset()，这个方法会根据时间的流逝计算当前Scrollx和ScrollYD 值，返回ture表示滑动未结束。代码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">computeScrollOffset</span><span class="params">()</span> </span>&#123;</div><div class="line">    <span class="keyword">if</span> (mFinished) &#123;</div><div class="line">        <span class="keyword">return</span> <span class="keyword">false</span>;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">int</span> timePassed = (<span class="keyword">int</span>)(AnimationUtils.currentAnimationTimeMillis() - mStartTime);</div><div class="line">    <span class="keyword">if</span> (timePassed &lt; mDuration) &#123;</div><div class="line">        <span class="keyword">switch</span> (mMode) &#123;</div><div class="line">        <span class="keyword">case</span> SCROLL_MODE:</div><div class="line">            <span class="keyword">final</span> <span class="keyword">float</span> x = mInterpolator.getInterpolation(timePassed * mDurationReciprocal);</div><div class="line">            mCurrX = mStartX + Math.round(x * mDeltaX);</div><div class="line">            mCurrY = mStartY + Math.round(x * mDeltaY);</div><div class="line">            <span class="keyword">break</span>;</div><div class="line">           ......</div><div class="line"></div><div class="line">            <span class="keyword">break</span>;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">else</span> &#123;</div><div class="line">        mCurrX = mFinalX;</div><div class="line">        mCurrY = mFinalY;</div><div class="line">        mFinished = <span class="keyword">true</span>;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> <span class="keyword">true</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>总结： Scroller 本身不能实现 View 的滑动，它需要配合 View 的 computeScroll 方法才能完成弹性滑动的效果。通过不断地让 View 重绘，而每一次重绘距离滑动其实起始时间会有一个时间间隔，通过这个时间间隔 Scroller 得出 View 当前的滑动位置，知道了滑动位置就可以通过 scrollTo 方法完成 View 的滑动。 View 的每一次重绘都会导致 View 的小幅度滑动，而多次的小幅度滑动组成了弹性滑动，这就是 Scroller 滑动的工作机制。</p>
+<h3 id="3-3-2-通过动画"><a href="#3-3-2-通过动画" class="headerlink" title="3.3.2 通过动画"></a>3.3.2 通过动画</h3><p>动画本身就是一个循序渐进的过程，因此使用动画进行滑动自然就具有弹性效果，比如以下代码就可以让一个View 在100ms内向右移动100像素。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">ObjectAnimator animator = ObjectAnimator.ofFloat(view, <span class="string">"translationX"</span>, <span class="number">0.0f</span>, <span class="number">100.0f</span>);</div><div class="line">animator.setDuration(<span class="number">100</span>).start();</div></pre></td></tr></table></figure>
+<p>这里我们是直接使用属性动画作用于 view 使其进行滑动，很简单，下面要作者提供了一个有意思的思路实现同样的效果，就是利用属性动画的特性结合ScrollTo 方法实现 Scroller 弹性滑动效果，代码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">scroller</span><span class="params">()</span></span>&#123;</div><div class="line">  <span class="comment">//动画起始位置</span></div><div class="line">    <span class="keyword">final</span> <span class="keyword">int</span> startX = <span class="number">0</span>;</div><div class="line">  <span class="comment">//动画要滑动的距离</span></div><div class="line">    <span class="keyword">final</span> <span class="keyword">int</span> deltax = <span class="number">1000</span>;</div><div class="line">    <span class="keyword">final</span> ValueAnimator animator = ValueAnimator.ofInt(<span class="number">0</span>, <span class="number">1</span>).setDuration(<span class="number">2000</span>);</div><div class="line">  <span class="comment">//动画添加监听器</span></div><div class="line">    animator.addUpdateListener(<span class="keyword">new</span> ValueAnimator.AnimatorUpdateListener() &#123;</div><div class="line">        <span class="meta">@Override</span></div><div class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onAnimationUpdate</span><span class="params">(ValueAnimator animation)</span> </span>&#123;</div><div class="line">          <span class="comment">//获取动画完成比例值</span></div><div class="line">            <span class="keyword">float</span> fraction = animator.getAnimatedFraction();</div><div class="line">          <span class="comment">//根据比例值对目标view进行滑动</span></div><div class="line">            targetView.scrollTo(startX +(<span class="keyword">int</span>)(deltax * fraction), <span class="number">0</span>);</div><div class="line">        &#125;</div><div class="line">    &#125;);</div><div class="line">  <span class="comment">//开始执行</span></div><div class="line">    animator.start();</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>上面代码属性动画animator 对象没有作用于任何 view 对象上，它的作用只是在2000ms内完成整个动画的过程，利用这个特性就可以在动画每一帧到来时获取动画完成比例，然后再根据这个比例计算出当前 view 所要滑动的距离，注意由于这里是使用的scrollTo() 方法，所以实质滑动的是 view 的内容。这个方法实现的思路其实和 Scroller 比较类似，都是通过计算 改变一个百分比配合 Scroller 实现 view 滑动，但是这个方法中我们还可以在onAnimationUpdate方法中添加一些我们想要实现的操作，使用更加灵活。</p>
+<h3 id="3-3-3-使用延时策略"><a href="#3-3-3-使用延时策略" class="headerlink" title="3.3.3 使用延时策略"></a>3.3.3 使用延时策略</h3><p>延时策略的思想是通过发送一系列的消息从而达到一种渐进式的效果，具体来说就是使用 Handler 或 View 的 postDelayed 方法，也可以使用线程的 sleep 方法。对于postDelayed 来说可以发送一个延时消息，然后在消息中对 view 进行滑动，连续不断的发送消息，就可以对 view 实现弹性滑动。对于sleep 来说，可以通过在while 循环中不断的对 view 进行滑动和 sleep，这样把整个滑动过程切成无数个小的滑动操作达到弹性滑动的效果。</p>
+<p>采用Handler大约在1000ms内将 view 向左滑动100像素，示例如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> MESSAGE_SCROLL_TO = <span class="number">1</span>;</div><div class="line"><span class="comment">//发送消息次数，即要滑动次数</span></div><div class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> FRAME_COUNT = <span class="number">30</span>;</div><div class="line"><span class="comment">//延时时间</span></div><div class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> DELAYED_TIME = <span class="number">33</span>;</div><div class="line"><span class="comment">//从0次开始</span></div><div class="line"><span class="keyword">private</span> <span class="keyword">int</span>  mCount = <span class="number">0</span>;</div><div class="line"><span class="meta">@SuppressLint</span>(<span class="string">"HandlerLeak"</span>)</div><div class="line"><span class="keyword">private</span> Handler mHandler = <span class="keyword">new</span> Handler() &#123;</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">handleMessage</span><span class="params">(Message msg)</span> </span>&#123;</div><div class="line">        <span class="keyword">switch</span> (msg.what) &#123;</div><div class="line">            <span class="keyword">case</span> MESSAGE_SCROLL_TO:</div><div class="line">            mCount++;</div><div class="line">            <span class="keyword">if</span>(mCount &lt;= FRAME_COUNT) &#123;</div><div class="line">              <span class="comment">//计算滑动百分比</span></div><div class="line">                <span class="keyword">float</span> fraction = mCount / (<span class="keyword">float</span>) FRAME_COUNT;</div><div class="line">              <span class="comment">//计算每次要滑动距离</span></div><div class="line">                <span class="keyword">int</span> scrollX = (<span class="keyword">int</span>) (fraction * <span class="number">100</span>);</div><div class="line">              <span class="comment">//开始滑动</span></div><div class="line">                view.scrollTo(scrollX, <span class="number">0</span>);</div><div class="line">              <span class="comment">//循环发送消息实现滑动</span></div><div class="line">                mHandler.sendEmptyMessageDelayed(MESSAGE_SCROLL_TO,DELAYED_TIME);</div><div class="line">            &#125;</div><div class="line">            <span class="keyword">break</span>;</div><div class="line">            <span class="keyword">default</span>:</div><div class="line">                <span class="keyword">break</span>;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+<p>以上是关于 view 滑动的基础知识基本讲解完毕！</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Android、View/" rel="tag">#Android、View</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/08/10/yongyu_20160810_View3.1 basic_knowledge/" rel="next" title="Android 开发艺术探索第3章 3.1View 基础知识读书笔记">
+                <i class="fa fa-chevron-left"></i> Android 开发艺术探索第3章 3.1View 基础知识读书笔记
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/08/14/view_to_scroll/"
+           data-title="Android 开发艺术探索第3章 3.2-3.3 View 滑动和弹性滑动读书笔记" data-url="http://yoursite.com/2016/08/14/view_to_scroll/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="https://github.com/yongyu0102/Images/blob/master/avatar/avatar.png?raw=true"
+               alt="Yongyu" />
+          <p class="site-author-name" itemprop="name">Yongyu</p>
+          <p class="site-description motion-element" itemprop="description">这里记录你的故事！</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">3</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              
+                <span class="site-state-item-count">3</span>
+                <span class="site-state-item-name">分类</span>
+              
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              
+                <span class="site-state-item-count">3</span>
+                <span class="site-state-item-name">标签</span>
+              
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#3-2-View-的滑动"><span class="nav-number">1.</span> <span class="nav-text">3.2 View 的滑动</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-1-使用scrollTo或scrollBy进行滑动"><span class="nav-number">1.1.</span> <span class="nav-text">3.2.1 使用scrollTo或scrollBy进行滑动</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-2-使用动画"><span class="nav-number">1.2.</span> <span class="nav-text">3.2.2 使用动画</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-3-改变布局参数"><span class="nav-number">1.3.</span> <span class="nav-text">3.2.3 改变布局参数</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-3-弹性滑动"><span class="nav-number">2.</span> <span class="nav-text">3.3 弹性滑动</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-3-1-使用Scroller"><span class="nav-number">2.1.</span> <span class="nav-text">3.3.1 使用Scroller</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-3-2-通过动画"><span class="nav-number">2.2.</span> <span class="nav-text">3.3.2 通过动画</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-3-3-使用延时策略"><span class="nav-number">2.3.</span> <span class="nav-text">3.3.3 使用延时策略</span></a></li></ol></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Yongyu</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+ </script>
+ </br>本站总访问量<span id="busuanzi_value_site_pv"></span>次，本站访客数<span id="busuanzi_value_site_uv"></span>人次，本文总阅读量<span id="busuanzi_value_page_pv"></span>次
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.0.1"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"yongyu"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+    <script src="/vendors/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+    <script src="/js/src/hook-duoshuo.js"></script>
+  
+
+
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

@@ -84,20 +84,23 @@
 
 
 
-<meta name="description" content="3.1 View 基础知识主要介绍内容：View 的位置参数、MotionEvent 和 TouchSlop对象、VelocityTracker, GestureDetector 和 Scroller对象。
-3.11 什么是 ViewView 是Android中所有控件的基类，例如Button和TextView、ViewGroup 等常见控件他们的基类都是View，View是一种界面层的控件的一种">
+<meta name="description" content="转载请附原文链接：Android 开发艺术探索第3章 3.1View 基础知识读书笔记 
+3.1 View 基础知识主要介绍内容：View 的位置参数、MotionEvent 和 TouchSlop对象、VelocityTracker, GestureDetector 和 Scroller对象。
+3.11 什么是 ViewView 是Android中所有控件的基类，例如Button和TextVie">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Android 开发艺术探索第3章 3.1View 基础知识读书笔记">
 <meta property="og:url" content="http://yoursite.com/2016/08/10/yongyu_20160810_View3.1 basic_knowledge/index.html">
 <meta property="og:site_name" content="一个写代码的地方">
-<meta property="og:description" content="3.1 View 基础知识主要介绍内容：View 的位置参数、MotionEvent 和 TouchSlop对象、VelocityTracker, GestureDetector 和 Scroller对象。
-3.11 什么是 ViewView 是Android中所有控件的基类，例如Button和TextView、ViewGroup 等常见控件他们的基类都是View，View是一种界面层的控件的一种">
+<meta property="og:description" content="转载请附原文链接：Android 开发艺术探索第3章 3.1View 基础知识读书笔记 
+3.1 View 基础知识主要介绍内容：View 的位置参数、MotionEvent 和 TouchSlop对象、VelocityTracker, GestureDetector 和 Scroller对象。
+3.11 什么是 ViewView 是Android中所有控件的基类，例如Button和TextVie">
 <meta property="og:image" content="https://github.com/yongyu0102/yongyu0102.github.io/blob/master/images/View_%20XYZ.png?raw=true">
-<meta property="og:updated_time" content="2016-08-10T16:29:06.998Z">
+<meta property="og:updated_time" content="2016-08-14T13:56:52.076Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Android 开发艺术探索第3章 3.1View 基础知识读书笔记">
-<meta name="twitter:description" content="3.1 View 基础知识主要介绍内容：View 的位置参数、MotionEvent 和 TouchSlop对象、VelocityTracker, GestureDetector 和 Scroller对象。
-3.11 什么是 ViewView 是Android中所有控件的基类，例如Button和TextView、ViewGroup 等常见控件他们的基类都是View，View是一种界面层的控件的一种">
+<meta name="twitter:description" content="转载请附原文链接：Android 开发艺术探索第3章 3.1View 基础知识读书笔记 
+3.1 View 基础知识主要介绍内容：View 的位置参数、MotionEvent 和 TouchSlop对象、VelocityTracker, GestureDetector 和 Scroller对象。
+3.11 什么是 ViewView 是Android中所有控件的基类，例如Button和TextVie">
 <meta name="twitter:image" content="https://github.com/yongyu0102/yongyu0102.github.io/blob/master/images/View_%20XYZ.png?raw=true">
 
 
@@ -307,7 +310,8 @@
       
 
       
-        <h1 id="3-1-View-基础知识"><a href="#3-1-View-基础知识" class="headerlink" title="3.1 View 基础知识"></a>3.1 View 基础知识</h1><p>主要介绍内容：View 的位置参数、MotionEvent 和 TouchSlop对象、VelocityTracker, GestureDetector 和 Scroller对象。</p>
+        <p>转载请附原文链接：<a href="http://yongyu.itscoder.com/2016/08/10/yongyu_20160810_View3.1%20basic_knowledge/" target="_blank" rel="external">Android 开发艺术探索第3章 3.1View 基础知识读书笔记</a> </p>
+<h1 id="3-1-View-基础知识"><a href="#3-1-View-基础知识" class="headerlink" title="3.1 View 基础知识"></a>3.1 View 基础知识</h1><p>主要介绍内容：View 的位置参数、MotionEvent 和 TouchSlop对象、VelocityTracker, GestureDetector 和 Scroller对象。</p>
 <h2 id="3-11-什么是-View"><a href="#3-11-什么是-View" class="headerlink" title="3.11 什么是 View"></a>3.11 什么是 View</h2><p>View 是Android中所有控件的基类，例如Button和TextView、ViewGroup 等常见控件他们的基类都是View，View是一种界面层的控件的一种抽象，代表了一个控件。View 本身可以是单个控件也可以是由多个控件组成的一组控件，通过这种关系就形成了View 树的结构，与Web前端中的DOM树概念相似。</p>
 <h2 id="3-1-2-View的位置参数"><a href="#3-1-2-View的位置参数" class="headerlink" title="3.1.2 View的位置参数"></a>3.1.2 View的位置参数</h2><p>View 的位置主要有四个顶点决定的， top（左上角纵坐标）、left（左上角横坐标）、right（右下角横坐标）、bottom（右下角纵坐标），这些顶点的坐标是相对于 View 的父容器来说，是一种相对坐标。</p>
 <h2 id=""><a href="#" class="headerlink" title=""></a><img src="https://github.com/yongyu0102/yongyu0102.github.io/blob/master/images/View_%20XYZ.png?raw=true" alt="View_ XYZ"></h2><p>根据上图View的坐标位置关系可以得出以下view的宽度（width)和高度（height)：</p>
@@ -397,6 +401,10 @@
 
           <div class="post-nav-prev post-nav-item">
             
+              <a href="/2016/08/14/view_to_scroll/" rel="prev" title="Android 开发艺术探索第3章 3.2-3.3 View 滑动和弹性滑动读书笔记">
+                Android 开发艺术探索第3章 3.2-3.3 View 滑动和弹性滑动读书笔记 <i class="fa fa-chevron-right"></i>
+              </a>
+            
           </div>
         </div>
       
@@ -467,7 +475,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">2</span>
+              <span class="site-state-item-count">3</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -475,7 +483,7 @@
           
             <div class="site-state-item site-state-categories">
               
-                <span class="site-state-item-count">2</span>
+                <span class="site-state-item-count">3</span>
                 <span class="site-state-item-name">分类</span>
               
             </div>
@@ -484,7 +492,7 @@
           
             <div class="site-state-item site-state-tags">
               
-                <span class="site-state-item-count">2</span>
+                <span class="site-state-item-count">3</span>
                 <span class="site-state-item-name">标签</span>
               
             </div>
