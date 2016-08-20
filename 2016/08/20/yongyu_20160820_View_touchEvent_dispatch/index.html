@@ -90,13 +90,13 @@
 <meta property="og:url" content="http://yoursite.com/2016/08/20/yongyu_20160820_View_touchEvent_dispatch/index.html">
 <meta property="og:site_name" content="一个写代码的地方">
 <meta property="og:description" content="3.4 View 事件的分发机制3.4.1 点击事件的传递规则在写这篇笔记的时候想了好久，也拖了好长时间，关于事件分发的博客看了很多，有的写的思路很清晰，画了事件分发的整体流程图，但是没有源码，看过之后只能知道事件是怎么分发的，但完全是记住的，而不是通过源码分析出来的，试想，如果以后再遇到其他知识点还是这样，那么我们就完全成了不能靠自己去分析问题，只能去食他人知识，没有自我学习分析能力，所以笔者试">
-<meta property="og:image" content="http://yoursite.com/D:\Android\hexo\source\images\Activity_ViewGroup_View.png">
-<meta property="og:image" content="http://yoursite.com/D:\Android\hexo\source\images\TouchEvent_disaptch.png">
-<meta property="og:updated_time" content="2016-08-20T15:30:03.152Z">
+<meta property="og:image" content="https://github.com/yongyu0102/yongyu0102.github.io/blob/master/images/Activity_ViewGroup_View.png?raw=true">
+<meta property="og:image" content="https://github.com/yongyu0102/yongyu0102.github.io/blob/master/images/TouchEvent_disaptch.png?raw=true">
+<meta property="og:updated_time" content="2016-08-20T15:37:27.657Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Android 开发艺术探索第3章 3.4 View 的事件分发读书笔记">
 <meta name="twitter:description" content="3.4 View 事件的分发机制3.4.1 点击事件的传递规则在写这篇笔记的时候想了好久，也拖了好长时间，关于事件分发的博客看了很多，有的写的思路很清晰，画了事件分发的整体流程图，但是没有源码，看过之后只能知道事件是怎么分发的，但完全是记住的，而不是通过源码分析出来的，试想，如果以后再遇到其他知识点还是这样，那么我们就完全成了不能靠自己去分析问题，只能去食他人知识，没有自我学习分析能力，所以笔者试">
-<meta name="twitter:image" content="http://yoursite.com/D:\Android\hexo\source\images\Activity_ViewGroup_View.png">
+<meta name="twitter:image" content="https://github.com/yongyu0102/yongyu0102.github.io/blob/master/images/Activity_ViewGroup_View.png?raw=true">
 
 
 
@@ -311,7 +311,7 @@
 <p>当用户触摸屏幕时，将创建一个 MotionEvent 对象即点击事件。MotionEvent 包含关于发生触摸的位置、时间、历史记录、手势动作等细节信息， Touch 事件相关细节被封装成了 MotionEvent 对象。理解了这一个知识点后，其实我们就很容易理解所谓点击事件的分发，其实就是对 MotionEvent 事件分发的过程，即当一个 MotionEvent 产生后，系统需要把这个事件传递给一个具体的 View 去处理, 而这个传递的过程就是分发过程。</p>
 <p>2、事件是在那些对象之间传递？</p>
 <p>Android与用户交互的界面就是由一系列Activity（Fragment)、ViewGroup、View 组成如图：</p>
-<p>​                      <img src="D:\Android\hexo\source\images\Activity_ViewGroup_View.png" alt="Activity_ViewGroup_View"></p>
+<p>​                                                 <img src="https://github.com/yongyu0102/yongyu0102.github.io/blob/master/images/Activity_ViewGroup_View.png?raw=true" alt="Activity_ViewGroup_View"></p>
 <p>当然一个界面可能由多个ViewGroup或者多个View 组成，所以事件就是在这三者之间进行传递，我们要分析的就是要捋清楚事件是由哪个对象发出，经过哪些对象，最终达到哪个对象，在某些条件改变的时候下他们之间的关系又是怎样的，理解了这些之后，当我们在遇到点击或者滑动事件冲突的情况，相信一切问题就迎刃而解了。</p>
 <p>3、这个分发过程由哪些对象协作完成？</p>
 <p>其实点击事件分发过程主要由三个重要方法共同完成：dispatchTouchEvent(MotionEvent event) 、onInterceptTouchEvent(MotionEvent event)和onTouchEvent(MotionEvent event)，下面先介绍一下这三个方法的主要作用，这样有利于后面我们对源码的分析：</p>
@@ -368,7 +368,7 @@
 <p>我们再看一下第7步，如果 mFirstTouchTarget == null ，说明没有任何子 view 接受触摸事件，那么调用 handled = dispatchTransformedTouchEvent(ev, canceled, null, TouchTarget.ALL_POINTER_IDS) 注意这里第三个参数传入 null，就是我们上面分析的另一种情况 ，如果 child == null ，执行 handled = super.dispatchTouchEvent(event) ，而 ViewGroup 的父类是 view ，所以之后的处理逻辑又和前面说的 view 一样了，即 ViewGroup 的 onTouch 方法会得到执行 ，而如果 mFirstTouchTarget ！= null ，表明已经有事件分发成功了，那么会执行  while (target != null) 循环从从链表 mFirstTouchTarget 中取出 target，条件 if (alreadyDispatchedToNewTouchTarget &amp;&amp; target == newTouchTarget)  如果成立，那么说明这个事件是是已经分发过成功的事件，那么直接执行 handled = true ，即让 dispatchTouchEvent 方法返回 true， 表明事件分发成功，而如果 if (alreadyDispatchedToNewTouchTarget &amp;&amp; target == newTouchTarget)  不成立，表明该事件是新到来的事件还没进行分发，那么执行 dispatchTransformedTouchEvent(ev, cancelChild,  target.child, target.pointerIdBits)) ，进一步对事件进行分发，并将 分发处理结果进行返回，这这情况下就是前面 第3步所说，不执行第三步，直接执行第7步对事件进一步就行分发。</p>
 <p>最后说了这么多，大家可以结合下面这张流程图来对整理分发流程进行梳理，图片引自：</p>
 <p><a href="http://www.jianshu.com/p/e99b5e8bd67b" target="_blank" rel="external">图解 Android 事件分发机制</a>  </p>
-<p><img src="D:\Android\hexo\source\images\TouchEvent_disaptch.png" alt="TouchEvent_disaptch"></p>
+<p><img src="https://github.com/yongyu0102/yongyu0102.github.io/blob/master/images/TouchEvent_disaptch.png?raw=true" alt="TouchEvent_disaptch"></p>
 <p>其中 super 表示调用关系，true 表示消费事件， false 表示没有消费事件。</p>
 <p>到这里关于 View 的事件分发分析就结束了！</p>
 <p>如果感觉笔者写的不好，可以参考以下博客：</p>
