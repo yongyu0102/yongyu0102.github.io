@@ -68,7 +68,7 @@
 <link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="Android View," />
 
 
 
@@ -84,35 +84,41 @@
 
 
 
-<meta name="description" content="title:  View 的工作原理上 View 绘制流程梳理及 Measure 过程详解（Android 开发艺术探索笔记） date:  2016/9/11 categories:  Android View tags:  Android View
-
-文章来源：itsCoder 的 WeeklyBolg 项目
+<meta name="description" content="-文章来源：itsCoder 的 WeeklyBolg 项目
 
 itsCoder主页：http://itscoder.com/
-作者：yong">
+作者：yongyu0102
+审阅者：hymane
+
+
+1 前言View 是 Android 中所有控件的基类，例如 Button 和 TextView、ViewGroup 等常见控件他们的基类都是 View，View 是一种界面层的控件的一种抽象，代表了一个控件。Vie">
 <meta property="og:type" content="article">
-<meta property="og:title" content="一个写代码的地方">
-<meta property="og:url" content="http://yoursite.com/2016/09/19/view_measure/index.html">
+<meta property="og:title" content="View 的工作原理上 View 绘制流程梳理及 Measure 过程详解（Android 开发艺术探索笔记）">
+<meta property="og:url" content="http://yoursite.com/2016/09/11/view_measure/index.html">
 <meta property="og:site_name" content="一个写代码的地方">
-<meta property="og:description" content="title:  View 的工作原理上 View 绘制流程梳理及 Measure 过程详解（Android 开发艺术探索笔记） date:  2016/9/11 categories:  Android View tags:  Android View
-
-文章来源：itsCoder 的 WeeklyBolg 项目
+<meta property="og:description" content="-文章来源：itsCoder 的 WeeklyBolg 项目
 
 itsCoder主页：http://itscoder.com/
-作者：yong">
+作者：yongyu0102
+审阅者：hymane
+
+
+1 前言View 是 Android 中所有控件的基类，例如 Button 和 TextView、ViewGroup 等常见控件他们的基类都是 View，View 是一种界面层的控件的一种抽象，代表了一个控件。Vie">
 <meta property="og:image" content="https://github.com/yongyu0102/WeeklyBlogImages/blob/master/phase3_view_measure/decorView_view.png?raw=true">
 <meta property="og:image" content="https://github.com/yongyu0102/WeeklyBlogImages/blob/master/phase3_view_measure/decorView.png?raw=true">
 <meta property="og:image" content="https://github.com/yongyu0102/WeeklyBlogImages/blob/master/phase3_view_measure/view.png?raw=true">
 <meta property="og:image" content="https://github.com/yongyu0102/WeeklyBlogImages/blob/master/phase3_view_measure/mesureSpec.png?raw=true">
-<meta property="og:updated_time" content="2016-09-19T13:28:58.324Z">
+<meta property="og:updated_time" content="2016-09-19T13:33:07.425Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="一个写代码的地方">
-<meta name="twitter:description" content="title:  View 的工作原理上 View 绘制流程梳理及 Measure 过程详解（Android 开发艺术探索笔记） date:  2016/9/11 categories:  Android View tags:  Android View
-
-文章来源：itsCoder 的 WeeklyBolg 项目
+<meta name="twitter:title" content="View 的工作原理上 View 绘制流程梳理及 Measure 过程详解（Android 开发艺术探索笔记）">
+<meta name="twitter:description" content="-文章来源：itsCoder 的 WeeklyBolg 项目
 
 itsCoder主页：http://itscoder.com/
-作者：yong">
+作者：yongyu0102
+审阅者：hymane
+
+
+1 前言View 是 Android 中所有控件的基类，例如 Button 和 TextView、ViewGroup 等常见控件他们的基类都是 View，View 是一种界面层的控件的一种抽象，代表了一个控件。Vie">
 <meta name="twitter:image" content="https://github.com/yongyu0102/WeeklyBlogImages/blob/master/phase3_view_measure/decorView_view.png?raw=true">
 
 
@@ -134,9 +140,9 @@ itsCoder主页：http://itscoder.com/
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2016/09/19/view_measure/"/>
+  <link rel="canonical" href="http://yoursite.com/2016/09/11/view_measure/"/>
 
-  <title>  | 一个写代码的地方 </title>
+  <title> View 的工作原理上 View 绘制流程梳理及 Measure 过程详解（Android 开发艺术探索笔记） | 一个写代码的地方 </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -256,7 +262,7 @@ itsCoder主页：http://itscoder.com/
             
             
               
-                
+                View 的工作原理上 View 绘制流程梳理及 Measure 过程详解（Android 开发艺术探索笔记）
               
             
           </h1>
@@ -268,19 +274,38 @@ itsCoder主页：http://itscoder.com/
               <i class="fa fa-calendar-o"></i>
             </span>
             <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-09-19T21:11:43+08:00" content="2016-09-19">
-              2016-09-19
+            <time itemprop="dateCreated" datetime="2016-09-11T00:00:00+08:00" content="2016-09-11">
+              2016-09-11
             </time>
           </span>
 
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Android-View/" itemprop="url" rel="index">
+                    <span itemprop="name">Android View</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
           
 
           
             
               <span class="post-comments-count">
                 &nbsp; | &nbsp;
-                <a href="/2016/09/19/view_measure/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/09/19/view_measure/" itemprop="commentsCount"></span>
+                <a href="/2016/09/11/view_measure/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/09/11/view_measure/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -303,15 +328,14 @@ itsCoder主页：http://itscoder.com/
       
 
       
-        <hr>
-<p> title:  View 的工作原理上 View 绘制流程梳理及 Measure 过程详解（Android 开发艺术探索笔记）<br> date:  2016/9/11<br> categories:  Android View<br> tags:  Android View</p>
-<hr>
-<p>文章来源：itsCoder 的 <a href="https://github.com/itsCoder/weeklyblog" target="_blank" rel="external">WeeklyBolg</a> 项目</p>
+        <blockquote>
+<p>-文章来源：itsCoder 的 <a href="https://github.com/itsCoder/weeklyblog" target="_blank" rel="external">WeeklyBolg</a> 项目</p>
 <ul>
 <li>itsCoder主页：<a href="http://itscoder.com/" target="_blank" rel="external">http://itscoder.com/</a></li>
 <li>作者：<a href="https://github.com/yongyu0102" target="_blank" rel="external">yongyu0102</a></li>
 <li>审阅者：<a href="https://github.com/hymanme" target="_blank" rel="external">hymane</a></li>
 </ul>
+</blockquote>
 <h1 id="1-前言"><a href="#1-前言" class="headerlink" title="1 前言"></a>1 前言</h1><p>View 是 Android 中所有控件的基类，例如 Button 和 TextView、ViewGroup 等常见控件他们的基类都是 View，View 是一种界面层的控件的一种抽象，代表了一个控件。View 本身可以是单个控件也可以是由多个控件组成的一组控件，通过这种关系就形成了 View 树的结构。Android 系统本身就提供好了很多好用的 View，你也可以自己根据需求去自定义一个 View，拿最简单的一个例子来说，当我们想在界面上显示一行文字的时候，我们会在 xml 文件中写好布局然后在  Activity 中的 onCreate 方法中使用 setContentView 方法来加载布局就可以显示出我们想要的文字，这时候你是否有思考过这个过程是怎么完成的， View 是如何被显示到界面上的；还有一个我们经常遇到的问题是：当我们在一个 ScrollView 控件内部嵌套一个 ListView 的时候 ListView 只会显示一行；当使用自定义的 View 的时候，View 可以显示到界面，但是当使用 WrapContent 属性的时候不起作用，这些问题笔者就曾都遇到过，如果你也曾有过这样的疑问，可以阅读以下这篇文章。</p>
 <h2 id="1-1-主要内容简介"><a href="#1-1-主要内容简介" class="headerlink" title="1.1 主要内容简介"></a>1.1 主要内容简介</h2><p>View 的工作原理主要包含 View 的三大流程 onMeasure()、onLayout()和onDraw()  ，而由于一次性全部写完内容会有点长，所以本次主要先介绍关于 View 的工作流程的整体梳理和 Measure 过程相关知识，而下一篇笔记会把剩下的部分写完。</p>
 <h1 id="2-初识-ViewRoot-和-DecorView"><a href="#2-初识-ViewRoot-和-DecorView" class="headerlink" title="2 初识 ViewRoot 和 DecorView"></a>2 初识 ViewRoot 和 DecorView</h1><p>在正式介绍 View 的三大流程 onMeasure()、onLayout()和onDraw() 之前，先简单介绍一下当我们在 Activity 方法 onCreate 里执行 setContentView 之后 View 是如何显示到屏幕上的，这里我们就不分析源码过程了，因为这个过程不是我们要分析的重点，只是辅助我们去理解，有助于我们对整个流程有更好的理解和把握。</p>
@@ -425,6 +449,12 @@ itsCoder主页：http://itscoder.com/
 
     <footer class="post-footer">
       
+        <div class="post-tags">
+          
+            <a href="/tags/Android-View/" rel="tag">#Android View</a>
+          
+        </div>
+      
 
       
         <div class="post-nav">
@@ -462,8 +492,8 @@ itsCoder主页：http://itscoder.com/
           
   <div class="comments" id="comments">
     
-      <div class="ds-thread" data-thread-key="2016/09/19/view_measure/"
-           data-title="" data-url="http://yoursite.com/2016/09/19/view_measure/">
+      <div class="ds-thread" data-thread-key="2016/09/11/view_measure/"
+           data-title="View 的工作原理上 View 绘制流程梳理及 Measure 过程详解（Android 开发艺术探索笔记）" data-url="http://yoursite.com/2016/09/11/view_measure/">
       </div>
     
   </div>
