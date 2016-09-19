@@ -290,8 +290,15 @@
         
           
             <hr>
-<p> title:  View 的工作原理上 View 绘制流程梳理及 Measure 过程详解（Android 开发艺术探索笔记）<br> date:  2016/9/11<br> categories:  Android View</p>
-<h2 id="tags-Android-View"><a href="#tags-Android-View" class="headerlink" title=" tags:  Android View"></a> tags:  Android View</h2><h1 id="1-前言"><a href="#1-前言" class="headerlink" title="1 前言"></a>1 前言</h1><p>View 是 Android 中所有控件的基类，例如 Button 和 TextView、ViewGroup 等常见控件他们的基类都是 View，View 是一种界面层的控件的一种抽象，代表了一个控件。View 本身可以是单个控件也可以是由多个控件组成的一组控件，通过这种关系就形成了 View 树的结构。Android 系统本身就提供好了很多好用的 View，你也可以自己根据需求去自定义一个 View，拿最简单的一个例子来说，当我们想在界面上显示一行文字的时候，我们会在 xml 文件中写好布局然后在  Activity 中的 onCreate 方法中使用 setContentView 方法来加载布局就可以显示出我们想要的文字，这时候你是否有思考过这个过程是怎么完成的， View 是如何被显示到界面上的；还有一个我们经常遇到的问题是：当我们在一个 ScrollView 控件内部嵌套一个 ListView 的时候 ListView 只会显示一行；当使用自定义的 View 的时候，View 可以显示到界面，但是当使用 WrapContent 属性的时候不起作用，这些问题笔者就曾都遇到过，如果你也曾有过这样的疑问，可以阅读以下这篇文章。</p>
+<p> title:  View 的工作原理上 View 绘制流程梳理及 Measure 过程详解（Android 开发艺术探索笔记）<br> date:  2016/9/11<br> categories:  Android View<br> tags:  Android View</p>
+<hr>
+<p>文章来源：itsCoder 的 <a href="https://github.com/itsCoder/weeklyblog" target="_blank" rel="external">WeeklyBolg</a> 项目</p>
+<ul>
+<li>itsCoder主页：<a href="http://itscoder.com/" target="_blank" rel="external">http://itscoder.com/</a></li>
+<li>作者：<a href="https://github.com/yongyu0102" target="_blank" rel="external">yongyu0102</a></li>
+<li>审阅者：<a href="https://github.com/hymanme" target="_blank" rel="external">hymane</a></li>
+</ul>
+<h1 id="1-前言"><a href="#1-前言" class="headerlink" title="1 前言"></a>1 前言</h1><p>View 是 Android 中所有控件的基类，例如 Button 和 TextView、ViewGroup 等常见控件他们的基类都是 View，View 是一种界面层的控件的一种抽象，代表了一个控件。View 本身可以是单个控件也可以是由多个控件组成的一组控件，通过这种关系就形成了 View 树的结构。Android 系统本身就提供好了很多好用的 View，你也可以自己根据需求去自定义一个 View，拿最简单的一个例子来说，当我们想在界面上显示一行文字的时候，我们会在 xml 文件中写好布局然后在  Activity 中的 onCreate 方法中使用 setContentView 方法来加载布局就可以显示出我们想要的文字，这时候你是否有思考过这个过程是怎么完成的， View 是如何被显示到界面上的；还有一个我们经常遇到的问题是：当我们在一个 ScrollView 控件内部嵌套一个 ListView 的时候 ListView 只会显示一行；当使用自定义的 View 的时候，View 可以显示到界面，但是当使用 WrapContent 属性的时候不起作用，这些问题笔者就曾都遇到过，如果你也曾有过这样的疑问，可以阅读以下这篇文章。</p>
 <h2 id="1-1-主要内容简介"><a href="#1-1-主要内容简介" class="headerlink" title="1.1 主要内容简介"></a>1.1 主要内容简介</h2><p>View 的工作原理主要包含 View 的三大流程 onMeasure()、onLayout()和onDraw()  ，而由于一次性全部写完内容会有点长，所以本次主要先介绍关于 View 的工作流程的整体梳理和 Measure 过程相关知识，而下一篇笔记会把剩下的部分写完。</p>
 <h1 id="2-初识-ViewRoot-和-DecorView"><a href="#2-初识-ViewRoot-和-DecorView" class="headerlink" title="2 初识 ViewRoot 和 DecorView"></a>2 初识 ViewRoot 和 DecorView</h1><p>在正式介绍 View 的三大流程 onMeasure()、onLayout()和onDraw() 之前，先简单介绍一下当我们在 Activity 方法 onCreate 里执行 setContentView 之后 View 是如何显示到屏幕上的，这里我们就不分析源码过程了，因为这个过程不是我们要分析的重点，只是辅助我们去理解，有助于我们对整个流程有更好的理解和把握。</p>
 <p>当调用 Activity 的  setContentView 方法后会调用  PhoneWindow 类 的 setContentView  方法，PhoneWindow 类是抽象类Window的实现类，Window 类用来描述 Activity 视图最顶端的窗口显示和行为操作，PhoneWindow 类 的 setContentView  方法中最终会 生成一个 DecorView 对象，DecorView 是 PhoneWindow类的内部类，继承自FrameLayout ，所以调用 Activity 方法 setContetnView 后最终会生成一个 FrameLayout 类型的 DecorView 组件，该组件将作为整个应用窗口的顶层图，然后在 DecorView 容器中添加根布局，根布局中包含一个 id 为 contnet 的 FrameLayout 内容布局，我们的 Activity 加载的布局 xml 最后通过LayoutInflater 将 xml 内容布局解析成 View 树形结构，最后添加到 id 为 content 的 FrameLayout布局当中，至此，View 最终就会显示到手机屏幕上，如果想详细了解出门右转<a href="http://blog.csdn.net/feiduclear_up/article/details/46772477" target="_blank" rel="external">从ViewRootImpl类分析View绘制的流程——废墟的树</a>。整理流程梳理可以参考下面这张图片：</p>
