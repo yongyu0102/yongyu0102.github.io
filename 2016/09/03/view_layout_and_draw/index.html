@@ -1,0 +1,769 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Android View," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="-文章来源：itsCoder 的 WeeklyBolg 项目
+
+itsCoder主页：http://itscoder.com/
+作者：yongyu0102
+审阅者：melodyxxx
+
+
+一、概要本次介绍的主要内容是 View 的工作原理下 View 的 layout 和 draw 过程，同时介绍自定义 View 的注意事项并结合一个小的 Demo 进行说明，其中涉及到的 onMeasre  测">
+<meta property="og:type" content="article">
+<meta property="og:title" content="View 的工作原理下 View 的 layout 和 draw 过程 （Android 开发艺术探索读书笔记）">
+<meta property="og:url" content="http://yoursite.com/2016/09/03/view_layout_and_draw/index.html">
+<meta property="og:site_name" content="一个写代码的地方">
+<meta property="og:description" content="-文章来源：itsCoder 的 WeeklyBolg 项目
+
+itsCoder主页：http://itscoder.com/
+作者：yongyu0102
+审阅者：melodyxxx
+
+
+一、概要本次介绍的主要内容是 View 的工作原理下 View 的 layout 和 draw 过程，同时介绍自定义 View 的注意事项并结合一个小的 Demo 进行说明，其中涉及到的 onMeasre  测">
+<meta property="og:updated_time" content="2016-10-05T11:31:54.891Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="View 的工作原理下 View 的 layout 和 draw 过程 （Android 开发艺术探索读书笔记）">
+<meta name="twitter:description" content="-文章来源：itsCoder 的 WeeklyBolg 项目
+
+itsCoder主页：http://itscoder.com/
+作者：yongyu0102
+审阅者：melodyxxx
+
+
+一、概要本次介绍的主要内容是 View 的工作原理下 View 的 layout 和 draw 过程，同时介绍自定义 View 的注意事项并结合一个小的 Demo 进行说明，其中涉及到的 onMeasre  测">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2016/09/03/view_layout_and_draw/"/>
+
+  <title> View 的工作原理下 View 的 layout 和 draw 过程 （Android 开发艺术探索读书笔记） | 一个写代码的地方 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">一个写代码的地方</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">记录你的学习</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                View 的工作原理下 View 的 layout 和 draw 过程 （Android 开发艺术探索读书笔记）
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-09-03T00:00:00+08:00" content="2016-09-03">
+              2016-09-03
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Android-View/" itemprop="url" rel="index">
+                    <span itemprop="name">Android View</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/09/03/view_layout_and_draw/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/09/03/view_layout_and_draw/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>-文章来源：itsCoder 的 <a href="https://github.com/itsCoder/weeklyblog" target="_blank" rel="external">WeeklyBolg</a> 项目</p>
+<ul>
+<li>itsCoder主页：<a href="http://itscoder.com/" target="_blank" rel="external">http://itscoder.com/</a></li>
+<li>作者：<a href="https://github.com/yongyu0102" target="_blank" rel="external">yongyu0102</a></li>
+<li>审阅者：<a href="https://github.com/melodyxxx" target="_blank" rel="external">melodyxxx</a></li>
+</ul>
+</blockquote>
+<h1 id="一、概要"><a href="#一、概要" class="headerlink" title="一、概要"></a>一、概要</h1><p>本次介绍的主要内容是 View 的工作原理下 View 的 layout 和 draw 过程，同时介绍自定义 View 的注意事项并结合一个小的 Demo 进行说明，其中涉及到的 onMeasre  测量部分知识可以看上一篇文章<a href="http://yongyu.itscoder.com/2016/09/11/view_measure/" target="_blank" rel="external">View 的工作原理上 View 绘制流程梳理及 Measure 过程详解</a> ，以下开始正文：</p>
+<h1 id="二、-layout-过程详解"><a href="#二、-layout-过程详解" class="headerlink" title="二、 layout 过程详解"></a>二、 layout 过程详解</h1><p> layout 的作用是 ViewGroup 来确定子元素的位置，当 ViewGroup 的位置被确定后，在  layout 中会调用 onLayout ，在 onLayout 中会遍历所有的子元素并调用子元素的 layout 方法，在子元素的 layout 方法中 onLayout 方法又会被调用，layout 方法是确定 View 本身在屏幕上显示的具体位置，即在代码中设置其成员变量 mLeft，mTop，mRight，mBottom 的值，这几个值是在屏幕上构成矩形区域的四个坐标点，就是该 View 显示的位置，不过这里的具体位置都是相对与父视图的位置而言，而 onLayout 方法则会确定所有子元素位置，ViewGroup 在 onLayout 函数中通过调用其 children 的 layout 函数来设置子视图相对与父视图中的位置，具体位置由函数 layout 的参数决定。下面我们先看 View 的layout 方法如下：   </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div></pre></td><td class="code"><pre><div class="line"> <span class="comment">/* </span></div><div class="line"> *@param l view 左边缘相对于父布局左边缘距离</div><div class="line"> *@param t view 上边缘相对于父布局上边缘位置</div><div class="line"> *@param r view 右边缘相对于父布局左边缘距离</div><div class="line"> *@param b view 下边缘相对于父布局上边缘距离</div><div class="line"> */</div><div class="line"> <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">layout</span><span class="params">(<span class="keyword">int</span> l, <span class="keyword">int</span> t, <span class="keyword">int</span> r, <span class="keyword">int</span> b)</span> </span>&#123;</div><div class="line"> <span class="keyword">if</span> ((mPrivateFlags3 &amp; PFLAG3_MEASURE_NEEDED_BEFORE_LAYOUT) != <span class="number">0</span>) &#123;</div><div class="line">      onMeasure(mOldWidthMeasureSpec, mOldHeightMeasureSpec);</div><div class="line">      mPrivateFlags3 &amp;= ~PFLAG3_MEASURE_NEEDED_BEFORE_LAYOUT;</div><div class="line">  &#125;</div><div class="line">  <span class="comment">//记录 view 原始位置</span></div><div class="line">  <span class="keyword">int</span> oldL = mLeft;</div><div class="line">  <span class="keyword">int</span> oldT = mTop;</div><div class="line">  <span class="keyword">int</span> oldB = mBottom;</div><div class="line">  <span class="keyword">int</span> oldR = mRight;</div><div class="line"><span class="comment">//第1步，调用 setFrame 方法 设置新的 mLeft、mTop、mBottom、mRight 值，</span></div><div class="line"><span class="comment">//设置 View 本身四个顶点位置</span></div><div class="line"><span class="comment">//并返回 changed 用于判断 view 布局是否改变</span></div><div class="line">  <span class="keyword">boolean</span> changed = isLayoutModeOptical(mParent) ?</div><div class="line">          setOpticalFrame(l, t, r, b) : setFrame(l, t, r, b);</div><div class="line">             <span class="comment">//第二步，如果 view 位置改变那么调用 onLayout 方法设置子 view 位置</span></div><div class="line">             <span class="keyword">if</span> (changed || (mPrivateFlags &amp; PFLAG_LAYOUT_REQUIRED) == PFLAG_LAYOUT_REQUIRED) &#123;</div><div class="line">    <span class="comment">//调用 onLayout</span></div><div class="line">      onLayout(changed, l, t, r, b);</div><div class="line">      mPrivateFlags &amp;= ~PFLAG_LAYOUT_REQUIRED;</div><div class="line">      ListenerInfo li = mListenerInfo;</div><div class="line">      <span class="keyword">if</span> (li != <span class="keyword">null</span> &amp;&amp; li.mOnLayoutChangeListeners != <span class="keyword">null</span>) &#123;</div><div class="line">          ArrayList&lt;OnLayoutChangeListener&gt; listenersCopy =</div><div class="line">                  (ArrayList&lt;OnLayoutChangeListener&gt;)li.mOnLayoutChangeListeners.clone();</div><div class="line">          <span class="keyword">int</span> numListeners = listenersCopy.size();</div><div class="line">          <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; numListeners; ++i) &#123;</div><div class="line">              listenersCopy.get(i).onLayoutChange(<span class="keyword">this</span>, l, t, r, b, oldL, oldT, oldR, oldB);</div><div class="line">          &#125;</div><div class="line">      &#125;</div><div class="line">  &#125;</div></pre></td></tr></table></figure>
+<p> layout 方法大致流程：先通过上面代码第一步调用  setFrame 设置 view 本身四个顶点位置，其中 setOpticalFrame 内部也是调用 setFrame  方法来完成设置的，即为 View 的4个成员变量（mLeft，mTop，mRight，mBottom）赋值，View 的四个顶点一旦确定，那么 View 在父容器中的位置就确定了，接着进行第二步，调用 onLayout 方法，这个方法用途是父容器确定子 View 位置，和 onMeasure 方法类似， onLayout 方法的具体实现同样和具体布局有关，所以 View 和 ViewGroup 中都没有真正实现 onLayout 方法，都是一个空方法。</p>
+<p>   先看一下 View 的 onLayout 方法：</p>
+ <figure class="highlight plain"><figcaption><span>void onLayout(boolean changed, int left, int top, int right, int bottom) &#123;&#125;```</span></figcaption><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">   那么对于我们自定义的 View 是继承自 View 的情况下，我们一般不需要重写 onLayout 方法，因为 这个方法用途是父容器确定子 View 位置，对于 View 来说是没有子 View 的，所以一般不需要重写。</div><div class="line"></div><div class="line">   再看一下 ViewGroup 的 onLayout 方法：</div><div class="line"></div><div class="line">```java</div><div class="line">protected abstract void onLayout(boolean changed,</div><div class="line">           int l, int t, int r, int b);</div></pre></td></tr></table></figure>
+<p>   相对于 view 来说，ViewGroup 中 onLayout 多了关键字abstract的修饰，也就说对于继承自 ViewGroup 的自定义 View 必须要重写 onLayout 方法，而重载 onLayout 的目的就是安排其子元素在父视图中的具体位置，为了更好的理解，接下来我们看一下 LinearLayout  的 onLayout 方法：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Override</span></div><div class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onLayout</span><span class="params">(<span class="keyword">boolean</span> changed, <span class="keyword">int</span> l, <span class="keyword">int</span> t, <span class="keyword">int</span> r, <span class="keyword">int</span> b)</span> </span>&#123;</div><div class="line">    <span class="keyword">if</span> (mOrientation == VERTICAL) &#123;</div><div class="line">        layoutVertical(l, t, r, b);</div><div class="line">    &#125; <span class="keyword">else</span> &#123;</div><div class="line">        layoutHorizontal(l, t, r, b);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>   和 onMeasure 类似，这里也是分为竖直方向和水平方向的布局安排，二者原理一样，我们选择竖直方向的 layoutVertical 来进行分析，这里给出主要代码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">layoutVertical</span><span class="params">(<span class="keyword">int</span> left, <span class="keyword">int</span> top, <span class="keyword">int</span> right, <span class="keyword">int</span> bottom)</span> </span>&#123;</div><div class="line">    <span class="keyword">final</span> <span class="keyword">int</span> paddingLeft = mPaddingLeft;</div><div class="line">  <span class="comment">//记录子 View 上边缘相对于父容器上边缘距离</span></div><div class="line">    <span class="keyword">int</span> childTop;</div><div class="line">    <span class="comment">//记录子 View 左边缘相对于父容器左边缘距离</span></div><div class="line">    <span class="keyword">int</span> childLeft;</div><div class="line">  <span class="comment">//第1步，主要是根据不同的 gravity 属性来确定子元素的 child 的位置</span></div><div class="line">    <span class="keyword">switch</span> (majorGravity) &#123;</div><div class="line">           <span class="keyword">case</span> Gravity.BOTTOM:</div><div class="line">               <span class="comment">// mTotalLength contains the padding already</span></div><div class="line">               childTop = mPaddingTop + bottom - top - mTotalLength;</div><div class="line">               <span class="keyword">break</span>;</div><div class="line">               <span class="comment">// mTotalLength contains the padding already</span></div><div class="line">           <span class="keyword">case</span> Gravity.CENTER_VERTICAL:</div><div class="line">               childTop = mPaddingTop + (bottom - top - mTotalLength) / <span class="number">2</span>;</div><div class="line">               <span class="keyword">break</span>;</div><div class="line"></div><div class="line">           <span class="keyword">case</span> Gravity.TOP:</div><div class="line">           <span class="keyword">default</span>:</div><div class="line">               childTop = mPaddingTop;</div><div class="line">               <span class="keyword">break</span>;</div><div class="line">        &#125;</div><div class="line">   ...............................</div><div class="line"><span class="comment">//第2步，循环遍历子 view </span></div><div class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; count; i++) &#123;</div><div class="line">      <span class="comment">//获取指定位置 view </span></div><div class="line">        <span class="keyword">final</span> View child = getVirtualChildAt(i);</div><div class="line">        <span class="keyword">if</span> (child == <span class="keyword">null</span>) &#123;</div><div class="line">            childTop += measureNullChild(i);</div><div class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (child.getVisibility() != GONE) &#123;</div><div class="line">          <span class="comment">//第2.1步，如果 view 可见，获取 view  的测量宽/高</span></div><div class="line">            <span class="keyword">final</span> <span class="keyword">int</span> childWidth = child.getMeasuredWidth();</div><div class="line">            <span class="keyword">final</span> <span class="keyword">int</span> childHeight = child.getMeasuredHeight();</div><div class="line">            <span class="comment">//获取 view  的 LayoutParams 参数</span></div><div class="line">            <span class="keyword">final</span> LinearLayout.LayoutParams lp =</div><div class="line">                    (LinearLayout.LayoutParams) child.getLayoutParams();</div><div class="line">        .............</div><div class="line">            <span class="keyword">if</span> (hasDividerBeforeChildAt(i)) &#123;</div><div class="line">                childTop += mDividerHeight;</div><div class="line">            &#125;</div><div class="line">			</div><div class="line">            childTop += lp.topMargin;</div><div class="line">          <span class="comment">//第3步，设置子 view 位置</span></div><div class="line">            setChildFrame(child, childLeft, childTop + getLocationOffset(child),</div><div class="line">                    childWidth, childHeight);</div><div class="line">          <span class="comment">//第4步，重新计算子 view 的 顶部 top 位置，也就是每增加一个子 view </span></div><div class="line">          <span class="comment">//下一个子 view 的 top 顶部位置就会相应的增加</span></div><div class="line">            childTop += childHeight + lp.bottomMargin + getNextLocationOffset(child);</div><div class="line">            i += getChildrenSkipCount(child, i);</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>  简单梳理下整个流程，此方法会遍历所有子 view ，并调用 setChildFrame 方法来设定子元素位置，然后重新计算 childTop ，childTop  随着子元素的遍历而逐渐增大，这就意味着后面的子元素会被放置在当前子元素的下方，这正是我们平时使用竖直方向 LinearLayout 的特性。这里我们看一下第三步执行的 setChildFrame 方法类设置子元素位置方法代码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">setChildFrame</span><span class="params">(View child, <span class="keyword">int</span> left, <span class="keyword">int</span> top, <span class="keyword">int</span> width, <span class="keyword">int</span> height)</span> </span>&#123;        </div><div class="line">    child.layout(left, top, left + width, top + height);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>可以发现，这个方法只是调用子元素的 layout 方法而已，这样父元素在自己的 layout 方法中完成自己的定位之后，通过 onLayout 方法去调用了子元素的 layout 方法，子元素又会通过自己的 layout 方法完成自己的位置设定，这样一层一层的传递下去就完成了整个 view 数的 layout 过程。</p>
+<p>这里我们注意到在第三步调用 setChildFrame 方法中的 传入的参数 childWidth 和 childHeight 是上面第2.1步获取的子元素的测量宽/高，而在 layout 过程中会通过 setFrame 方法设置子元素四个顶点位置，这样子元素的位置就确定了，在 setFrame 中有如下赋值语句：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">mLeft = left;</div><div class="line">mTop = top;</div><div class="line">mRight = right;</div><div class="line">mBottom = bottom;</div></pre></td></tr></table></figure>
+<p>也就是说在 LinearLayout 中其子视图显示的宽和高由 measure 过程来决定的，因此 measure 过程的意义就是为 layout 过程提供视图显示范围的参考值。为什么说是提供参考值呢？因为 layout 过程中的4个参数  left,  top, iwidth, height 完全可以由视图设计者任意指定，而最终视图的布局位置和大小完全由这4个参数决定，measure 过程得到的mMeasuredWidth 和 mMeasuredHeight 提供了视图大小的测量值，只是提供一个参考一般情况下我们使用这个参考值，但我们完全可以不使用这两个值，而自己在 layout 过程中去设定一个值，可见 measure 过程并不是必须的。</p>
+<p>说到这里就不得说一下 getWidth() 、getHeight() 和 getMeasuredWidth()、getMeasuredHeight() 这两对函数之间的区别，即 View 的测量宽/高和最终显示宽/高之间的区别。首先我们看一下 getWith() 和 getHeight() 方法的具体实现：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">final</span> <span class="keyword">int</span> <span class="title">getWidth</span><span class="params">()</span> </span>&#123;</div><div class="line">    <span class="keyword">return</span> mRight - mLeft;</div><div class="line">&#125;</div><div class="line"></div><div class="line"> <span class="function"><span class="keyword">public</span> <span class="keyword">final</span> <span class="keyword">int</span> <span class="title">getHeight</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> mBottom - mTop;</div><div class="line">    &#125;</div></pre></td></tr></table></figure>
+<p>通过 getWith() 和 getHeight() 源码和上面 setChildFrame(View child, int left, int top, int width, int height) 方法设置子元素四个顶点位置的四个变量 mLeft、mTop、mRight、mBottom 的赋值过程来看，默认情况下 getWidth() 、getHeight() 方法返回的值正好就是 view 的测量宽/高，只不过 view 的测量宽/高形成于 view 的measure 过程，而最终宽/高形成于 view 的 layout 方法中，但是对于特殊情况，两者的值是不相等的，就是我们在 layout 过程中不按默认常规套路出牌，即不使用 measure 过程得到的 mMeasuredWidth 和 mMeasuredHeight ，而是人为的去自己根据需要设定的一个值的情况，例如以下代码，重写 view 的 layout 方法：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">layout</span><span class="params">(<span class="keyword">int</span> l, <span class="keyword">int</span> t, <span class="keyword">int</span> r, <span class="keyword">int</span> b)</span> </span>&#123;</div><div class="line">  <span class="comment">//在得到的测量值基础上加100</span></div><div class="line">    <span class="keyword">super</span>.layout(<span class="keyword">int</span> l, <span class="keyword">int</span> t, <span class="keyword">int</span> r+<span class="number">100</span>, <span class="keyword">int</span> b+<span class="number">100</span>);</div><div class="line">    &#125;</div></pre></td></tr></table></figure>
+<p>上面代码会导致在任何情况下 view 的最终宽/高总会比测量宽高大100px。</p>
+<h1 id="三、-draw-过程详解"><a href="#三、-draw-过程详解" class="headerlink" title="三、 draw 过程详解"></a>三、 draw 过程详解</h1><p>draw 的作用是将 view 绘制到屏幕上，view 的绘制过程准守以下几个步骤：</p>
+<ol>
+<li>绘制背景：<code>background.draw(canvas)</code>；</li>
+<li>绘制自己：<code>onDraw()</code>；</li>
+<li>绘制 children：<code>dispatchDraw</code>；</li>
+<li><p>绘制装饰：<code>onDrawScrollBars</code>。</p>
+<p>通过源码可以看出来，部分源码如下：</p>
+</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">draw</span><span class="params">(Canvas canvas)</span> </span>&#123;</div><div class="line">    <span class="keyword">final</span> <span class="keyword">int</span> privateFlags = mPrivateFlags;</div><div class="line">    <span class="keyword">final</span> <span class="keyword">boolean</span> dirtyOpaque = (privateFlags &amp; PFLAG_DIRTY_MASK) == PFLAG_DIRTY_OPAQUE &amp;&amp;</div><div class="line">            (mAttachInfo == <span class="keyword">null</span> || !mAttachInfo.mIgnoreDirtyState);</div><div class="line">    mPrivateFlags = (privateFlags &amp; ~PFLAG_DIRTY_MASK) | PFLAG_DRAWN;</div><div class="line"></div><div class="line">    <span class="comment">/*</span></div><div class="line">     * Draw traversal performs several drawing steps which must be executed</div><div class="line">     * in the appropriate order:</div><div class="line">     *</div><div class="line">     *      1. Draw the background</div><div class="line">     *      2. If necessary, save the canvas' layers to prepare for fading</div><div class="line">     *      3. Draw view's content</div><div class="line">     *      4. Draw children</div><div class="line">     *      5. If necessary, draw the fading edges and restore layers</div><div class="line">     *      6. Draw decorations (scrollbars for instance)</div><div class="line">     */</div><div class="line"></div><div class="line">    <span class="comment">// Step 1, draw the background, if needed</span></div><div class="line">  <span class="comment">//绘制背景</span></div><div class="line">    <span class="keyword">int</span> saveCount;</div><div class="line"></div><div class="line">    <span class="keyword">if</span> (!dirtyOpaque) &#123;</div><div class="line">        drawBackground(canvas);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">// skip step 2 &amp; 5 if possible (common case)</span></div><div class="line">    <span class="keyword">final</span> <span class="keyword">int</span> viewFlags = mViewFlags;</div><div class="line">    <span class="keyword">boolean</span> horizontalEdges = (viewFlags &amp; FADING_EDGE_HORIZONTAL) != <span class="number">0</span>;</div><div class="line">    <span class="keyword">boolean</span> verticalEdges = (viewFlags &amp; FADING_EDGE_VERTICAL) != <span class="number">0</span>;</div><div class="line">    <span class="keyword">if</span> (!verticalEdges &amp;&amp; !horizontalEdges) &#123;</div><div class="line">        <span class="comment">// Step 3, draw the content</span></div><div class="line">      <span class="comment">//调用 onDraw 方法，绘制自己本身内容，这个方法是个空方法，没有具体实现，</span></div><div class="line">      <span class="comment">//因为每个视图的内容部分肯定都是各不相同的，这部分的功能交给子类来去实现，</span></div><div class="line">      <span class="comment">//如果要自定义 view ，需要重载该方法完成绘制工作</span></div><div class="line">        <span class="keyword">if</span> (!dirtyOpaque) onDraw(canvas);</div><div class="line"></div><div class="line">        <span class="comment">// Step 4, draw the children</span></div><div class="line">      <span class="comment">//绘制子视图</span></div><div class="line">      <span class="comment">//View 中的 dispatchDraw()方法也是一个空方法，因为 view 本身没有子视图，所以不需要，</span></div><div class="line">      <span class="comment">//而 ViewGroup 的 dispatchDraw() 方法中就会有具体的绘制代码，来实现子视图的绘制工作</span></div><div class="line">        dispatchDraw(canvas);</div><div class="line"></div><div class="line">        <span class="comment">// Overlay is part of the content and draws beneath Foreground</span></div><div class="line">        <span class="keyword">if</span> (mOverlay != <span class="keyword">null</span> &amp;&amp; !mOverlay.isEmpty()) &#123;</div><div class="line">            mOverlay.getOverlayView().dispatchDraw(canvas);</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        <span class="comment">// Step 6, draw decorations (foreground, scrollbars)</span></div><div class="line">      <span class="comment">//绘制装饰</span></div><div class="line">      <span class="comment">//对视图的滚动条进行绘制，其实任何一个视图都是有滚动条的，只是一般情况下都没有让它显示出来，</span></div><div class="line">      <span class="comment">//而例如像 ListView 等控件是进行了显示而已。</span></div><div class="line">        onDrawForeground(canvas);</div><div class="line"></div><div class="line">        <span class="comment">// we're done...</span></div><div class="line">        <span class="keyword">return</span>;</div><div class="line">    &#125;</div></pre></td></tr></table></figure>
+<p>通过上面代码可以发现，View 绘制过程的传递是通过 dispatchDraw() 方法完成，这个方法会遍历调用所有子视图的 draw ()方法，这样事件就一层一层的传递下去了。其中 View 中有一个特殊方法 setWillNotDraw ，源码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> * If this view doesn't do any drawing on its own, set this flag to</div><div class="line"> * allow further optimizations. By default, this flag is not set on</div><div class="line"> * View, but could be set on some View subclasses such as ViewGroup.</div><div class="line"> *</div><div class="line"> * Typically, if you override &#123;<span class="doctag">@link</span> #onDraw(android.graphics.Canvas)&#125;</div><div class="line"> * you should clear this flag.</div><div class="line"> *</div><div class="line"> * <span class="doctag">@param</span> willNotDraw whether or not this View draw on its own</div><div class="line"> */</div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setWillNotDraw</span><span class="params">(<span class="keyword">boolean</span> willNotDraw)</span> </span>&#123;</div><div class="line">    setFlags(willNotDraw ? WILL_NOT_DRAW : <span class="number">0</span>, DRAW_MASK);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>看注释部分大概意思是，如果一个 View 不需要绘制任何内容，那么设置这个标记位为 true 后，系统会进行相应的优化，默认情况下 View 没有启动这个默认标记位，但 viewGroup 默认启用这个标记位，这个标记位对实际开发的意义是：当我们的自定义的控件继承自 viewGroup 并且本身不具备绘制功能的时候，就可以开启这个标记位，从而便于系统进行后续的优化工作，当我们明确知道 viewGrop 需要通过 onDraw 来绘制本身内容时，需要我们去关闭 WILL_NOT_DRAW 这个标记位。</p>
+<h1 id="四、自定义-View"><a href="#四、自定义-View" class="headerlink" title="四、自定义 View"></a>四、自定义 View</h1><h2 id="4-1-自定义-View-分类"><a href="#4-1-自定义-View-分类" class="headerlink" title="4.1 自定义 View 分类"></a>4.1 自定义 View 分类</h2><ol>
+<li><p><strong>继承自 View 重写 ondraw 方法</strong> </p>
+<p>这种方法主要用于实现一些不规则的效果，即想要达到的 View 效果无法使用已有的 View 通过布局组合的方式来实现，所以需要我们自己去绘制去画一个出来，即重写 onDraw 方法，采用这种方式需要注意处理自定义的 View 支持 wrap_content ，并且 padding 也需要自己处理。</p>
+</li>
+<li><p><strong>继承自 ViewGroup 实现特殊的 Layout 容器</strong></p>
+<p>主要实现除了 LinearLayout 、 RelativeLayout  等系统已有的 View 容器之外的特殊 View 容器，需要处理 ViewGroup 的测量 onMeasure 和布局 onLayout 这两个方法，并同时处理子元素的测量和布局。</p>
+</li>
+<li><p><strong>继承自 Android 系统本身已有的特定 View （如 TextView）</strong></p>
+<p>这种方法是要是为拓展某个已有 View 的功能，在已有的 View 的基础上添加一些功能，方便我们重复使用，这种方法不需要我们进行特殊的处理。</p>
+</li>
+<li><p><strong>继承自 Android 系统本身已有的特定的 ViewGroup （如 LinearLayout)</strong></p>
+<p>这种方法主要是为了实现将几个 View 组合在一起形成一个特定的组合模块，来方便我们后续进行使用，例如我们想要一个特定的 TitleBar ，我们可以可以将几个 TextView 和 Button 放在一个 LinearLayout 布局中组合成一个自定义的控件，采用这种方式不需要进行特殊的处理。</p>
+</li>
+</ol>
+<h2 id="4-2-自定义-View-须知"><a href="#4-2-自定义-View-须知" class="headerlink" title="4.2 自定义 View 须知"></a>4.2 自定义 View 须知</h2><p>自定义 View 过程中需要注意一些事项，如果这些问题处理不好，可能会影响 View 的正常使用和性能。</p>
+<ol>
+<li><p><strong>让 View 支持 wrap_content</strong> </p>
+<p>在自定义 View 时，如果是直接继承自 View 或者 View Group ，并且不在 onMeasure 中对 wrap_content 做特殊处理，那么在我们使用这个自定义的 View  的 wrap_content 属性时，就无法达到预期效果，而是和使用 match_parent 属性效果一样。</p>
+</li>
+<li><p><strong>如果有必要，让自定义的 View 支持 padding 属性</strong></p>
+<p>在自定义 View 时，如果是直接继承自 View  ，不在 onDraw 方法中处理 padding ，那么该自定义的 View padding属性将失效；如果是直接继承自 ViewGrop 需要在 onMeasure 和 onLayout 中考虑 padding 和 margin 对其造成的影响，否则将导致自定义的控件 padding 和子元素的 margin 属性失效。</p>
+</li>
+<li><p><strong>尽量不要在 View 中使用 Handler ，没必要</strong></p>
+<p>View 本身内部提供了一些列的 post 方法，完全可以替代 Handler 作用。</p>
+</li>
+<li><p><strong>View 中如果有线程或者动画需要在特定生命周期进行停止</strong></p>
+<p>当包含此 View 的 Activity 退出或者当前 View 被 remove 掉时，View 的 onDetachedFromWindow() 方法会被调用，所以如果有需要停止的线程或者动画可以在这个方法中执行，和此方法相对应的是 onAttachedToWindow() 方法，当包含该 View 的 Activity 启动的时候，该方法就会被调用。同时当 View 变得不可见时，我们需要及时停止线程和动画，否则可能造成内存泄露。</p>
+</li>
+<li><p><strong>View 带有滑动嵌套情形时，需要处理好滑动冲突</strong></p>
+<p>如果有滑动冲突需要合适的进行处理。如果要处理好滑动处理可以看一下<a href="http://yongyu.itscoder.com/2016/08/28/view_touchEvent_dispatch/" target="_blank" rel="external">View 事件的分发机制</a></p>
+</li>
+</ol>
+<h2 id="4-3-自定义-View-示例"><a href="#4-3-自定义-View-示例" class="headerlink" title="4.3 自定义 View 示例"></a>4.3 自定义 View 示例</h2><h3 id="4-3-1-继承自-View-重写-onDraw-方法"><a href="#4-3-1-继承自-View-重写-onDraw-方法" class="headerlink" title="4.3.1 继承自 View 重写 onDraw 方法"></a>4.3.1 继承自 View 重写 onDraw 方法</h3><p>这种方法一般为了实现一些不规则的效果，需要我们自己去绘制去画一个出来 View 出来，即重写 onDraw 方法，采用这种方式需要考虑 View 四周的空白即处理 padding 值，而 margin 值是受父容器控制所以不需要进行处理，并且需要注意处理自定义的 View 支持 wrap_content ，即重写 onMeasure 方法，如果不进行处理那么当在 xml 文件中使用 wrap_content 属性的时候，就相当于 match_parent 属性，这里为了更详细的说明问题，我们一起来实现一个简单的自定义 View ，只简单的画一个圆出来，这里给出关键地方的代码，先看看 onMeasure 部分代码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> * 这里进行重写 onMeasure 方法，让自定义的 View 支持 Wrap_content 模式</div><div class="line"> * 当使用该自定义的 View 时候，如果使用了 Wrap_content 属性后</div><div class="line"> * 该 View  的宽和高都为 200dp ，这个尺寸在实际应用中需要根据具体需要和情况进行计算</div><div class="line"> * 这里只是为了解释这个原理，任意给定了一个值恰巧是 200dp 而已</div><div class="line"> * <span class="doctag">@param</span> widthMeasureSpec 父容器给定的宽度约束条件</div><div class="line"> * <span class="doctag">@param</span> heightMeasureSpec 父容器给定的高度约束条件</div><div class="line"> */</div><div class="line"><span class="meta">@Override</span></div><div class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onMeasure</span><span class="params">(<span class="keyword">int</span> widthMeasureSpec, <span class="keyword">int</span> heightMeasureSpec)</span> </span>&#123;</div><div class="line">    <span class="keyword">super</span>.onMeasure(widthMeasureSpec, heightMeasureSpec);</div><div class="line">    <span class="comment">// 在 xml 文件中使用 wrap_content 属性时，该 View 的默认宽/高值为 200dp</span></div><div class="line">    <span class="keyword">int</span> width=<span class="number">200</span>;</div><div class="line">    <span class="keyword">int</span> height=<span class="number">200</span>;</div><div class="line">  <span class="comment">//获取测量值和模式</span></div><div class="line">    <span class="keyword">int</span> widthMode=MeasureSpec.getMode(widthMeasureSpec);</div><div class="line">    <span class="keyword">int</span> heightMode=MeasureSpec.getMode(heightMeasureSpec);</div><div class="line">    <span class="keyword">int</span> withSize=MeasureSpec.getSize(widthMeasureSpec);</div><div class="line">    <span class="keyword">int</span> heightSize=MeasureSpec.getSize(heightMeasureSpec);</div><div class="line">    <span class="keyword">if</span>(widthMode==MeasureSpec.AT_MOST&amp;&amp;heightMode==MeasureSpec.AT_MOST)&#123;</div><div class="line">        <span class="comment">//宽和高都为 wap_content 模式，进行设定默认值</span></div><div class="line">        setMeasuredDimension(width,height);</div><div class="line">    &#125;<span class="keyword">else</span> <span class="keyword">if</span>(widthMode==MeasureSpec.AT_MOST)&#123;</div><div class="line">        <span class="comment">//如果只有宽为 wrap_content 模式</span></div><div class="line">        setMeasuredDimension(width,heightSize);</div><div class="line">    &#125;<span class="keyword">else</span> <span class="keyword">if</span>(heightMode==MeasureSpec.AT_MOST)&#123;</div><div class="line">        <span class="comment">//如果只有高为 wrap_content 模式</span></div><div class="line">        setMeasuredDimension(withSize,height);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>以上代码就解决了让 自定义的 View 支持 wrap_content 的问题。下面在看看在 onDraw 方法中进行绘制的时候处理  padding 值的问题，代码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> * 这里进行绘制 View 的内容，这里要注意需要处理 padding 值，</div><div class="line"> * 让自定义的 View 支持 padding 属性，如果不处理，</div><div class="line"> *那么在 xml 文件中使用该自定义的 View 的 padding</div><div class="line"> * 属性时候，将会失效</div><div class="line"> * <span class="doctag">@param</span> canvas 画布</div><div class="line"> */</div><div class="line"><span class="meta">@Override</span></div><div class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onDraw</span><span class="params">(Canvas canvas)</span> </span>&#123;</div><div class="line">    <span class="keyword">super</span>.onDraw(canvas);</div><div class="line">    <span class="comment">//获取 view 最终宽和高</span></div><div class="line">    <span class="keyword">int</span> width=getWidth();</div><div class="line">    <span class="keyword">int</span> height=getHeight();</div><div class="line">    <span class="comment">//获取 padding 值</span></div><div class="line">    <span class="keyword">int</span> paddingLeft=getPaddingLeft();</div><div class="line">    <span class="keyword">int</span> paddingRight=getPaddingRight();</div><div class="line">    <span class="keyword">int</span> paddingTop=getPaddingTop();</div><div class="line">    <span class="keyword">int</span> paddingBottom=getPaddingBottom();</div><div class="line">    <span class="comment">//计算去掉 padding 的宽和高</span></div><div class="line">    <span class="keyword">int</span> withFinal=width-paddingLeft-paddingRight;</div><div class="line">    <span class="keyword">int</span> heightFinal=height-paddingTop-paddingBottom;</div><div class="line">    <span class="comment">//计算半径</span></div><div class="line">    <span class="keyword">int</span> radius=Math.min(withFinal/<span class="number">2</span>,heightFinal/<span class="number">2</span>);</div><div class="line">    <span class="comment">//绘制视图内容</span></div><div class="line">    <span class="comment">//确定x轴和y轴圆中心点位置，主要受 paddingLeft 和 withFinal/2 影响</span></div><div class="line">    <span class="comment">//即受左上方侧偏移量和圆半径有关，与 RightPadding 无关</span></div><div class="line">    canvas.drawCircle(paddingLeft+withFinal/<span class="number">2</span>,paddingTop+heightFinal/<span class="number">2</span>,radius,paint);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>以上代码解决了让自定义的 View 支持 padding 属性。</p>
+<h3 id="4-3-2-继承自-ViewGroup-实现特殊的-Layout-容器"><a href="#4-3-2-继承自-ViewGroup-实现特殊的-Layout-容器" class="headerlink" title="4.3.2 继承自 ViewGroup  实现特殊的 Layout 容器"></a>4.3.2 继承自 ViewGroup  实现特殊的 Layout 容器</h3><p>这种自定义的 ViewGroup 需要处理 onMeasure 测量和 onLayout 布局两个过程，同时需要处理子元素的测量和布局过程。采用这种方法实现一个规范的自定义 View 是相当复杂的，通过前面分析的 LinearLayout 代码就可以发现，因为要考虑如何摆放子视图以及各种细节的处理，Android 开发艺术探索书中给出了一个相对规范（不完全规范）的自定义的 HorizontalScrollViewEx 视图容器，实现了一个类似 ViewPaper 的控件，内部子视图可以水平方向滑动，并且子视图的内部子元素可以实现竖直方向滑动，很显然这个控件解决了水平方向和竖直方向滑动冲突的问题，该部分知识可以看一下<a href="http://yongyu.itscoder.com/2016/08/28/view_touchEvent_dispatch/" target="_blank" rel="external">View 的事件分发机制（Android 开发艺术探索读书笔记）</a> 这篇文章从源码角度分析了事件分发机制，理解了就可以解决滑动冲突的问题。下面一起看一下关键部分代码，先看 onMeasure 部分代码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> * 重写 onMeasure 方法，处理自定义 View 支持 wrap_content 模式</div><div class="line"> * <span class="doctag">@param</span> widthMeasureSpec 父容器给定宽度约束条件</div><div class="line"> * <span class="doctag">@param</span> heightMeasureSpec 父容器给定高度约束条件</div><div class="line"> */</div><div class="line"><span class="meta">@Override</span></div><div class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onMeasure</span><span class="params">(<span class="keyword">int</span> widthMeasureSpec, <span class="keyword">int</span> heightMeasureSpec)</span> </span>&#123;</div><div class="line">    <span class="keyword">super</span>.onMeasure(widthMeasureSpec, heightMeasureSpec);</div><div class="line">    <span class="keyword">int</span> measuredWidth = <span class="number">0</span>;</div><div class="line">    <span class="keyword">int</span> measuredHeight = <span class="number">0</span>;</div><div class="line">    <span class="comment">//获取子视图个数</span></div><div class="line">    <span class="keyword">final</span> <span class="keyword">int</span> childCount = getChildCount();</div><div class="line">    <span class="comment">//测量子视图</span></div><div class="line">    measureChildren(widthMeasureSpec, heightMeasureSpec);</div><div class="line">    <span class="comment">//获取父容器给定测量模式和测量值</span></div><div class="line">    <span class="keyword">int</span> widthSpaceSize = MeasureSpec.getSize(widthMeasureSpec);</div><div class="line">    <span class="keyword">int</span> widthSpecMode = MeasureSpec.getMode(widthMeasureSpec);</div><div class="line">    <span class="keyword">int</span> heightSpaceSize = MeasureSpec.getSize(heightMeasureSpec);</div><div class="line">    <span class="keyword">int</span> heightSpecMode = MeasureSpec.getMode(heightMeasureSpec);</div><div class="line">    <span class="keyword">if</span> (childCount == <span class="number">0</span>) &#123;</div><div class="line">        <span class="comment">//如果没有子视图直接设定 View 的宽/高为0</span></div><div class="line">        setMeasuredDimension(<span class="number">0</span>, <span class="number">0</span>);</div><div class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (widthSpecMode == MeasureSpec.AT_MOST &amp;&amp; heightSpecMode == MeasureSpec.AT_MOST) &#123;</div><div class="line">        <span class="comment">//如果视图宽/高都采用 wrap_content 模式</span></div><div class="line">        <span class="keyword">final</span> View childView = getChildAt(<span class="number">0</span>);</div><div class="line">        <span class="comment">//宽度为第一个视图宽度乘以所有子视图个数</span></div><div class="line">        measuredWidth = childView.getMeasuredWidth() * childCount;</div><div class="line">       <span class="comment">// 高度为第一个视图宽度</span></div><div class="line">        measuredHeight = childView.getMeasuredHeight();</div><div class="line">        <span class="comment">//设置 自定义视图宽/高值</span></div><div class="line">        setMeasuredDimension(measuredWidth, measuredHeight);</div><div class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (heightSpecMode == MeasureSpec.AT_MOST) &#123;</div><div class="line">        <span class="comment">//如果只有视图高采用 wrap_content 模式</span></div><div class="line">        <span class="keyword">final</span> View childView = getChildAt(<span class="number">0</span>);</div><div class="line">        <span class="comment">//设置视图高度为第一个视图高度</span></div><div class="line">        measuredHeight = childView.getMeasuredHeight();</div><div class="line">        setMeasuredDimension(widthSpaceSize, childView.getMeasuredHeight());</div><div class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (widthSpecMode == MeasureSpec.AT_MOST) &#123;</div><div class="line">        <span class="comment">//如果视图宽度使用 wrap_content 模式，设置宽度为第一个视图宽度乘以所有子视图个数</span></div><div class="line">        <span class="keyword">final</span> View childView = getChildAt(<span class="number">0</span>);</div><div class="line">        measuredWidth = childView.getMeasuredWidth() * childCount;</div><div class="line">        setMeasuredDimension(measuredWidth, heightSpaceSize);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>以上代码实现了让自定义的 View 支持  wrap_content 属性。</p>
+<p><strong>说明，这里为了方便处理有几处不规范的地方如下：</strong></p>
+<ol>
+<li>假设了所有子视图的高度和宽度都相等，而实际应用中这是不可能的，所以计算起来会更复杂。</li>
+<li>没有子元素的时候不应该直接设置宽/高为 0，而是应该根据 LayoutParams 的宽/高来做相应的处理，因为当使用 padding 属性的时候，虽然没有子视图，但 padding 值也会占据一定空间，你可以设置 LinearLayout 子视图个数为 0，然后给定一个 padding 值去试试。</li>
+<li>在测量 HorizontalScrollViewEx  的高/宽的时候没有考虑它的 padding 值和子视图的 margin 值，因为自己的 padding 值和子视图的 margin 值都是占据空间的。</li>
+</ol>
+<p>下面再看一下 onLayout 代码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> * 重写 onLayout 方法，实现摆放子视图功能</div><div class="line"> */</div><div class="line"><span class="meta">@Override</span></div><div class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onLayout</span><span class="params">(<span class="keyword">boolean</span> changed, <span class="keyword">int</span> l, <span class="keyword">int</span> t, <span class="keyword">int</span> r, <span class="keyword">int</span> b)</span> </span>&#123;</div><div class="line">    <span class="comment">//记录子视图左边距位置</span></div><div class="line">    <span class="keyword">int</span> childLeft = <span class="number">0</span>;</div><div class="line">    <span class="comment">//获取子视图个数</span></div><div class="line">    <span class="keyword">final</span> <span class="keyword">int</span> childCount = getChildCount();</div><div class="line">    <span class="comment">//记录子视图个数</span></div><div class="line">    mChildrenSize = childCount;</div><div class="line">    <span class="comment">//遍历子视图</span></div><div class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; childCount; i++) &#123;</div><div class="line">        <span class="comment">//获取子视图</span></div><div class="line">        <span class="keyword">final</span> View childView = getChildAt(i);</div><div class="line">        <span class="keyword">if</span> (childView.getVisibility() != View.GONE) &#123;</div><div class="line">            <span class="comment">//如果子视图可见，获取子视图测量宽度</span></div><div class="line">            <span class="keyword">final</span> <span class="keyword">int</span> childWidth = childView.getMeasuredWidth();</div><div class="line">            <span class="comment">//记录子视图宽度</span></div><div class="line">            mChildWidth = childWidth;</div><div class="line">            <span class="comment">//设置摆放子视图位置，每次子视图放置在上一个子视图右边依次排放</span></div><div class="line">            childView.layout(childLeft, <span class="number">0</span>, childLeft + childWidth,</div><div class="line">                    childView.getMeasuredHeight());</div><div class="line">            childLeft += childWidth;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>以上代码实现了摆放子视图的功能，从代码可以看出放置子视图是从左至右依次摆放。</p>
+<p><strong>说明，以上代码不规范之处：</strong></p>
+<p>在摆放子视图的过程中，没有考虑自身的 padding 和子视图的 margin 值。</p>
+<h3 id="4-3-3-自定义-View-的总结"><a href="#4-3-3-自定义-View-的总结" class="headerlink" title="4.3.3 自定义 View 的总结"></a>4.3.3 自定义 View 的总结</h3><p>到这里，关于 View 的基础知识基本学习完毕，笔者写到这里也完全不能写出了一个牛逼的自定义控件（一个基友曾经这样问我：你学完了这些知识，还不徒手撸出一个牛逼的自定义 View 啊——–<a href="http://extremej.itscoder.com/" target="_blank" rel="external">阿风</a> ，我的回答当然不能。因为自定义 View 是一个综合的知识体系，需要灵活的运用各种知识和经验，这里我们只是学习了一下基础理论知识，知其原理，懂其思路，如果我们想自定义 View，首先要掌握基本功，比如 <a href="http://yongyu.itscoder.com/2016/08/14/view_to_scroll/" target="_blank" rel="external">View 的弹性滑动</a>，<a href="http://yongyu.itscoder.com/2016/08/28/view_touchEvent_dispatch/" target="_blank" rel="external">滑动冲突</a>，绘制原理等，这些都是自定义 View 所必须知识点，再复杂的自定义 View 也是离不开这些知识点，尤其是那些看起来很炫酷的自定义 View，往往对这些技术点要求更高，只有熟悉掌握这些基础知识点以后，在面对新的自定义 View 时，才能够根据需求情况选择合适的实现思路，实现大体方法就是 4.1 节中介绍的四种分类，另外还需要学习一下 Canvas 这个类的用法才能画出想要的 View 。</p>
+<p>最后，文章中的 Demo 会上传在 github，<a href="https://github.com/yongyu0102/ViewDrawDemo" target="_blank" rel="external">链接地址</a> ，这里只是一个简单的 Demo ，分析一下原理，（这些 Demo 源码出自 Android 开发艺术探索）如果想撸出更炫酷的 View 还需要掌握 Canvas 这个类的用法，后面需要续学习。</p>
+<p>以上就是本次的笔记内容，如有错误，希望指出，谢谢！！！</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Android-View/" rel="tag">#Android View</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/08/28/view_touchEvent_dispatch/" rel="next" title="View 的事件分发机制（Android 开发艺术探索读书笔记）">
+                <i class="fa fa-chevron-left"></i> View 的事件分发机制（Android 开发艺术探索读书笔记）
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/09/11/view_measure/" rel="prev" title="View 的工作原理上 View 绘制流程梳理及 Measure 过程详解（Android 开发艺术探索笔记）">
+                View 的工作原理上 View 绘制流程梳理及 Measure 过程详解（Android 开发艺术探索笔记） <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/09/03/view_layout_and_draw/"
+           data-title="View 的工作原理下 View 的 layout 和 draw 过程 （Android 开发艺术探索读书笔记）" data-url="http://yoursite.com/2016/09/03/view_layout_and_draw/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="https://github.com/yongyu0102/Images/blob/master/avatar/avatar.png?raw=true"
+               alt="Yongyu" />
+          <p class="site-author-name" itemprop="name">Yongyu</p>
+          <p class="site-description motion-element" itemprop="description">这里记录你的故事！</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">6</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              
+                <span class="site-state-item-count">3</span>
+                <span class="site-state-item-name">分类</span>
+              
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              
+                <span class="site-state-item-count">4</span>
+                <span class="site-state-item-name">标签</span>
+              
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+          <div class="links-of-blogroll motion-element links-of-blogroll-inline">
+            <div class="links-of-blogroll-title">
+              <i class="fa  fa-fw fa-globe"></i>
+              Links
+            </div>
+            <ul class="links-of-blogroll-list">
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://extremej.itscoder.com/" title="Joe" target="_blank">Joe</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://jaeger.itscoder.com/" title="写代码的猴子" target="_blank">写代码的猴子</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://brucezz.itscoder.com/" title="Brucezz" target="_blank">Brucezz</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://allenwu.itscoder.com/" title="小刚" target="_blank">小刚</a>
+                </li>
+              
+            </ul>
+          </div>
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#一、概要"><span class="nav-number">1.</span> <span class="nav-text">一、概要</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#二、-layout-过程详解"><span class="nav-number">2.</span> <span class="nav-text">二、 layout 过程详解</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#三、-draw-过程详解"><span class="nav-number">3.</span> <span class="nav-text">三、 draw 过程详解</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#四、自定义-View"><span class="nav-number">4.</span> <span class="nav-text">四、自定义 View</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#4-1-自定义-View-分类"><span class="nav-number">4.1.</span> <span class="nav-text">4.1 自定义 View 分类</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-2-自定义-View-须知"><span class="nav-number">4.2.</span> <span class="nav-text">4.2 自定义 View 须知</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-3-自定义-View-示例"><span class="nav-number">4.3.</span> <span class="nav-text">4.3 自定义 View 示例</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#4-3-1-继承自-View-重写-onDraw-方法"><span class="nav-number">4.3.1.</span> <span class="nav-text">4.3.1 继承自 View 重写 onDraw 方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-3-2-继承自-ViewGroup-实现特殊的-Layout-容器"><span class="nav-number">4.3.2.</span> <span class="nav-text">4.3.2 继承自 ViewGroup  实现特殊的 Layout 容器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-3-3-自定义-View-的总结"><span class="nav-number">4.3.3.</span> <span class="nav-text">4.3.3 自定义 View 的总结</span></a></li></ol></li></ol></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Yongyu</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+ </script>
+ </br>本站总访问量<span id="busuanzi_value_site_pv"></span>次，本站访客数<span id="busuanzi_value_site_uv"></span>人次，本文总阅读量<span id="busuanzi_value_page_pv"></span>次
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.0.1"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"yongyu"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+    <script src="/vendors/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+    <script src="/js/src/hook-duoshuo.js"></script>
+  
+
+
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
