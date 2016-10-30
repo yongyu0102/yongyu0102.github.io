@@ -316,7 +316,19 @@ itsCoder主页：http://itscoder.com/
 
 一、概要最近在公司的项目中遇到需求如下：
 
-点击 WebView 页面的图片实现开启查看图片模式，即可以显示点
+点击 WebView 页面的图片实现开启查看图片模式，即可以显示点击的图片，然后滑动显示下一张图片。
+  
+
+长按 WebView 页面图片弹出对话框可以选择保存长按的图片到本地相册。
+ 
+
+
+拿到这个需求笔者第一反应是没做过 WebView 相关的交互，甚至分不清这个需求是否需要服务端配合完成 Java 与 JavaScript 的互相调用，一脸茫然。遇到这种情况笔者的解决思路一般分两个方向：
+
+找一个比较出名的客户端有类似功能的，然后 Google 搜索，仿 XXXX，先粗略看一下有没有现成的 Demo 可以参考，比如我这个需要，先去搜索一下 ”Android 仿微信朋友圈浏览图片效果“ （这个搜索关键字很关键啊），可是笔者没找到符合该需要的 Demo。
+
+在第一个方案不好使的情况下，我们没有了参考，那么咱们就得自己思考这个大概实现思路，然后把这个需求进行拆分，逐一击破。所以思考大概如下：
+（1）要想展示图片那么就得先拿到图片，要拿到图片只有两种可能，第一种可能是 WebView 本身缓存了图片，我们去缓存中读取图片进行显示，可是想一下，咱们浏览微博看图的时候如果没有网，这时候去点击图片那么图片是加载不出来的，所以这种可能否定了；所以只有第二种可能就是点击图片的时候拿到该图片对应的 URL 网址，然后咱们自己去网络加载图片进行显示，所以这个点我
           ...
 
           <div class="post-more-link text-center">
@@ -449,7 +461,8 @@ itsCoder主页：http://itscoder.com/
 审阅者：melodyxxx
 
 
-一、概要本次介绍的主要内容是 View 的工作原理下 View 的 layout 和 draw 过程，同时介绍
+一、概要本次介绍的主要内容是 View 的工作原理下 View 的 layout 和 draw 过程，同时介绍自定义 View 的注意事项并结合一个小的 Demo 进行说明，其中涉及到的 onMeasre  测量部分知识可以看上一篇文章View 的工作原理上 View 绘制流程梳理及 Measure 过程详解 ，以下开始正文：
+二、 layout 过程详解 layout 的作用是 ViewGroup 来确定子元素的位置，当 ViewGroup 的位置被确定后，在  layout 中会调用 onLayout ，在 onLayout 中会遍历所有的子元素并调用子元素的 layout 方法，在子元素的 layout 方法中 onLayout 方法又会被调用，layout 方法是确定 View 本身在屏幕上显示的具体位置，即在代码中设置其成员变量 mLeft，mTop，mRight，mBottom 的值，这几个值是在屏幕上构成矩形区域的四个坐标点，就是该 View 显示的位置，不过这里的具体位置都是相对与父视图的位置而言，而 onLayout 方法则会确定所有子元素位置，ViewGroup 在 onLayout 函数中通过调用其 children 的 layout 函数来设置子视图相对与父视图中的位置，具体位置由函数 layout 的参数决定。下面我们先看 View 的layout 方法如下：   
           ...
 
           <div class="post-more-link text-center">
@@ -582,7 +595,8 @@ itsCoder主页：http://itscoder.com/
 审阅者：hymane
 
 
-1 前言View 是 Android 中所有控件的基类，例如 Button 和 TextView、ViewGroup
+1 前言View 是 Android 中所有控件的基类，例如 Button 和 TextView、ViewGroup 等常见控件他们的基类都是 View，View 是一种界面层的控件的一种抽象，代表了一个控件。View 本身可以是单个控件也可以是由多个控件组成的一组控件，通过这种关系就形成了 View 树的结构。Android 系统本身就提供好了很多好用的 View，你也可以自己根据需求去自定义一个 View，拿最简单的一个例子来说，当我们想在界面上显示一行文字的时候，我们会在 xml 文件中写好布局然后在  Activity 中的 onCreate 方法中使用 setContentView 方法来加载布局就可以显示出我们想要的文字，这时候你是否有思考过这个过程是怎么完成的， View 是如何被显示到界面上的；还有一个我们经常遇到的问题是：当我们在一个 ScrollView 控件内部嵌套一个 ListView 的时候 ListView 只会显示一行；当使用自定义的 View 的时候，View 可以显示到界面，但是当使用 WrapContent 属性的时候不起作用，这些问题笔者就曾都遇到过，如果你也曾有过这样的疑问，可以阅读以下这篇文章。
+1.1 主要内容简介View 的工作原理主要包含 View 的三大流程 onMeasure()、onLayout()和onDraw()  ，而由于一次性全部写完内
           ...
 
           <div class="post-more-link text-center">
@@ -715,7 +729,12 @@ itsCoder主页：http://itscoder.com/
 审阅者：HanJie
 
 
-前言在写这篇笔记的时候想了好久，也拖了好长时间，关于事件分发的博客看了很多，有的写的思路很清晰，画了事件分发的整体流
+前言在写这篇笔记的时候想了好久，也拖了好长时间，关于事件分发的博客看了很多，有的写的思路很清晰，画了事件分发的整体流程图，但是没有源码，看过之后只能知道事件是怎么分发的，但完全是记住的，而不是通过源码分析出来的，试想，如果以后再遇到其他知识点还是这样，那么我们就完全成了不能靠自己去分析问题，只能去食他人知识，没有自我学习分析能力，所以笔者试着结合艺术探索的讲解，尝试在源码的基础上加以理解，本文的写作逻辑是先从文字描述上尽量让大家先大概了解，事件分发的概况，先有个感性认识，再结合源码进行分析，如果错误的地方，还请指出。
+1.1 点击事件的传递规则在我们进行分析事件分发机制之前，先思考一下我们要研究哪些问题：
+1、事件分发的对象是什么？
+当用户触摸屏幕时，将创建一个 MotionEvent 对象即点击事件。MotionEvent 包含关于发生触摸的位置、时间、历史记录、手势动作等细节信息， Touch 事件相关细节被封装成了 MotionEvent 对象。理解了这一个知识点后，其实我们就很容易理解所谓点击事件的分发，其实就是对 MotionEvent 事件分发的过程，即当一个 MotionEvent 产生后，系统需要把这个事件传递给一个具体的 View 去处理, 而这个传递的过程就是分发过程。
+2、事件是在哪些对象之间传递？
+Android 与用户交互的界面就是由一系列 Activity（Fragme
           ...
 
           <div class="post-more-link text-center">
@@ -840,7 +859,9 @@ itsCoder主页：http://itscoder.com/
       
         
           
-          3.2 View 的滑动3.1节中介绍了View的基础知识，有了这些基础知识和概念，我们就可以根据需要对 View 做一些操作，在Android设备上，最常见的一个操作就是滑动，如此可见滑动是很重要的知识，只有具备了滑动的基础知识才能做出更复杂炫酷的滑动效果，复杂的效果是由不同的滑动基础组成，通常V
+          3.2 View 的滑动3.1节中介绍了View的基础知识，有了这些基础知识和概念，我们就可以根据需要对 View 做一些操作，在Android设备上，最常见的一个操作就是滑动，如此可见滑动是很重要的知识，只有具备了滑动的基础知识才能做出更复杂炫酷的滑动效果，复杂的效果是由不同的滑动基础组成，通常View 的滑动可以由三种方式：使用scrollTo或scrollBy、通过动画给View 添加平移效果实现滑动、通过改变 View 的布局参数 LayoutParams 实现滑动，下面进行逐一分析。
+3.2.1 使用scrollTo或scrollBy进行滑动Android 中 View 为我们提供了两个专门的方法 scrollTo或scrollBy 来实现  View 的滑动，scrollTo 是滑动到某一坐标，是绝对滑动，View 调用的时候只能进行一次滑动，比如将 View 从 A 点滑动到 B 点；而scrollBy是滑动一段距离，是相对滑动，可以进行连续滑动，View 每次进行调用的时候都会将 View 滑动指定的距离。下面看一下源码：
+12345678910111213141516171819202122232425262728293031323334/**  * 绝对滑动  * @param x 指定水平方向滑动像素  * @param y 指定竖直方向滑动像素  */    public void scrollTo(int x, int y) &#123;      //位置发生了改变        if (mScrollX != x || mScrollY != y)
           ...
 
           <div class="post-more-link text-center">
@@ -967,7 +988,13 @@ itsCoder主页：http://itscoder.com/
           
           转载请附原文链接：Android 开发艺术探索第3章 3.1View 基础知识读书笔记 
 3.1 View 基础知识主要介绍内容：View 的位置参数、MotionEvent 和 TouchSlop对象、VelocityTracker, GestureDetector 和 Scroller对象。
-3
+3.11 什么是 ViewView 是Android中所有控件的基类，例如Button和TextView、ViewGroup 等常见控件他们的基类都是View，View是一种界面层的控件的一种抽象，代表了一个控件。View 本身可以是单个控件也可以是由多个控件组成的一组控件，通过这种关系就形成了View 树的结构，与Web前端中的DOM树概念相似。
+3.1.2 View的位置参数View 的位置主要有四个顶点决定的， top（左上角纵坐标）、left（左上角横坐标）、right（右下角横坐标）、bottom（右下角纵坐标），这些顶点的坐标是相对于 View 的父容器来说，是一种相对坐标。
+根据上图View的坐标位置关系可以得出以下view的宽度（width)和高度（height)：
+View的宽高和坐标关系：width = right - left，height = top - bottom。
+view 源码中他们对应于mLeft、mRight、mTop、mBottom这四个成员变量，获取方式如下：
+Left=getLeft() 、Right=getRight() 、Top=getTop() 、Bottom=getBottom() 
+从Android 3.0开始，view增加了：x、y
           ...
 
           <div class="post-more-link text-center">
@@ -1093,7 +1120,13 @@ itsCoder主页：http://itscoder.com/
         
           
           转载请附原文链接：Volley学习笔记之简单使用及部分源码详解 
-一、使用背景简介现在大多数手机 App 几乎都离不开网络技术，需要手机端与网络服务端进行数据交互，Android 系统中主要提供了两种方式来进行HTTP通信，HttpURLConnection 和 HttpClient，在初学 And
+一、使用背景简介现在大多数手机 App 几乎都离不开网络技术，需要手机端与网络服务端进行数据交互，Android 系统中主要提供了两种方式来进行HTTP通信，HttpURLConnection 和 HttpClient，在初学 Android 的时候，这两个类是我们最开始学着使用的，但是在使用过程中需要调取各种API，进行封，然后请求到的结果需要自己去解析，最后再将解析到的数据进行封装存到数据库，整个过程，相当复杂，而且重复性很高，于是针对这种情况，网络上就有大神封装了各种第三方框架供我们使用，将这些复杂冗余操作进行组合优化，使得整个编写过程得以简化，只需简单配置几行代码就可以完成整个流程操作。今天我们介绍的 Volley  就是其中一个优秀第三方框架。笔者所在公司目前项目使用的就是Volley ，所以在使用的同时决定写一系列笔记分析，从学会简单使用，到最后的 Volley 源码分析一系列循序渐进的流程来理解Volley的实现原理。
+二、Volley简介Volley 是 Google在 Google I/O 2013 大会上 推出的 Android 异步网络请求和图片加载框架。
+
+主要作用 ：实现异步网络请求、图片加载。
+
+主要特点：
+(1).  Volley基于接口设计，扩展性强，我们可以根据我们的需求定制自己想要的请求方式方法。(2).  一定程度符合 Http 规范，包括返回 ResponseCode(2xx、3xx、4xx、5xx）的处理，请求头的处理，缓存机制的支持等。并支持重试及优先级定义。(3). 
           ...
 
           <div class="post-more-link text-center">
