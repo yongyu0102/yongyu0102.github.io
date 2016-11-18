@@ -238,6 +238,139 @@
             
               
                 
+                <a class="post-title-link" href="/2016/11/15/rxjava_learning_note/" itemprop="url">
+                  RxJava 学习笔记（部分示例代码及源码）
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-11-15T00:00:00+08:00" content="2016-11-15">
+              2016-11-15
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Android-RxJava/" itemprop="url" rel="index">
+                    <span itemprop="name">Android RxJava</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/11/15/rxjava_learning_note/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/11/15/rxjava_learning_note/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          -文章来源：itsCoder 的 WeeklyBolg 项目
+
+itsCoder主页：http://itscoder.com/
+作者：yongyu0102
+审阅者：hymane
+
+说在前面，本文较长，从观察者模式到 RxJava 原理，以及 RxJava 的一些常用操作符的使用，并且对主要涉及到的源码进行了详细分析，讲解内部实现原理，都是笔者自己的学习笔记，所以你可以选择感兴趣的地方去阅读，如果你有时间也可以慢慢品尝，希望对你有所帮助！
+一、初识 RxJavaRxJava 是什么 ：它就是一个实现异步操作的库，使你的程序逻辑简介清晰实现链式调用，避免代码的迷之嵌套以及各种接口回调。
+扩展的观察者模式：RxJava 的异步实现，是通过一种扩展的观察者模式来实现的，观察者模式面向的需求是：A 对象（观察者）对 B 对象（被观察者）的某种变化高度敏感，需要在 B 变化的一瞬间做出反应。Android 开发中一个比较典型的例子是点击监听器 OnClickListener 。对设置OnClickListener 来说， View 是被观察者， OnClickListener 是观察者，二者通过 
+          ...
+
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/11/15/rxjava_learning_note/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
                 <a class="post-title-link" href="/2016/10/24/show_image_from_webView/" itemprop="url">
                   Android  WebView 实现点击界面图片滑动浏览和保存图片功能
                 </a>
@@ -1189,7 +1322,7 @@ View的
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">7</span>
+              <span class="site-state-item-count">8</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -1197,7 +1330,7 @@ View的
           
             <div class="site-state-item site-state-categories">
               
-                <span class="site-state-item-count">4</span>
+                <span class="site-state-item-count">5</span>
                 <span class="site-state-item-name">分类</span>
               
             </div>
@@ -1206,7 +1339,7 @@ View的
           
             <div class="site-state-item site-state-tags">
               
-                <span class="site-state-item-count">5</span>
+                <span class="site-state-item-count">6</span>
                 <span class="site-state-item-name">标签</span>
               
             </div>
