@@ -106,7 +106,7 @@ itsCoder主页：http://itscoder.com/
 前言在写这篇笔记的时候想了好久，也拖了好长时间，关于事件分发的博客看了很多，有的写的思路很清晰，画了事件分发的整体流程图，但是没有源码，看过之后只能知道事件是怎么分发的，但完全是记住的，而不是通过源码分析出来的，试想">
 <meta property="og:image" content="https://github.com/yongyu0102/yongyu0102.github.io/blob/master/images/Activity_ViewGroup_View.png?raw=true">
 <meta property="og:image" content="https://github.com/yongyu0102/yongyu0102.github.io/blob/master/images/TouchEvent_disaptch.png?raw=true">
-<meta property="og:updated_time" content="2016-08-28T10:11:37.738Z">
+<meta property="og:updated_time" content="2016-12-18T08:55:46.502Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="View 的事件分发机制（Android 开发艺术探索读书笔记）">
 <meta name="twitter:description" content="-文章来源：itsCoder 的 WeeklyBolg 项目
@@ -399,7 +399,7 @@ itsCoder主页：http://itscoder.com/
 <p><strong>3、这个分发过程由哪些对象协作完成？</strong></p>
 <p>其实点击事件分发过程主要由三个重要方法共同完成：dispatchTouchEvent(MotionEvent event) 、onInterceptTouchEvent(MotionEvent event)和onTouchEvent(MotionEvent event)，下面先介绍一下这三个方法的主要作用，这样有利于后面我们对源码的分析：</p>
 <ol>
-<li><p>public boolean dispatchTouchEvent(MotionEvent event) ：用来进行事件的分发。如果事件能够传递给当前view，那么此方法一定会被调用，返回结果受当前 view 的 onTouchEvent 和下级 view 的 dispatchTouchEvent 方法的影响，表示是否消耗当前事件。返回值 true，表示触摸事件被消费，已经分发出去，后续事件会继续分发到该 View；返回值 false，则表示触摸事件没有被消费，即事件没有分发出去，那么后续事件就不会继续向该 View 分发，该方法在 View 和 ViewGroup 中都有。</p>
+<li><p>public boolean dispatchTouchEvent(MotionEvent event) ：用来进行事件的分发。如果事件能够传递给当前view，那么此方法一定会被调用，返回结果受当前 view 的 onTouchEvent 和下级 view 的 dispatchTouchEvent 方法的影响，表示是否消费当前事件。返回值 true，表示触摸事件被消费（<strong>注意：这里事件是否被消费由返回值决定，true 表示消费，false 表示不消费，与是否使用了事件无关</strong>），已经分发出去，后续事件会继续分发到该 View；返回值 false，则表示触摸事件没有被消费，即事件没有分发出去，那么后续事件就不会继续向该 View 分发，该方法在 View 和 ViewGroup 中都有。</p>
 </li>
 <li><p>public boolean onInterceptTouchEvent(MotionEvent event)<br>在 dispatchTouchEvent 方法内部调用，用来判断是否拦截某个事件，如果当前 view 拦截了某个事件，那么在同一个事件序列当中，此方法不会再被调用，返回结果表示是否拦截当前事件。只有 ViewGroup 中才有该方法 ，返回值 true，表示ViewGroup拦截了该触摸事件，该事件就不会分发给它的子 View 或者子 ViewGroup，事件会由自己的 onTouchEvent() 方法处理。返回值 false，表示 ViewGroup 没有拦截该事件，该事件就可以分发给它的子 View 和子 ViewGroup ，事件传递到子 view 的 dispatchTouchEvent() 方法中去处理。</p>
 </li>
@@ -671,7 +671,7 @@ itsCoder主页：http://itscoder.com/
         <div class="copyright" >
   
   &copy; 
-  <span itemprop="copyrightYear">2016</span>
+  <span itemprop="copyrightYear">2017</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
