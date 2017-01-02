@@ -84,17 +84,17 @@
 
 
 
-<meta name="description" content="3.2 View 的滑动3.1节中介绍了View的基础知识，有了这些基础知识和概念，我们就可以根据需要对 View 做一些操作，在Android设备上，最常见的一个操作就是滑动，如此可见滑动是很重要的知识，只有具备了滑动的基础知识才能做出更复杂炫酷的滑动效果，复杂的效果是由不同的滑动基础组成，通常View 的滑动可以由三种方式：使用scrollTo或scrollBy、通过动画给View 添加平移效">
+<meta name="description" content="3.2 View 的滑动View 的基础知识 学习笔记中记录了 View 的基础知识和概念，本次笔记内容源于Android 开发艺术探索第3章 3.2-3.3 View 滑动和弹性滑动读书笔记，我们就可以根据需要对 View 做一些操作，在 Android 设备上，最常见的一个操作就是滑动，如此可见滑动是很重要的知识，只有具备了滑动的基础知识才能做出更复杂炫酷的滑动效果，复杂的效果是由不同的滑动基">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Android 开发艺术探索第3章 3.2-3.3 View 滑动和弹性滑动读书笔记">
+<meta property="og:title" content="Android View 滑动和弹性滑动读书笔记">
 <meta property="og:url" content="http://yoursite.com/2016/08/14/view_to_scroll/index.html">
 <meta property="og:site_name" content="一个写代码的地方">
-<meta property="og:description" content="3.2 View 的滑动3.1节中介绍了View的基础知识，有了这些基础知识和概念，我们就可以根据需要对 View 做一些操作，在Android设备上，最常见的一个操作就是滑动，如此可见滑动是很重要的知识，只有具备了滑动的基础知识才能做出更复杂炫酷的滑动效果，复杂的效果是由不同的滑动基础组成，通常View 的滑动可以由三种方式：使用scrollTo或scrollBy、通过动画给View 添加平移效">
+<meta property="og:description" content="3.2 View 的滑动View 的基础知识 学习笔记中记录了 View 的基础知识和概念，本次笔记内容源于Android 开发艺术探索第3章 3.2-3.3 View 滑动和弹性滑动读书笔记，我们就可以根据需要对 View 做一些操作，在 Android 设备上，最常见的一个操作就是滑动，如此可见滑动是很重要的知识，只有具备了滑动的基础知识才能做出更复杂炫酷的滑动效果，复杂的效果是由不同的滑动基">
 <meta property="og:image" content="https://github.com/yongyu0102/yongyu0102.github.io/blob/master/images/view_scroll.png?raw=true">
-<meta property="og:updated_time" content="2016-11-20T04:46:20.769Z">
+<meta property="og:updated_time" content="2017-01-02T14:59:08.940Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Android 开发艺术探索第3章 3.2-3.3 View 滑动和弹性滑动读书笔记">
-<meta name="twitter:description" content="3.2 View 的滑动3.1节中介绍了View的基础知识，有了这些基础知识和概念，我们就可以根据需要对 View 做一些操作，在Android设备上，最常见的一个操作就是滑动，如此可见滑动是很重要的知识，只有具备了滑动的基础知识才能做出更复杂炫酷的滑动效果，复杂的效果是由不同的滑动基础组成，通常View 的滑动可以由三种方式：使用scrollTo或scrollBy、通过动画给View 添加平移效">
+<meta name="twitter:title" content="Android View 滑动和弹性滑动读书笔记">
+<meta name="twitter:description" content="3.2 View 的滑动View 的基础知识 学习笔记中记录了 View 的基础知识和概念，本次笔记内容源于Android 开发艺术探索第3章 3.2-3.3 View 滑动和弹性滑动读书笔记，我们就可以根据需要对 View 做一些操作，在 Android 设备上，最常见的一个操作就是滑动，如此可见滑动是很重要的知识，只有具备了滑动的基础知识才能做出更复杂炫酷的滑动效果，复杂的效果是由不同的滑动基">
 <meta name="twitter:image" content="https://github.com/yongyu0102/yongyu0102.github.io/blob/master/images/view_scroll.png?raw=true">
 
 
@@ -129,7 +129,7 @@
 
 
 
-  <title> Android 开发艺术探索第3章 3.2-3.3 View 滑动和弹性滑动读书笔记 | 一个写代码的地方 </title>
+  <title> Android View 滑动和弹性滑动读书笔记 | 一个写代码的地方 </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -284,7 +284,7 @@
             
             
               
-                Android 开发艺术探索第3章 3.2-3.3 View 滑动和弹性滑动读书笔记
+                Android View 滑动和弹性滑动读书笔记
               
             
           </h1>
@@ -358,11 +358,11 @@
       
 
       
-        <h2 id="3-2-View-的滑动"><a href="#3-2-View-的滑动" class="headerlink" title="3.2 View 的滑动"></a>3.2 View 的滑动</h2><p>3.1节中介绍了View的基础知识，有了这些基础知识和概念，我们就可以根据需要对 View 做一些操作，在Android设备上，最常见的一个操作就是滑动，如此可见滑动是很重要的知识，只有具备了滑动的基础知识才能做出更复杂炫酷的滑动效果，复杂的效果是由不同的滑动基础组成，通常View 的滑动可以由三种方式：使用scrollTo或scrollBy、通过动画给View 添加平移效果实现滑动、通过改变 View 的布局参数 LayoutParams 实现滑动，下面进行逐一分析。</p>
-<h3 id="3-2-1-使用scrollTo或scrollBy进行滑动"><a href="#3-2-1-使用scrollTo或scrollBy进行滑动" class="headerlink" title="3.2.1 使用scrollTo或scrollBy进行滑动"></a>3.2.1 使用scrollTo或scrollBy进行滑动</h3><p>Android 中 View 为我们提供了两个专门的方法 scrollTo或scrollBy 来实现  View 的滑动，scrollTo 是滑动到某一坐标，是绝对滑动，View 调用的时候只能进行一次滑动，比如将 View 从 A 点滑动到 B 点；而scrollBy是滑动一段距离，是相对滑动，可以进行连续滑动，View 每次进行调用的时候都会将 View 滑动指定的距离。下面看一下源码：</p>
+        <h2 id="3-2-View-的滑动"><a href="#3-2-View-的滑动" class="headerlink" title="3.2 View 的滑动"></a>3.2 View 的滑动</h2><p><a href="http://yongyu.itscoder.com/2016/08/10/yongyu_20160810_View3.1%20basic_knowledge" target="_blank" rel="external">View 的基础知识</a> 学习笔记中记录了 View 的基础知识和概念，本次笔记内容源于Android 开发艺术探索第3章 3.2-3.3 View 滑动和弹性滑动读书笔记，我们就可以根据需要对 View 做一些操作，在 Android 设备上，最常见的一个操作就是滑动，如此可见滑动是很重要的知识，只有具备了滑动的基础知识才能做出更复杂炫酷的滑动效果，复杂的效果是由不同的滑动基础组成，通常 View 的滑动可以由三种方式：使用 scrollTo 或 scrollBy、通过动画给 View  添加平移效果实现滑动、通过改变 View 的布局参数 LayoutParams 实现滑动，下面进行逐一分析。</p>
+<h3 id="3-2-1-使用-scrollTo-或-scrollBy-进行滑动"><a href="#3-2-1-使用-scrollTo-或-scrollBy-进行滑动" class="headerlink" title="3.2.1 使用 scrollTo 或 scrollBy 进行滑动"></a>3.2.1 使用 scrollTo 或 scrollBy 进行滑动</h3><p>Android 中 View 为我们提供了两个专门的方法  scrollTo 或 scrollBy 来实现  View 的滑动，scrollTo 是滑动到某一坐标，是绝对滑动，View 调用的时候只能进行一次滑动，比如将 View 从 A 点滑动到 B 点；而 scrollBy是滑动一段距离，是相对滑动，可以进行连续滑动，View 每次进行调用的时候都会将 View 滑动指定的距离。下面看一下源码：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line">  * 绝对滑动</div><div class="line">  * <span class="doctag">@param</span> x 指定水平方向滑动像素</div><div class="line">  * <span class="doctag">@param</span> y 指定竖直方向滑动像素</div><div class="line">  */</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">scrollTo</span><span class="params">(<span class="keyword">int</span> x, <span class="keyword">int</span> y)</span> </span>&#123;</div><div class="line">      <span class="comment">//位置发生了改变</span></div><div class="line">        <span class="keyword">if</span> (mScrollX != x || mScrollY != y) &#123;</div><div class="line">            <span class="keyword">int</span> oldX = mScrollX;</div><div class="line">            <span class="keyword">int</span> oldY = mScrollY;</div><div class="line">            mScrollX = x;</div><div class="line">            mScrollY = y;d</div><div class="line">          <span class="comment">//使父视图清出子view，作用是重新创建显示的内容</span></div><div class="line">          <span class="comment">//主要应用场景是view 的渐变度改变，滑动，旋转等</span></div><div class="line">            invalidateParentCaches();</div><div class="line">          <span class="comment">//使View内容进行滑动</span></div><div class="line">            onScrollChanged(mScrollX, mScrollY, oldX, oldY);	</div><div class="line">          <span class="comment">//触发scrollbars进行绘制		              	      </span></div><div class="line">          <span class="comment">//如果正在动画播放完毕返回</span></div><div class="line">          <span class="comment">//ture 否则返回false</span></div><div class="line">            <span class="keyword">if</span> (!awakenScrollBars()) &#123;</div><div class="line">              <span class="comment">//在动画期间（下一个动画开始)，使view重新绘制</span></div><div class="line">                postInvalidateOnAnimation();</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"><span class="comment">/**</span></div><div class="line">  * 进行相对滑动</div><div class="line">  * <span class="doctag">@param</span> x  指定水平方向滑动像素</div><div class="line">  * <span class="doctag">@param</span> y 指定竖直方向滑动像素</div><div class="line">  */</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">scrollBy</span><span class="params">(<span class="keyword">int</span> x, <span class="keyword">int</span> y)</span> </span>&#123;</div><div class="line">        scrollTo(mScrollX + x, mScrollY + y);</div><div class="line">    &#125;</div></pre></td></tr></table></figure>
-<p>通过源码可以看出实际上scrollBy调用了scrollTo方法，实现了基于当前位置的相对滑动。其中 mScrollX 、mScrollY 这两个参数表示View内容的偏移量，单位为px，可以通过getScrollX 和 getScrollY 得到，mScrollX  是等于View的左边缘和View内容左边缘在水平方向的距离，并且当View内容左边缘在View左边缘的右侧的时候，mScrollX为负，反之为正,View边缘是指 View 的位置，由四个顶点组成，而 View内容边缘是指 View 的内容边缘；同理，mScrollY是等于View的上边缘和View内容上边缘在数值方向的距离，并且 View 内容上边缘在View上边缘下侧的时候，mScrollY为负，反之为正；scrollTo或scrollBy只能改变 View内容的位置不能改变View 在布局中的位置（即View的布局参数比如Top、Left、X、Y等不会改变），即不能改变 View 本身的位置，对于一个View来说，其本身是一个容器，而View内容是容器里面的东西，对于一个ViewGroup来说，那么它的内容是它的所有子View。</p>
-<p>为了方便理解，下面用几幅图描述mScrollX、mScrollY和View内容的关系：</p>
+<p>通过源码可以看出实际上 scrollBy 调用了 scrollTo 方法，实现了基于当前位置的相对滑动。其中 mScrollX 、mScrollY 这两个参数表示 View 内容的偏移量，单位为 px，可以通过 getScrollX 和 getScrollY 得到，mScrollX  是等于View的左边缘和View内容左边缘在水平方向的距离，并且当 View 内容左边缘在View左边缘的右侧的时候，mScrollX 为负，反之为正，View 边缘是指 View 的位置，由四个顶点组成，而 View 内容边缘是指 View 的内容边缘；同理，mScrollY 是等于View的上边缘和View 内容上边缘在数值方向的距离，并且 View 内容上边缘在View上边缘下侧的时候，mScrollY为负，反之为正；scrollTo或 scrollBy 只能改变 View 内容的位置不能改变 View 在布局中的位置（即View的布局参数比如 Top、Left、X、Y 等不会改变），即不能改变 View 本身的位置，对于一个 View 来说，其本身是一个容器，而 View 内容是容器里面的东西，对于一个ViewGroup来说，那么它的内容是它的所有子 View。</p>
+<p>为了方便理解，下面用几幅图描述 mScrollX、mScrollY 和 View 内容的关系：</p>
 <p><img src="https://github.com/yongyu0102/yongyu0102.github.io/blob/master/images/view_scroll.png?raw=true" alt="view_scroll"></p>
 <h3 id="3-2-2-使用动画"><a href="#3-2-2-使用动画" class="headerlink" title="3.2.2 使用动画"></a>3.2.2 使用动画</h3><p>使用动画来移动view主要是操作view的translationX和translationY属性，既可以使用传统的view动画，也可以使用属性动画，使用后者需要考虑兼容性问题，如果要兼容Android 3.0以下版本系统的话推荐使用开元动画库<a href="http://nineoldandroids.com/" target="_blank" rel="external">nineoldandroids</a>。采用 View 动画 示例代码如下，此动画可以使 View在100ms内从原始位置向右下角移动100个像素。在项目的res目录中，创建一个名为anim的目录，创建动画资源文件 translation.xml 代码如下：</p>
 <figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">&lt;?xml version="1.0" encoding="utf-8"?&gt;</div><div class="line">&lt;set xmlns:android="http://schemas.android.com/apk/res/android"</div><div class="line">    android:fillAfter="true"&gt;</div><div class="line">    &lt;translate</div><div class="line">        android:duration="100"</div><div class="line">        android:fromXDelta="0"</div><div class="line">        android:fromYDelta="0"</div><div class="line">        android:toXDelta="100"</div><div class="line">        android:toYDelta="100" /&gt;</div><div class="line">&lt;/set&gt;</div></pre></td></tr></table></figure>
@@ -441,8 +441,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2016/08/28/view_touchEvent_dispatch/" rel="prev" title="View 的事件分发机制（Android 开发艺术探索读书笔记）">
-                View 的事件分发机制（Android 开发艺术探索读书笔记） <i class="fa fa-chevron-right"></i>
+              <a href="/2016/08/28/view_touchEvent_dispatch/" rel="prev" title="View 的事件分发机制">
+                View 的事件分发机制 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -470,7 +470,7 @@
   <div class="comments" id="comments">
     
       <div class="ds-thread" data-thread-key="2016/08/14/view_to_scroll/"
-           data-title="Android 开发艺术探索第3章 3.2-3.3 View 滑动和弹性滑动读书笔记" data-url="http://yoursite.com/2016/08/14/view_to_scroll/">
+           data-title="Android View 滑动和弹性滑动读书笔记" data-url="http://yoursite.com/2016/08/14/view_to_scroll/">
       </div>
     
   </div>
@@ -593,7 +593,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#3-2-View-的滑动"><span class="nav-number">1.</span> <span class="nav-text">3.2 View 的滑动</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-1-使用scrollTo或scrollBy进行滑动"><span class="nav-number">1.1.</span> <span class="nav-text">3.2.1 使用scrollTo或scrollBy进行滑动</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-2-使用动画"><span class="nav-number">1.2.</span> <span class="nav-text">3.2.2 使用动画</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-3-改变布局参数"><span class="nav-number">1.3.</span> <span class="nav-text">3.2.3 改变布局参数</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-3-弹性滑动"><span class="nav-number">2.</span> <span class="nav-text">3.3 弹性滑动</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-3-1-使用Scroller"><span class="nav-number">2.1.</span> <span class="nav-text">3.3.1 使用Scroller</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-3-2-通过动画"><span class="nav-number">2.2.</span> <span class="nav-text">3.3.2 通过动画</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-3-3-使用延时策略"><span class="nav-number">2.3.</span> <span class="nav-text">3.3.3 使用延时策略</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#3-2-View-的滑动"><span class="nav-number">1.</span> <span class="nav-text">3.2 View 的滑动</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-1-使用-scrollTo-或-scrollBy-进行滑动"><span class="nav-number">1.1.</span> <span class="nav-text">3.2.1 使用 scrollTo 或 scrollBy 进行滑动</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-2-使用动画"><span class="nav-number">1.2.</span> <span class="nav-text">3.2.2 使用动画</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-3-改变布局参数"><span class="nav-number">1.3.</span> <span class="nav-text">3.2.3 改变布局参数</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-3-弹性滑动"><span class="nav-number">2.</span> <span class="nav-text">3.3 弹性滑动</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-3-1-使用Scroller"><span class="nav-number">2.1.</span> <span class="nav-text">3.3.1 使用Scroller</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-3-2-通过动画"><span class="nav-number">2.2.</span> <span class="nav-text">3.3.2 通过动画</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-3-3-使用延时策略"><span class="nav-number">2.3.</span> <span class="nav-text">3.3.3 使用延时策略</span></a></li></ol></li></ol></div>
             
 
           </div>

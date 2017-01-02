@@ -91,9 +91,10 @@ itsCoder主页：http://itscoder.com/
 审阅者：melodyxxx
 
 
-一、概要本次介绍的主要内容是 View 的工作原理下 View 的 layout 和 draw 过程，同时介绍自定义 View 的注意事项并结合一个小的 Demo 进行说明，其中涉及到的 onMeasre  测">
+一、概要笔记内容源于Android 开发艺术探索。
+本次介绍的主要内容是 View 的工作原理下 View 的 layout 和 draw 过程，同时介绍自定义 View 的注意事项并结合一个小的 Demo 进">
 <meta property="og:type" content="article">
-<meta property="og:title" content="View 的工作原理下 View 的 layout 和 draw 过程 （Android 开发艺术探索读书笔记）">
+<meta property="og:title" content="View 的工作原理下 View 的 layout 和 draw 过程">
 <meta property="og:url" content="http://yoursite.com/2016/10/05/view_layout_and_draw/index.html">
 <meta property="og:site_name" content="一个写代码的地方">
 <meta property="og:description" content="-文章来源：itsCoder 的 WeeklyBolg 项目
@@ -103,10 +104,11 @@ itsCoder主页：http://itscoder.com/
 审阅者：melodyxxx
 
 
-一、概要本次介绍的主要内容是 View 的工作原理下 View 的 layout 和 draw 过程，同时介绍自定义 View 的注意事项并结合一个小的 Demo 进行说明，其中涉及到的 onMeasre  测">
-<meta property="og:updated_time" content="2016-10-05T11:37:45.580Z">
+一、概要笔记内容源于Android 开发艺术探索。
+本次介绍的主要内容是 View 的工作原理下 View 的 layout 和 draw 过程，同时介绍自定义 View 的注意事项并结合一个小的 Demo 进">
+<meta property="og:updated_time" content="2017-01-02T15:02:31.265Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="View 的工作原理下 View 的 layout 和 draw 过程 （Android 开发艺术探索读书笔记）">
+<meta name="twitter:title" content="View 的工作原理下 View 的 layout 和 draw 过程">
 <meta name="twitter:description" content="-文章来源：itsCoder 的 WeeklyBolg 项目
 
 itsCoder主页：http://itscoder.com/
@@ -114,7 +116,8 @@ itsCoder主页：http://itscoder.com/
 审阅者：melodyxxx
 
 
-一、概要本次介绍的主要内容是 View 的工作原理下 View 的 layout 和 draw 过程，同时介绍自定义 View 的注意事项并结合一个小的 Demo 进行说明，其中涉及到的 onMeasre  测">
+一、概要笔记内容源于Android 开发艺术探索。
+本次介绍的主要内容是 View 的工作原理下 View 的 layout 和 draw 过程，同时介绍自定义 View 的注意事项并结合一个小的 Demo 进">
 
 
 
@@ -148,7 +151,7 @@ itsCoder主页：http://itscoder.com/
 
 
 
-  <title> View 的工作原理下 View 的 layout 和 draw 过程 （Android 开发艺术探索读书笔记） | 一个写代码的地方 </title>
+  <title> View 的工作原理下 View 的 layout 和 draw 过程 | 一个写代码的地方 </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -303,7 +306,7 @@ itsCoder主页：http://itscoder.com/
             
             
               
-                View 的工作原理下 View 的 layout 和 draw 过程 （Android 开发艺术探索读书笔记）
+                View 的工作原理下 View 的 layout 和 draw 过程
               
             
           </h1>
@@ -385,7 +388,8 @@ itsCoder主页：http://itscoder.com/
 <li>审阅者：<a href="https://github.com/melodyxxx" target="_blank" rel="external">melodyxxx</a></li>
 </ul>
 </blockquote>
-<h1 id="一、概要"><a href="#一、概要" class="headerlink" title="一、概要"></a>一、概要</h1><p>本次介绍的主要内容是 View 的工作原理下 View 的 layout 和 draw 过程，同时介绍自定义 View 的注意事项并结合一个小的 Demo 进行说明，其中涉及到的 onMeasre  测量部分知识可以看上一篇文章<a href="http://yongyu.itscoder.com/2016/09/11/view_measure/" target="_blank" rel="external">View 的工作原理上 View 绘制流程梳理及 Measure 过程详解</a> ，以下开始正文：</p>
+<h1 id="一、概要"><a href="#一、概要" class="headerlink" title="一、概要"></a>一、概要</h1><p>笔记内容源于Android 开发艺术探索。</p>
+<p>本次介绍的主要内容是 View 的工作原理下 View 的 layout 和 draw 过程，同时介绍自定义 View 的注意事项并结合一个小的 Demo 进行说明，其中涉及到的 onMeasre  测量部分知识可以看上一篇文章<a href="http://yongyu.itscoder.com/2016/09/11/view_measure/" target="_blank" rel="external">View 的工作原理上 View 绘制流程梳理及 Measure 过程详解</a> ，以下开始正文：</p>
 <h1 id="二、-layout-过程详解"><a href="#二、-layout-过程详解" class="headerlink" title="二、 layout 过程详解"></a>二、 layout 过程详解</h1><p> layout 的作用是 ViewGroup 来确定子元素的位置，当 ViewGroup 的位置被确定后，在  layout 中会调用 onLayout ，在 onLayout 中会遍历所有的子元素并调用子元素的 layout 方法，在子元素的 layout 方法中 onLayout 方法又会被调用，layout 方法是确定 View 本身在屏幕上显示的具体位置，即在代码中设置其成员变量 mLeft，mTop，mRight，mBottom 的值，这几个值是在屏幕上构成矩形区域的四个坐标点，就是该 View 显示的位置，不过这里的具体位置都是相对与父视图的位置而言，而 onLayout 方法则会确定所有子元素位置，ViewGroup 在 onLayout 函数中通过调用其 children 的 layout 函数来设置子视图相对与父视图中的位置，具体位置由函数 layout 的参数决定。下面我们先看 View 的layout 方法如下：   </p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div></pre></td><td class="code"><pre><div class="line"> <span class="comment">/* </span></div><div class="line"> *@param l view 左边缘相对于父布局左边缘距离</div><div class="line"> *@param t view 上边缘相对于父布局上边缘位置</div><div class="line"> *@param r view 右边缘相对于父布局左边缘距离</div><div class="line"> *@param b view 下边缘相对于父布局上边缘距离</div><div class="line"> */</div><div class="line"> <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">layout</span><span class="params">(<span class="keyword">int</span> l, <span class="keyword">int</span> t, <span class="keyword">int</span> r, <span class="keyword">int</span> b)</span> </span>&#123;</div><div class="line"> <span class="keyword">if</span> ((mPrivateFlags3 &amp; PFLAG3_MEASURE_NEEDED_BEFORE_LAYOUT) != <span class="number">0</span>) &#123;</div><div class="line">      onMeasure(mOldWidthMeasureSpec, mOldHeightMeasureSpec);</div><div class="line">      mPrivateFlags3 &amp;= ~PFLAG3_MEASURE_NEEDED_BEFORE_LAYOUT;</div><div class="line">  &#125;</div><div class="line">  <span class="comment">//记录 view 原始位置</span></div><div class="line">  <span class="keyword">int</span> oldL = mLeft;</div><div class="line">  <span class="keyword">int</span> oldT = mTop;</div><div class="line">  <span class="keyword">int</span> oldB = mBottom;</div><div class="line">  <span class="keyword">int</span> oldR = mRight;</div><div class="line"><span class="comment">//第1步，调用 setFrame 方法 设置新的 mLeft、mTop、mBottom、mRight 值，</span></div><div class="line"><span class="comment">//设置 View 本身四个顶点位置</span></div><div class="line"><span class="comment">//并返回 changed 用于判断 view 布局是否改变</span></div><div class="line">  <span class="keyword">boolean</span> changed = isLayoutModeOptical(mParent) ?</div><div class="line">          setOpticalFrame(l, t, r, b) : setFrame(l, t, r, b);</div><div class="line">             <span class="comment">//第二步，如果 view 位置改变那么调用 onLayout 方法设置子 view 位置</span></div><div class="line">             <span class="keyword">if</span> (changed || (mPrivateFlags &amp; PFLAG_LAYOUT_REQUIRED) == PFLAG_LAYOUT_REQUIRED) &#123;</div><div class="line">    <span class="comment">//调用 onLayout</span></div><div class="line">      onLayout(changed, l, t, r, b);</div><div class="line">      mPrivateFlags &amp;= ~PFLAG_LAYOUT_REQUIRED;</div><div class="line">      ListenerInfo li = mListenerInfo;</div><div class="line">      <span class="keyword">if</span> (li != <span class="keyword">null</span> &amp;&amp; li.mOnLayoutChangeListeners != <span class="keyword">null</span>) &#123;</div><div class="line">          ArrayList&lt;OnLayoutChangeListener&gt; listenersCopy =</div><div class="line">                  (ArrayList&lt;OnLayoutChangeListener&gt;)li.mOnLayoutChangeListeners.clone();</div><div class="line">          <span class="keyword">int</span> numListeners = listenersCopy.size();</div><div class="line">          <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; numListeners; ++i) &#123;</div><div class="line">              listenersCopy.get(i).onLayoutChange(<span class="keyword">this</span>, l, t, r, b, oldL, oldT, oldR, oldB);</div><div class="line">          &#125;</div><div class="line">      &#125;</div><div class="line">  &#125;</div></pre></td></tr></table></figure>
 <p> layout 方法大致流程：先通过上面代码第一步调用  setFrame 设置 view 本身四个顶点位置，其中 setOpticalFrame 内部也是调用 setFrame  方法来完成设置的，即为 View 的4个成员变量（mLeft，mTop，mRight，mBottom）赋值，View 的四个顶点一旦确定，那么 View 在父容器中的位置就确定了，接着进行第二步，调用 onLayout 方法，这个方法用途是父容器确定子 View 位置，和 onMeasure 方法类似， onLayout 方法的具体实现同样和具体布局有关，所以 View 和 ViewGroup 中都没有真正实现 onLayout 方法，都是一个空方法。</p>
@@ -505,8 +509,8 @@ itsCoder主页：http://itscoder.com/
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2016/09/11/view_measure/" rel="next" title="View 的工作原理上 View 绘制流程梳理及 Measure 过程详解（Android 开发艺术探索笔记）">
-                <i class="fa fa-chevron-left"></i> View 的工作原理上 View 绘制流程梳理及 Measure 过程详解（Android 开发艺术探索笔记）
+              <a href="/2016/09/11/view_measure/" rel="next" title="View 的工作原理上 View 绘制流程梳理及 Measure 过程详解">
+                <i class="fa fa-chevron-left"></i> View 的工作原理上 View 绘制流程梳理及 Measure 过程详解
               </a>
             
           </div>
@@ -544,7 +548,7 @@ itsCoder主页：http://itscoder.com/
   <div class="comments" id="comments">
     
       <div class="ds-thread" data-thread-key="2016/10/05/view_layout_and_draw/"
-           data-title="View 的工作原理下 View 的 layout 和 draw 过程 （Android 开发艺术探索读书笔记）" data-url="http://yoursite.com/2016/10/05/view_layout_and_draw/">
+           data-title="View 的工作原理下 View 的 layout 和 draw 过程" data-url="http://yoursite.com/2016/10/05/view_layout_and_draw/">
       </div>
     
   </div>

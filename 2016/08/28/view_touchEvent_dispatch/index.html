@@ -91,9 +91,10 @@ itsCoder主页：http://itscoder.com/
 审阅者：HanJie
 
 
-前言在写这篇笔记的时候想了好久，也拖了好长时间，关于事件分发的博客看了很多，有的写的思路很清晰，画了事件分发的整体流程图，但是没有源码，看过之后只能知道事件是怎么分发的，但完全是记住的，而不是通过源码分析出来的，试想">
+前言笔记内容源于Android 开发艺术探索。
+在写这篇笔记的时候想了好久，也拖了好长时间，关于事件分发的博客看了很多，有的写的思路很清晰，画了事件分发的整体流程图，但是没有源码，看过之后只能知道事件是怎么分发的，但">
 <meta property="og:type" content="article">
-<meta property="og:title" content="View 的事件分发机制（Android 开发艺术探索读书笔记）">
+<meta property="og:title" content="View 的事件分发机制">
 <meta property="og:url" content="http://yoursite.com/2016/08/28/view_touchEvent_dispatch/index.html">
 <meta property="og:site_name" content="一个写代码的地方">
 <meta property="og:description" content="-文章来源：itsCoder 的 WeeklyBolg 项目
@@ -103,12 +104,13 @@ itsCoder主页：http://itscoder.com/
 审阅者：HanJie
 
 
-前言在写这篇笔记的时候想了好久，也拖了好长时间，关于事件分发的博客看了很多，有的写的思路很清晰，画了事件分发的整体流程图，但是没有源码，看过之后只能知道事件是怎么分发的，但完全是记住的，而不是通过源码分析出来的，试想">
+前言笔记内容源于Android 开发艺术探索。
+在写这篇笔记的时候想了好久，也拖了好长时间，关于事件分发的博客看了很多，有的写的思路很清晰，画了事件分发的整体流程图，但是没有源码，看过之后只能知道事件是怎么分发的，但">
 <meta property="og:image" content="https://github.com/yongyu0102/yongyu0102.github.io/blob/master/images/Activity_ViewGroup_View.png?raw=true">
 <meta property="og:image" content="https://github.com/yongyu0102/yongyu0102.github.io/blob/master/images/TouchEvent_disaptch.png?raw=true">
-<meta property="og:updated_time" content="2016-12-18T08:55:46.502Z">
+<meta property="og:updated_time" content="2017-01-02T15:03:10.982Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="View 的事件分发机制（Android 开发艺术探索读书笔记）">
+<meta name="twitter:title" content="View 的事件分发机制">
 <meta name="twitter:description" content="-文章来源：itsCoder 的 WeeklyBolg 项目
 
 itsCoder主页：http://itscoder.com/
@@ -116,7 +118,8 @@ itsCoder主页：http://itscoder.com/
 审阅者：HanJie
 
 
-前言在写这篇笔记的时候想了好久，也拖了好长时间，关于事件分发的博客看了很多，有的写的思路很清晰，画了事件分发的整体流程图，但是没有源码，看过之后只能知道事件是怎么分发的，但完全是记住的，而不是通过源码分析出来的，试想">
+前言笔记内容源于Android 开发艺术探索。
+在写这篇笔记的时候想了好久，也拖了好长时间，关于事件分发的博客看了很多，有的写的思路很清晰，画了事件分发的整体流程图，但是没有源码，看过之后只能知道事件是怎么分发的，但">
 <meta name="twitter:image" content="https://github.com/yongyu0102/yongyu0102.github.io/blob/master/images/Activity_ViewGroup_View.png?raw=true">
 
 
@@ -151,7 +154,7 @@ itsCoder主页：http://itscoder.com/
 
 
 
-  <title> View 的事件分发机制（Android 开发艺术探索读书笔记） | 一个写代码的地方 </title>
+  <title> View 的事件分发机制 | 一个写代码的地方 </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -306,7 +309,7 @@ itsCoder主页：http://itscoder.com/
             
             
               
-                View 的事件分发机制（Android 开发艺术探索读书笔记）
+                View 的事件分发机制
               
             
           </h1>
@@ -388,7 +391,8 @@ itsCoder主页：http://itscoder.com/
 <li>审阅者：<a href="https://github.com/melodyxxx" target="_blank" rel="external">HanJie</a></li>
 </ul>
 </blockquote>
-<h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>在写这篇笔记的时候想了好久，也拖了好长时间，关于事件分发的博客看了很多，有的写的思路很清晰，画了事件分发的整体流程图，但是没有源码，看过之后只能知道事件是怎么分发的，但完全是记住的，而不是通过源码分析出来的，试想，如果以后再遇到其他知识点还是这样，那么我们就完全成了不能靠自己去分析问题，只能去食他人知识，没有自我学习分析能力，所以笔者试着结合艺术探索的讲解，尝试在源码的基础上加以理解，本文的写作逻辑是先从文字描述上尽量让大家先大概了解，事件分发的概况，先有个感性认识，再结合源码进行分析，如果错误的地方，还请指出。</p>
+<h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>笔记内容源于Android 开发艺术探索。</p>
+<p>在写这篇笔记的时候想了好久，也拖了好长时间，关于事件分发的博客看了很多，有的写的思路很清晰，画了事件分发的整体流程图，但是没有源码，看过之后只能知道事件是怎么分发的，但完全是记住的，而不是通过源码分析出来的，试想，如果以后再遇到其他知识点还是这样，那么我们就完全成了不能靠自己去分析问题，只能去食他人知识，没有自我学习分析能力，所以笔者试着结合艺术探索的讲解，尝试在源码的基础上加以理解，本文的写作逻辑是先从文字描述上尽量让大家先大概了解，事件分发的概况，先有个感性认识，再结合源码进行分析，如果错误的地方，还请指出。</p>
 <h3 id="1-1-点击事件的传递规则"><a href="#1-1-点击事件的传递规则" class="headerlink" title="1.1 点击事件的传递规则"></a>1.1 点击事件的传递规则</h3><p>在我们进行分析事件分发机制之前，先思考一下我们要研究哪些问题：</p>
 <p><strong>1、事件分发的对象是什么？</strong></p>
 <p>当用户触摸屏幕时，将创建一个 MotionEvent 对象即点击事件。MotionEvent 包含关于发生触摸的位置、时间、历史记录、手势动作等细节信息， Touch 事件相关细节被封装成了 MotionEvent 对象。理解了这一个知识点后，其实我们就很容易理解所谓点击事件的分发，其实就是对 MotionEvent 事件分发的过程，即当一个 MotionEvent 产生后，系统需要把这个事件传递给一个具体的 View 去处理, 而这个传递的过程就是分发过程。</p>
@@ -488,8 +492,8 @@ itsCoder主页：http://itscoder.com/
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2016/08/14/view_to_scroll/" rel="next" title="Android 开发艺术探索第3章 3.2-3.3 View 滑动和弹性滑动读书笔记">
-                <i class="fa fa-chevron-left"></i> Android 开发艺术探索第3章 3.2-3.3 View 滑动和弹性滑动读书笔记
+              <a href="/2016/08/14/view_to_scroll/" rel="next" title="Android View 滑动和弹性滑动读书笔记">
+                <i class="fa fa-chevron-left"></i> Android View 滑动和弹性滑动读书笔记
               </a>
             
           </div>
@@ -498,8 +502,8 @@ itsCoder主页：http://itscoder.com/
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2016/09/11/view_measure/" rel="prev" title="View 的工作原理上 View 绘制流程梳理及 Measure 过程详解（Android 开发艺术探索笔记）">
-                View 的工作原理上 View 绘制流程梳理及 Measure 过程详解（Android 开发艺术探索笔记） <i class="fa fa-chevron-right"></i>
+              <a href="/2016/09/11/view_measure/" rel="prev" title="View 的工作原理上 View 绘制流程梳理及 Measure 过程详解">
+                View 的工作原理上 View 绘制流程梳理及 Measure 过程详解 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -527,7 +531,7 @@ itsCoder主页：http://itscoder.com/
   <div class="comments" id="comments">
     
       <div class="ds-thread" data-thread-key="2016/08/28/view_touchEvent_dispatch/"
-           data-title="View 的事件分发机制（Android 开发艺术探索读书笔记）" data-url="http://yoursite.com/2016/08/28/view_touchEvent_dispatch/">
+           data-title="View 的事件分发机制" data-url="http://yoursite.com/2016/08/28/view_touchEvent_dispatch/">
       </div>
     
   </div>
