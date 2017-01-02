@@ -1308,11 +1308,12 @@ itsCoder主页：http://itscoder.com/
         
           
           转载请附原文链接：Android View 基础知识读 
-主要介绍内容：View 的位置参数、MotionEvent 和 TouchSlop对象、VelocityTracker, GestureDetector 和 Scroller对象。
+内容源于Android 开发艺术探索第 3 章 3.1 View 基础知识读书笔记：View 的位置参数、MotionEvent 和 TouchSlop对象、VelocityTracker, GestureDetector 和 Scroller对象。
 1 什么是 ViewView 是Android中所有控件的基类，例如Button和TextView、ViewGroup 等常见控件他们的基类都是View，View是一种界面层的控件的一种抽象，代表了一个控件。View 本身可以是单个控件也可以是由多个控件组成的一组控件，通过这种关系就形成了View 树的结构，与Web前端中的DOM树概念相似。
 1.1 View的位置参数View 的位置主要有四个顶点决定的， top（左上角纵坐标）、left（左上角横坐标）、right（右下角横坐标）、bottom（右下角纵坐标），这些顶点的坐标是相对于 View 的父容器来说，是一种相对坐标。
+
 根据上图View的坐标位置关系可以得出以下view的宽度（width)和高度（height)：
-View的宽高和坐标关系：width = right - left，heigh
+Vie
           ...
           <!--noindex-->
           <div class="post-more-link text-center">
