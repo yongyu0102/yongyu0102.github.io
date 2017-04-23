@@ -1,0 +1,777 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Android View," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="转载请附原文链接：
+1  需求分析最近公司项目要实现一个需求要满足以下功能：
+1）显示一个 list 列表， item 数量不固定。
+2）实现翻页功能，一次翻一页。
+3）实现翻至某一页功能。
+下面介绍通过 RecyclerView 实现该需求的实现过程（效果图如下）。
+ 
+2 功能实现2.1 OnTouchListener 记录当前开始滑动位置要实现翻页滑动首先我们要确定是向前翻页还是向后翻页，这">
+<meta property="og:type" content="article">
+<meta property="og:title" content="RecyclerView 实现分页滚动">
+<meta property="og:url" content="http://yoursite.com/2017/04/23/yongyu_20170419_PageRecyclerView/index.html">
+<meta property="og:site_name" content="一个写代码的地方">
+<meta property="og:description" content="转载请附原文链接：
+1  需求分析最近公司项目要实现一个需求要满足以下功能：
+1）显示一个 list 列表， item 数量不固定。
+2）实现翻页功能，一次翻一页。
+3）实现翻至某一页功能。
+下面介绍通过 RecyclerView 实现该需求的实现过程（效果图如下）。
+ 
+2 功能实现2.1 OnTouchListener 记录当前开始滑动位置要实现翻页滑动首先我们要确定是向前翻页还是向后翻页，这">
+<meta property="og:image" content="https://github.com/yongyu0102/WeeklyBlogImages/blob/master/phase10/showimage.gif?raw=true">
+<meta property="og:updated_time" content="2017-04-23T01:09:42.005Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="RecyclerView 实现分页滚动">
+<meta name="twitter:description" content="转载请附原文链接：
+1  需求分析最近公司项目要实现一个需求要满足以下功能：
+1）显示一个 list 列表， item 数量不固定。
+2）实现翻页功能，一次翻一页。
+3）实现翻至某一页功能。
+下面介绍通过 RecyclerView 实现该需求的实现过程（效果图如下）。
+ 
+2 功能实现2.1 OnTouchListener 记录当前开始滑动位置要实现翻页滑动首先我们要确定是向前翻页还是向后翻页，这">
+<meta name="twitter:image" content="https://github.com/yongyu0102/WeeklyBlogImages/blob/master/phase10/showimage.gif?raw=true">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/04/23/yongyu_20170419_PageRecyclerView/"/>
+
+
+
+
+
+  <title> RecyclerView 实现分页滚动 | 一个写代码的地方 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">一个写代码的地方</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">记录你的学习</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+  <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/04/23/yongyu_20170419_PageRecyclerView/">
+
+  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="name" content="Yongyu">
+    <meta itemprop="description" content="">
+    <meta itemprop="image" content="https://github.com/yongyu0102/Images/blob/master/avatar/avatar.png?raw=true">
+  </span>
+
+  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="一个写代码的地方">
+    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
+      <img style="display:none;" itemprop="url image" alt="一个写代码的地方" src="">
+    </span>
+  </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                RecyclerView 实现分页滚动
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-04-23T09:14:58+08:00">
+                2017-04-23
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+              <span class="post-meta-divider">|</span>
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android-View/" itemprop="url" rel="index">
+                    <span itemprop="name">Android View</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <a href="/2017/04/23/yongyu_20170419_PageRecyclerView/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/04/23/yongyu_20170419_PageRecyclerView/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>转载请附原文链接：</p>
+<h2 id="1-需求分析"><a href="#1-需求分析" class="headerlink" title="1  需求分析"></a>1  需求分析</h2><p>最近公司项目要实现一个需求要满足以下功能：</p>
+<p>1）显示一个 list 列表， item 数量不固定。</p>
+<p>2）实现翻页功能，一次翻一页。</p>
+<p>3）实现翻至某一页功能。</p>
+<p>下面介绍通过 RecyclerView 实现该需求的实现过程（效果图如下）。</p>
+<p> <img src="https://github.com/yongyu0102/WeeklyBlogImages/blob/master/phase10/showimage.gif?raw=true" alt="showimage"></p>
+<h2 id="2-功能实现"><a href="#2-功能实现" class="headerlink" title="2 功能实现"></a>2 功能实现</h2><h3 id="2-1-OnTouchListener-记录当前开始滑动位置"><a href="#2-1-OnTouchListener-记录当前开始滑动位置" class="headerlink" title="2.1 OnTouchListener 记录当前开始滑动位置"></a>2.1 OnTouchListener 记录当前开始滑动位置</h3><p>要实现翻页滑动首先我们要确定是向前翻页还是向后翻页，这里通过记录开始翻页前当前的位置和滑动后的位置比较即可得知，下面选择手指触摸按下时滑动的位置为当前开始滑动位置：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">    <span class="comment">//当前滑动距离</span></div><div class="line">    <span class="keyword">private</span> <span class="keyword">int</span> offsetY = <span class="number">0</span>;</div><div class="line">    <span class="keyword">private</span> <span class="keyword">int</span> offsetX = <span class="number">0</span>;</div><div class="line"></div><div class="line">    <span class="comment">//按下屏幕点</span></div><div class="line">    <span class="keyword">private</span> <span class="keyword">int</span> startY = <span class="number">0</span>;</div><div class="line">    <span class="keyword">private</span> <span class="keyword">int</span> startX = <span class="number">0</span>;</div><div class="line"><span class="meta">@Override</span></div><div class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">onTouch</span><span class="params">(View v, MotionEvent event)</span> </span>&#123;</div><div class="line">            <span class="comment">//手指按下的时候记录开始滚动的坐标</span></div><div class="line">            <span class="keyword">if</span> (event.getAction() == MotionEvent.ACTION_DOWN) &#123;</div><div class="line">                <span class="comment">//手指按下的开始坐标</span></div><div class="line">                startY = offsetY;</div><div class="line">                startX = offsetX;</div><div class="line">            &#125;</div><div class="line">            <span class="keyword">return</span> <span class="keyword">false</span>;</div><div class="line">        &#125;</div><div class="line"></div><div class="line">    &#125;</div></pre></td></tr></table></figure>
+<p>好了，当我们确定了滑动方向，下面要考虑的就是如何实现滑动？</p>
+<h3 id="2-2-scrollTo-int-x-int-y-和-scrollBy-int-x-int-y-实现滑动"><a href="#2-2-scrollTo-int-x-int-y-和-scrollBy-int-x-int-y-实现滑动" class="headerlink" title="2.2 scrollTo(int x, int y) 和  scrollBy(int x, int y) 实现滑动"></a>2.2 scrollTo(int x, int y) 和  scrollBy(int x, int y) 实现滑动</h3><p>滑动我们最容易想到的方法就是  <code>scrollTo(int x, int y)</code> 和  <code>scrollBy(int x, int y)</code>   这两个方法，  <code>scrollTo(int x, int y)</code>  是将当前 View 的内容滑动至某一位置， <code>scrollBy(int x, int y)</code>  是将当前 View 内容相对于当前位置滑动一定的距离，其实  <code>scrollBy(int x, int y)</code>  内部是调用了  <code>scrollTo(int x, int y)</code> 方法实现的   一开始想用 <code>scrollTo(int x, int y)</code> 去实现，但是简单看了下源码发现， RecyclerView 不支持这个方法：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Override</span></div><div class="line">   <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">scrollTo</span><span class="params">(<span class="keyword">int</span> x, <span class="keyword">int</span> y)</span> </span>&#123;</div><div class="line">       Log.w(TAG, <span class="string">"RecyclerView does not support scrolling to an absolute position. "</span></div><div class="line">               + <span class="string">"Use scrollToPosition instead"</span>);</div><div class="line">   &#125;</div></pre></td></tr></table></figure>
+<p>所以这里我们就选择使用  <code>scrollBy(int x, int y)</code>  去实现滑动。</p>
+<h3 id="2-3-OnFlingListener-和-OnScrollListener-调用滑动时机"><a href="#2-3-OnFlingListener-和-OnScrollListener-调用滑动时机" class="headerlink" title="2.3 OnFlingListener  和 OnScrollListener  调用滑动时机"></a>2.3 <code>OnFlingListener</code>  和 <code>OnScrollListener</code>  调用滑动时机</h3><p>上面我们决定使用   <code>scrollBy(int x, int y)</code>  去实现滑动，那么现在我们就要确定   <code>scrollBy(int x, int y)</code>  这个方法的调用时机，我们知道当我们滑动 RecyclerView 的时候一般分为两种情况，一种是手指在屏幕上面缓慢滑动（Scroll），另一种是飞速滑动（onFling），经过一番查阅，发现 RecyclerView 中有这两种状态的监听，那么我们一起看一下这两种状态的方法定义，先看  <code>onFling(int velocityX, int velocityY)</code> ：</p>
+<p><strong>Note:</strong> 由于使用了 RecyclerView 的 OnFlingListener，所以 RecycleView 的版本必须要 recyclerview-v7:25.0.0 以上。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line">    * This class defines the behavior of fling if the developer wishes to handle it.</div><div class="line">    * &lt;p&gt;</div><div class="line">    * Subclasses of &#123;<span class="doctag">@link</span> OnFlingListener&#125; can be used to implement custom fling behavior.</div><div class="line">    *</div><div class="line">    * <span class="doctag">@see</span> #setOnFlingListener(OnFlingListener)</div><div class="line">    */</div><div class="line">   <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">OnFlingListener</span> </span>&#123;</div><div class="line"></div><div class="line">       <span class="comment">/**</span></div><div class="line">        * Override this to handle a fling given the velocities in both x and y directions.</div><div class="line">        * Note that this method will only be called if the associated &#123;<span class="doctag">@link</span> LayoutManager&#125;</div><div class="line">        * supports scrolling and the fling is not handled by nested scrolls first.</div><div class="line">        *</div><div class="line">        * <span class="doctag">@param</span> velocityX the fling velocity on the X axis</div><div class="line">        * <span class="doctag">@param</span> velocityY the fling velocity on the Y axis</div><div class="line">        *</div><div class="line">        * <span class="doctag">@return</span> true if the fling washandled, false otherwise.</div><div class="line">        */</div><div class="line">       <span class="function"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">boolean</span> <span class="title">onFling</span><span class="params">(<span class="keyword">int</span> velocityX, <span class="keyword">int</span> velocityY)</span></span>;</div><div class="line">   &#125;</div></pre></td></tr></table></figure>
+<p>方法的注释写的也很清楚，当这个方法被调用并且返回 true 的时候系统就不处理滑动了，而是将滑动交给我们自己处理。所以我们可以监听这个方法，当我们执行快速滑动的时候在这个方法里面计算要滑动的距离并执行   <code>scrollBy(int x, int y)</code>   实现滑动，然后直接返回 true，表示滑动我们自己处理了，不需要系统处理。处理代码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div><div class="line">107</div><div class="line">108</div><div class="line">109</div><div class="line">110</div><div class="line">111</div><div class="line">112</div><div class="line">113</div><div class="line">114</div><div class="line">115</div><div class="line">116</div><div class="line">117</div></pre></td><td class="code"><pre><div class="line">   <span class="comment">//当前滑动距离</span></div><div class="line">    <span class="keyword">private</span> <span class="keyword">int</span> offsetY = <span class="number">0</span>;</div><div class="line">    <span class="keyword">private</span> <span class="keyword">int</span> offsetX = <span class="number">0</span>;</div><div class="line"></div><div class="line">    <span class="comment">//按下屏幕点</span></div><div class="line">    <span class="keyword">private</span> <span class="keyword">int</span> startY = <span class="number">0</span>;</div><div class="line">    <span class="keyword">private</span> <span class="keyword">int</span> startX = <span class="number">0</span>;</div><div class="line"></div><div class="line">    <span class="comment">//最后一个可见 view 位置</span></div><div class="line">    <span class="keyword">private</span> <span class="keyword">int</span> lastItemPosition = -<span class="number">1</span>;</div><div class="line">    <span class="comment">//第一个可见view的位置</span></div><div class="line">    <span class="keyword">private</span> <span class="keyword">int</span> firstItemPosition = -<span class="number">2</span>;</div><div class="line">    <span class="comment">//总 itemView 数量</span></div><div class="line">    <span class="keyword">private</span> <span class="keyword">int</span> totalNum;</div><div class="line"><span class="meta">@Override</span></div><div class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">onFling</span><span class="params">(<span class="keyword">int</span> velocityX, <span class="keyword">int</span> velocityY)</span> </span>&#123;</div><div class="line">            <span class="keyword">if</span> (mOrientation == ORIENTATION.NULL) &#123;</div><div class="line">                <span class="keyword">return</span> <span class="keyword">false</span>;</div><div class="line">            &#125;</div><div class="line">            <span class="comment">//获取开始滚动时所在页面的index</span></div><div class="line">            <span class="keyword">int</span> page = getStartPageIndex();</div><div class="line">            <span class="comment">//记录滚动开始和结束的位置</span></div><div class="line">            <span class="keyword">int</span> endPoint = <span class="number">0</span>;</div><div class="line">            <span class="keyword">int</span> startPoint = <span class="number">0</span>;</div><div class="line"></div><div class="line">            <span class="comment">//如果是垂直方向</span></div><div class="line">            <span class="keyword">if</span> (mOrientation == ORIENTATION.VERTICAL) &#123;</div><div class="line">                <span class="comment">//开始滚动位置，当前开始执行 scrollBy 位置</span></div><div class="line">                startPoint = offsetY;</div><div class="line">                <span class="keyword">if</span> (velocityY &lt; <span class="number">0</span>) &#123;</div><div class="line">                    page--;</div><div class="line">                &#125; <span class="keyword">else</span> <span class="keyword">if</span> (velocityY &gt; <span class="number">0</span>) &#123;</div><div class="line">                    page++;</div><div class="line">                &#125; <span class="keyword">else</span> <span class="keyword">if</span> (pageNum != -<span class="number">1</span>) &#123;</div><div class="line">                    <span class="keyword">if</span> (lastItemPosition + <span class="number">1</span> == totalNum) &#123;</div><div class="line">                        mRecyclerView.scrollToPosition(<span class="number">0</span>);</div><div class="line">                    &#125;</div><div class="line">                    page = pageNum - <span class="number">1</span>;</div><div class="line">                &#125;</div><div class="line">                <span class="comment">//更具不同的速度判断需要滚动的方向</span></div><div class="line">                <span class="comment">//一次滚动一个 mRecyclerView 高度</span></div><div class="line">                endPoint = page * mRecyclerView.getHeight();</div><div class="line"></div><div class="line">            &#125; <span class="keyword">else</span> &#123;</div><div class="line">                startPoint = offsetX;</div><div class="line">                <span class="keyword">if</span> (velocityX &lt; <span class="number">0</span>) &#123;</div><div class="line">                    page--;</div><div class="line">                &#125; <span class="keyword">else</span> <span class="keyword">if</span> (velocityX &gt; <span class="number">0</span>) &#123;</div><div class="line">                    page++;</div><div class="line">                &#125; <span class="keyword">else</span> <span class="keyword">if</span> (pageNum != -<span class="number">1</span>) &#123;</div><div class="line">                    <span class="keyword">if</span> (lastItemPosition + <span class="number">1</span> == totalNum) &#123;</div><div class="line">                        mRecyclerView.scrollToPosition(<span class="number">0</span>);</div><div class="line">                    &#125;</div><div class="line">                    page = pageNum - <span class="number">1</span>;</div><div class="line">                &#125;</div><div class="line">                endPoint = page * mRecyclerView.getWidth();</div><div class="line"></div><div class="line">            &#125;</div><div class="line">            <span class="comment">//使用动画处理滚动</span></div><div class="line">            <span class="keyword">if</span> (mAnimator == <span class="keyword">null</span>) &#123;</div><div class="line">                mAnimator = ValueAnimator.ofInt(startPoint, endPoint);</div><div class="line">                mAnimator.setDuration(<span class="number">300</span>);</div><div class="line">                mAnimator.addUpdateListener(<span class="keyword">new</span> ValueAnimator.AnimatorUpdateListener() &#123;</div><div class="line">                    <span class="meta">@Override</span></div><div class="line">                    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onAnimationUpdate</span><span class="params">(ValueAnimator animation)</span> </span>&#123;</div><div class="line">                        <span class="keyword">int</span> nowPoint = (<span class="keyword">int</span>) animation.getAnimatedValue();</div><div class="line"></div><div class="line">                        <span class="keyword">if</span> (mOrientation == ORIENTATION.VERTICAL) &#123;</div><div class="line">                            <span class="keyword">int</span> dy = nowPoint - offsetY;</div><div class="line">                            <span class="keyword">if</span> (dy == <span class="number">0</span>) <span class="keyword">return</span>;</div><div class="line">                            <span class="comment">//这里通过RecyclerView的scrollBy方法实现滚动。</span></div><div class="line">                            mRecyclerView.scrollBy(<span class="number">0</span>, dy);</div><div class="line">                        &#125; <span class="keyword">else</span> &#123;</div><div class="line">                            <span class="keyword">int</span> dx = nowPoint - offsetX;</div><div class="line">                            mRecyclerView.scrollBy(dx, <span class="number">0</span>);</div><div class="line">                        &#125;</div><div class="line">                    &#125;</div><div class="line">                &#125;);</div><div class="line">                mAnimator.addListener(<span class="keyword">new</span> AnimatorListenerAdapter() &#123;</div><div class="line">                    <span class="comment">//动画结束</span></div><div class="line">                    <span class="meta">@Override</span></div><div class="line">                    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onAnimationEnd</span><span class="params">(Animator animation)</span> </span>&#123;</div><div class="line">                        <span class="comment">//回调监听</span></div><div class="line">                        <span class="keyword">if</span> (<span class="keyword">null</span> != mOnPageChangeListener) &#123;</div><div class="line">                            mOnPageChangeListener.onPageChange(getPageIndex());</div><div class="line">                        &#125;</div><div class="line">                        <span class="comment">//滚动完成，进行判断是否滚到头了或者滚到尾部了</span></div><div class="line">                        RecyclerView.LayoutManager layoutManager = mRecyclerView.getLayoutManager();</div><div class="line">                        <span class="comment">//判断是当前layoutManager是否为LinearLayoutManager</span></div><div class="line">                        <span class="comment">// 只有LinearLayoutManager才有查找第一个和最后一个可见view位置的方法</span></div><div class="line">                        <span class="keyword">if</span> (layoutManager <span class="keyword">instanceof</span> LinearLayoutManager) &#123;</div><div class="line">                            LinearLayoutManager linearManager = (LinearLayoutManager) layoutManager;</div><div class="line">                            <span class="comment">//获取最后一个可见view的位置</span></div><div class="line">                            lastItemPosition = linearManager.findLastVisibleItemPosition();</div><div class="line">                            <span class="comment">//获取第一个可见view的位置</span></div><div class="line">                            firstItemPosition = linearManager.findFirstVisibleItemPosition();</div><div class="line"></div><div class="line">                        &#125;</div><div class="line">                        totalNum = mRecyclerView.getAdapter().getItemCount();</div><div class="line">                        <span class="keyword">if</span> (totalNum == lastItemPosition + <span class="number">1</span>) &#123;</div><div class="line">                            updateLayoutManger();</div><div class="line">                        &#125;</div><div class="line">                        <span class="keyword">if</span> (firstItemPosition == <span class="number">0</span>) &#123;</div><div class="line">                            updateLayoutManger();</div><div class="line">                        &#125;</div><div class="line">                    &#125;</div><div class="line">                &#125;);</div><div class="line">            &#125; <span class="keyword">else</span> &#123;</div><div class="line">                mAnimator.cancel();</div><div class="line">                mAnimator.setIntValues(startPoint, endPoint);</div><div class="line">            &#125;</div><div class="line"></div><div class="line">            mAnimator.start();</div><div class="line"></div><div class="line">            <span class="keyword">return</span> <span class="keyword">true</span>;</div><div class="line">        &#125;</div><div class="line">    &#125;</div></pre></td></tr></table></figure>
+<p>再看 <code>OnScrollListener</code>  滚动监听方法：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">OnScrollListener</span> </span>&#123;</div><div class="line">       <span class="comment">/**</span></div><div class="line">        * Callback method to be invoked when RecyclerView's scroll state changes.</div><div class="line">        *</div><div class="line">        * <span class="doctag">@param</span> recyclerView The RecyclerView whose scroll state has changed.</div><div class="line">        * <span class="doctag">@param</span> newState     The updated scroll state. One of &#123;<span class="doctag">@link</span> #SCROLL_STATE_IDLE&#125;,</div><div class="line">        *                     &#123;<span class="doctag">@link</span> #SCROLL_STATE_DRAGGING&#125; or &#123;<span class="doctag">@link</span> #SCROLL_STATE_SETTLING&#125;.</div><div class="line">        */</div><div class="line">       <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onScrollStateChanged</span><span class="params">(RecyclerView recyclerView, <span class="keyword">int</span> newState)</span></span>&#123;&#125;</div><div class="line"></div><div class="line">       <span class="comment">/**</span></div><div class="line">        * Callback method to be invoked when the RecyclerView has been scrolled. This will be</div><div class="line">        * called after the scroll has completed.</div><div class="line">        * &lt;p&gt;</div><div class="line">        * This callback will also be called if visible item range changes after a layout</div><div class="line">        * calculation. In that case, dx and dy will be 0.</div><div class="line">        * 滚动完成调用</div><div class="line">        * <span class="doctag">@param</span> recyclerView The RecyclerView which scrolled.</div><div class="line">        * <span class="doctag">@param</span> dx The amount of horizontal scroll.</div><div class="line">        * <span class="doctag">@param</span> dy The amount of vertical scroll.</div><div class="line">        */</div><div class="line">       <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onScrolled</span><span class="params">(RecyclerView recyclerView, <span class="keyword">int</span> dx, <span class="keyword">int</span> dy)</span></span>&#123;&#125;</div><div class="line">   &#125;</div></pre></td></tr></table></figure>
+<p>这个监听类主要有两个方法一个是 <code>onScrollStateChanged(RecyclerView recyclerView, int newState)</code> 滚动状态发生变化调用， <code>onScrolled(RecyclerView recyclerView, int dx, int dy)</code>  RecyclerView 发生滚动和滚动完成调用。有了这两个监听，当我们进行缓慢滑动我们就可以在 <code>onScrollStateChanged(RecyclerView recyclerView, int newState)</code>  中监听滑动如果结束并且超过一定距离去执行翻页，而通过 <code>onScrolled(RecyclerView recyclerView, int dx, int dy)</code> 方法可以记录当前的滑动距离。处理方法如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Override</span></div><div class="line">       <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onScrollStateChanged</span><span class="params">(RecyclerView recyclerView, <span class="keyword">int</span> newState)</span> </span>&#123;</div><div class="line">         <span class="comment">//如果滑动停止</span></div><div class="line">           <span class="keyword">if</span> (newState == RecyclerView.SCROLL_STATE_IDLE &amp;&amp; mOrientation != ORIENTATION.NULL) &#123;</div><div class="line">               <span class="keyword">boolean</span> move;</div><div class="line">               <span class="keyword">int</span> vX = <span class="number">0</span>, vY = <span class="number">0</span>;</div><div class="line">               <span class="keyword">if</span> (mOrientation == ORIENTATION.VERTICAL) &#123;</div><div class="line">                   <span class="keyword">int</span> absY = Math.abs(offsetY - startY);</div><div class="line">                   <span class="comment">//如果滑动的距离超过屏幕的一半表示需要滑动到下一页</span></div><div class="line">                   move = absY &gt; recyclerView.getHeight() / <span class="number">2</span>;</div><div class="line">                   vY = <span class="number">0</span>;</div><div class="line">                   <span class="keyword">if</span> (move) &#123;</div><div class="line">                       vY = offsetY - startY &lt; <span class="number">0</span> ? -<span class="number">1000</span> : <span class="number">1000</span>;</div><div class="line">                   &#125;</div><div class="line">               &#125; <span class="keyword">else</span> &#123;</div><div class="line">                   <span class="keyword">int</span> absX = Math.abs(offsetX - startX);</div><div class="line">                   move = absX &gt; recyclerView.getWidth() / <span class="number">2</span>;</div><div class="line">                   <span class="keyword">if</span> (move) &#123;</div><div class="line">                       vX = offsetX - startX &lt; <span class="number">0</span> ? -<span class="number">1000</span> : <span class="number">1000</span>;</div><div class="line">                   &#125;</div><div class="line">               &#125;</div><div class="line">             <span class="comment">//调用滑动</span></div><div class="line">               mOnFlingListener.onFling(vX, vY);</div><div class="line">           &#125;</div><div class="line">       &#125;</div><div class="line"> <span class="meta">@Override</span></div><div class="line">       <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onScrolled</span><span class="params">(RecyclerView recyclerView, <span class="keyword">int</span> dx, <span class="keyword">int</span> dy)</span> </span>&#123;</div><div class="line">           <span class="comment">//滚动结束记录滚动的偏移量</span></div><div class="line">           <span class="comment">//记录当前滚动到的位置</span></div><div class="line">           offsetY += dy;</div><div class="line">           offsetX += dx;</div><div class="line">       &#125;</div><div class="line">   &#125;</div></pre></td></tr></table></figure>
+<p>到这里我们要实现滑动的方法和时机基本就搞定了，剩下的就是滑动位置计算和滑动效果实现，滑动位置计算就是一次滑动一整页，这个没什么可说的，所以简单说下实现弹性滑动效果。</p>
+<h3 id="2-4-ValueAnimator-实现弹性滑动效果"><a href="#2-4-ValueAnimator-实现弹性滑动效果" class="headerlink" title="2.4  ValueAnimator 实现弹性滑动效果"></a>2.4  ValueAnimator 实现弹性滑动效果</h3><p>我们知道如果我们直接调用  <code>scrollBy(int x, int y)</code>  这个方法去滑动，那么是没有缓慢滑动的效果，看着有点愣，所以这里我们通过 ValueAnimator 这个类来实现缓慢滑动的效果，这个就很简单了，直接贴代码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">if</span> (mAnimator == <span class="keyword">null</span>) &#123;</div><div class="line">             mAnimator = ValueAnimator.ofInt(startPoint, endPoint);</div><div class="line">             mAnimator.setDuration(<span class="number">300</span>);</div><div class="line">             mAnimator.addUpdateListener(<span class="keyword">new</span> ValueAnimator.AnimatorUpdateListener() &#123;</div><div class="line">                 <span class="meta">@Override</span></div><div class="line">                 <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onAnimationUpdate</span><span class="params">(ValueAnimator animation)</span> </span>&#123;</div><div class="line">                     <span class="keyword">int</span> nowPoint = (<span class="keyword">int</span>) animation.getAnimatedValue();</div><div class="line"></div><div class="line">                     <span class="keyword">if</span> (mOrientation == ORIENTATION.VERTICAL) &#123;</div><div class="line">                         <span class="keyword">int</span> dy = nowPoint - offsetY;</div><div class="line">                         <span class="keyword">if</span> (dy == <span class="number">0</span>) <span class="keyword">return</span>;</div><div class="line">                         <span class="comment">//这里通过RecyclerView的scrollBy方法实现滚动。</span></div><div class="line">                         mRecyclerView.scrollBy(<span class="number">0</span>, dy);</div><div class="line">                     &#125; <span class="keyword">else</span> &#123;</div><div class="line">                         <span class="keyword">int</span> dx = nowPoint - offsetX;</div><div class="line">                         mRecyclerView.scrollBy(dx, <span class="number">0</span>);</div><div class="line">                     &#125;</div><div class="line">                 &#125;</div><div class="line">             &#125;);</div></pre></td></tr></table></figure>
+<h3 id="2-5-翻页至某一页"><a href="#2-5-翻页至某一页" class="headerlink" title="2.5 翻页至某一页"></a>2.5 翻页至某一页</h3><p>这里翻页至某一页的实现有了上面的基础就很好实现了，就是直接调用 我们已经实现好了的 <code>onFling(int velocityX, int velocityY)</code> 方法，然后把页数传递过去计算一下就可以了 ：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setPageNum</span><span class="params">(<span class="keyword">int</span> page)</span> </span>&#123;</div><div class="line">    <span class="keyword">this</span>.pageNum = page;</div><div class="line">    mOnFlingListener.onFling(<span class="number">0</span>, <span class="number">0</span>);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>到这里前面说的功能已经全部实现完毕，具体代码细节请见 github 地址： <a href="https://github.com/yongyu0102/PageRecyclerView" target="_blank" rel="external">pagerecyclerview</a> </p>
+<p>参考文章：</p>
+<p><a href="http://blog.csdn.net/qq_22706515/article/details/53173162" target="_blank" rel="external">一行代码让RecyclerView变身ViewPager</a></p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Android-View/" rel="tag"># Android View</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/01/19/yongyu_20161225_tell_to_myself /" rel="next" title="2016 再见！">
+                <i class="fa fa-chevron-left"></i> 2016 再见！
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2017/04/23/yongyu_20170419_PageRecyclerView/"
+           data-title="RecyclerView 实现分页滚动" data-url="http://yoursite.com/2017/04/23/yongyu_20170419_PageRecyclerView/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="https://github.com/yongyu0102/Images/blob/master/avatar/avatar.png?raw=true"
+               alt="Yongyu" />
+          <p class="site-author-name" itemprop="name">Yongyu</p>
+          <p class="site-description motion-element" itemprop="description">这里记录你的故事！</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">11</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">6</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">6</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+          <div class="links-of-blogroll motion-element links-of-blogroll-inline">
+            <div class="links-of-blogroll-title">
+              <i class="fa  fa-fw fa-globe"></i>
+              Links
+            </div>
+            <ul class="links-of-blogroll-list">
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://extremej.itscoder.com/" title="Joe" target="_blank">Joe</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://jaeger.itscoder.com/" title="写代码的猴子" target="_blank">写代码的猴子</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://brucezz.itscoder.com/" title="Brucezz" target="_blank">Brucezz</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://allenwu.itscoder.com/" title="小刚" target="_blank">小刚</a>
+                </li>
+              
+            </ul>
+          </div>
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-需求分析"><span class="nav-number">1.</span> <span class="nav-text">1  需求分析</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-功能实现"><span class="nav-number">2.</span> <span class="nav-text">2 功能实现</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-OnTouchListener-记录当前开始滑动位置"><span class="nav-number">2.1.</span> <span class="nav-text">2.1 OnTouchListener 记录当前开始滑动位置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-scrollTo-int-x-int-y-和-scrollBy-int-x-int-y-实现滑动"><span class="nav-number">2.2.</span> <span class="nav-text">2.2 scrollTo(int x, int y) 和  scrollBy(int x, int y) 实现滑动</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-OnFlingListener-和-OnScrollListener-调用滑动时机"><span class="nav-number">2.3.</span> <span class="nav-text">2.3 OnFlingListener  和 OnScrollListener  调用滑动时机</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-4-ValueAnimator-实现弹性滑动效果"><span class="nav-number">2.4.</span> <span class="nav-text">2.4  ValueAnimator 实现弹性滑动效果</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-5-翻页至某一页"><span class="nav-number">2.5.</span> <span class="nav-text">2.5 翻页至某一页</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Yongyu</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+  <script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+  document.write(unescape("%3Cspan id='cnzz_stat_icon_1260579440'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s11.cnzz.com/z_stat.php%3Fid%3D1260579440%26show%3Dpic' type='text/javascript'%3E%3C/script%3E"));
+  </script>
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+ </script>
+ </br>本站总访问量<span id="busuanzi_value_site_pv"></span>次，本站访客数<span id="busuanzi_value_site_uv"></span>人次，本文总阅读量<span id="busuanzi_value_page_pv"></span>次
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.0"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"yongyu"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+    
+    <script src="/lib/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+    <script src="/js/src/hook-duoshuo.js"></script>
+  
+
+
+
+
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+
+</body>
+</html>
