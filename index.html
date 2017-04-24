@@ -367,10 +367,11 @@
 1）显示一个 list 列表， item 数量不固定。
 2）实现翻页功能，一次翻一页。
 3）实现翻至某一页功能。
+4）实现一次翻几页功能。
 下面介绍通过 RecyclerView 实现该需求的实现过程（效果图如下）。
  
 2 功能实现2.1 OnTouchListener 记录当前开始滑动位置要实现翻页滑动首先我们要确定是向前翻页还是向后翻页，这里通过记录开始翻页前当前的位置和滑动后的位置比较即可得知，下面选择手指触摸按下时滑动的位置为当前开始滑动位置：
-12345678910111213141516171819    //当前滑动距离    private int offsetY = 0;    private int offsetX = 0;    //按下屏幕点    private int startY = 0;    private int startX = 0;@Override        public boolean onTouch(View v, MotionEvent event) &#123;         
+12345678910111213141516171819    //当前滑动距离    private int offsetY = 0;    private int offsetX = 0;    //按下屏幕点    private int startY = 0;    private int startX = 0;@Override        public boolean onTouch(View v, MotionEvent event) &#
           ...
           <!--noindex-->
           <div class="post-more-link text-center">
