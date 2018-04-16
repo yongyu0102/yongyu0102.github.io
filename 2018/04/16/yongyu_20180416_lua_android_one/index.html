@@ -100,7 +100,7 @@
 <meta property="og:image" content="https://github.com/yongyu0102/WeeklyBlogImages/blob/master/androidLua/h.PNG?raw=true">
 <meta property="og:image" content="https://github.com/yongyu0102/WeeklyBlogImages/blob/master/androidLua/cpp.PNG?raw=true">
 <meta property="og:image" content="https://github.com/yongyu0102/WeeklyBlogImages/blob/master/androidLua/so.PNG?raw=true">
-<meta property="og:updated_time" content="2018-04-15T15:35:29.977Z">
+<meta property="og:updated_time" content="2018-04-16T14:05:42.493Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Lua 在 Android 中应用上,如何引入 Lua">
 <meta name="twitter:description" content="转载请附原文链接：Lua 在 Android 中应用上,如何引入 Lua
@@ -372,8 +372,7 @@
         <p>转载请附原文链接：<a href="">Lua 在 Android 中应用上,如何引入 Lua</a></p>
 <h2 id="一、概要"><a href="#一、概要" class="headerlink" title="一、概要"></a>一、概要</h2><p><em>注：该部分适合不熟悉 NDK 编译的新手看，老司机请绕行</em></p>
 <p>最近公司在做一个项目，利用一份  XML 文件来布局绘制 Android 和 iOS 界面，界面与用户的交互逻辑部分开始是根据自己定义的协议进行手动解析实现，但是这样有两个弊端，第一是每次需要一些特殊功能时候需要事先定义好协议，第二个是自己定义的协议在进行一些复杂的逻辑判断很麻烦，写起来很不方便。所以决定引入脚本来实现逻辑交互功能。说起脚本语言大家应该马上会想起 JavaScript， JavaScript 在前端开发应用最多，而且微信小程序也使用到了 js 脚本，那么我们为什么最终选择使用 Lua 了呢，因为 JavaScript 虽然功能强大，但是引擎使用起来稍微重了一点，而 Lua 是一个功能强大，高效，轻量级的嵌入式脚本语言，使用标准 Lua 库构建的 Lua 解释器需要 246K，Lua 库需要 421K。<a href="https://www.lua.org/about.html" target="_blank" rel="external">Why choose Lua?</a> 而且 Android 中嵌入 Lua 优点很多，借助 Lua 脚本语言的优势，可以轻松实现动态逻辑控制，应用可以随时从服务器读取最新 Lua 脚本文件，在不更新应用的情况下修改程序逻辑，算是一种热更新？算吧。</p>
-<p>##二、Android 中如何引入 Lua</p>
-<p>Lua 解释器是 C 语言写的，而 Android 开发使用的是 Java 语言，所以如果我们不打算用 Java 重写解释器的话，我们需要一种方式使 C 和 Java 能良好的沟通，互相调用。所幸的是 Java 支持本地化编程，能使用 JNI 调用 C，因而让 Lua 嵌入到 Java 中成为可能。但是要将 Lua 大部分需要的函数通过 JNI 转换成对应的 Java 方法实际上也是比较浩大的工程。不过，已经有 LuaJava 这个开源库帮我们完成这个工作，将大部分 Lua 函数封装成堆栈类 LuaState 对应的 Java 方法，我们就可以直接拿来用。</p>
+<h2 id="二、Android-中如何引入-Lua"><a href="#二、Android-中如何引入-Lua" class="headerlink" title="二、Android 中如何引入 Lua"></a>二、Android 中如何引入 Lua</h2><p>Lua 解释器是 C 语言写的，而 Android 开发使用的是 Java 语言，所以如果我们不打算用 Java 重写解释器的话，我们需要一种方式使 C 和 Java 能良好的沟通，互相调用。所幸的是 Java 支持本地化编程，能使用 JNI 调用 C，因而让 Lua 嵌入到 Java 中成为可能。但是要将 Lua 大部分需要的函数通过 JNI 转换成对应的 Java 方法实际上也是比较浩大的工程。不过，已经有 LuaJava 这个开源库帮我们完成这个工作，将大部分 Lua 函数封装成堆栈类 LuaState 对应的 Java 方法，我们就可以直接拿来用。</p>
 <p>###1、假如你熟悉 NDK 编译：</p>
 <p><em>注意:不熟悉的，请绕行看第二种办法去，笔者就不熟悉，自己好顿折腾</em></p>
 <p>那么就自己去官网下载源码自己编译 so 库文件再去使用，下面是下载地址:</p>
@@ -609,7 +608,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#一、概要"><span class="nav-number">1.</span> <span class="nav-text">一、概要</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#一、概要"><span class="nav-number">1.</span> <span class="nav-text">一、概要</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二、Android-中如何引入-Lua"><span class="nav-number">2.</span> <span class="nav-text">二、Android 中如何引入 Lua</span></a></li></ol></div>
             
 
           </div>
