@@ -1,0 +1,760 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Android Lua," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="转载请附原文链接： Lua 在 Android 中应用下,具体使用
+一、概要在上一章节中介绍了  Android 中如何引入 Lua  ，本章节主要介绍 Lua 在 Android 中的具体使用，本章节主要分为两个部分，第一部分是使用 Lua API 绘制 Android 的 View ，第二部分是介绍学习 Lua 和 Android 之间函数回调及参数传递。
+##二、调用 Lua 布局 Andr">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Lua 在 Android 中应用下,具体使用">
+<meta property="og:url" content="http://yoursite.com/2018/04/16/yongyu_20180416_lua_android_two/index.html">
+<meta property="og:site_name" content="一个写代码的地方">
+<meta property="og:description" content="转载请附原文链接： Lua 在 Android 中应用下,具体使用
+一、概要在上一章节中介绍了  Android 中如何引入 Lua  ，本章节主要介绍 Lua 在 Android 中的具体使用，本章节主要分为两个部分，第一部分是使用 Lua API 绘制 Android 的 View ，第二部分是介绍学习 Lua 和 Android 之间函数回调及参数传递。
+##二、调用 Lua 布局 Andr">
+<meta property="og:image" content="https://github.com/yongyu0102/WeeklyBlogImages/blob/master/androidLua/lua_stack.png?raw=true">
+<meta property="og:updated_time" content="2018-04-15T15:31:39.275Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Lua 在 Android 中应用下,具体使用">
+<meta name="twitter:description" content="转载请附原文链接： Lua 在 Android 中应用下,具体使用
+一、概要在上一章节中介绍了  Android 中如何引入 Lua  ，本章节主要介绍 Lua 在 Android 中的具体使用，本章节主要分为两个部分，第一部分是使用 Lua API 绘制 Android 的 View ，第二部分是介绍学习 Lua 和 Android 之间函数回调及参数传递。
+##二、调用 Lua 布局 Andr">
+<meta name="twitter:image" content="https://github.com/yongyu0102/WeeklyBlogImages/blob/master/androidLua/lua_stack.png?raw=true">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/04/16/yongyu_20180416_lua_android_two/"/>
+
+
+
+
+
+  <title> Lua 在 Android 中应用下,具体使用 | 一个写代码的地方 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">一个写代码的地方</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">记录你的学习</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+  <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/04/16/yongyu_20180416_lua_android_two/">
+
+  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="name" content="Yongyu">
+    <meta itemprop="description" content="">
+    <meta itemprop="image" content="https://github.com/yongyu0102/Images/blob/master/avatar/avatar.png?raw=true">
+  </span>
+
+  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="一个写代码的地方">
+    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
+      <img style="display:none;" itemprop="url image" alt="一个写代码的地方" src="">
+    </span>
+  </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Lua 在 Android 中应用下,具体使用
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-04-16T21:46:27+08:00">
+                2018-04-16
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+              <span class="post-meta-divider">|</span>
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android-Lua/" itemprop="url" rel="index">
+                    <span itemprop="name">Android Lua</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <a href="/2018/04/16/yongyu_20180416_lua_android_two/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2018/04/16/yongyu_20180416_lua_android_two/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>转载请附原文链接：<a href=""> Lua 在 Android 中应用下,具体使用</a></p>
+<h2 id="一、概要"><a href="#一、概要" class="headerlink" title="一、概要"></a>一、概要</h2><p>在上一章节中介绍了  <a href="">Android 中如何引入 Lua </a> ，本章节主要介绍 Lua 在 Android 中的具体使用，本章节主要分为两个部分，第一部分是使用 Lua API 绘制 Android 的 View ，第二部分是介绍学习 Lua 和 Android 之间函数回调及参数传递。</p>
+<p>##二、调用 Lua 布局 Android View</p>
+<h3 id="2-1-一些知识点储备"><a href="#2-1-一些知识点储备" class="headerlink" title="2.1 一些知识点储备"></a>2.1 一些知识点储备</h3><p>Lua 程序一般不单独运行，标准的 <a href="https://link.jianshu.com/?t=https://www.lua.org/download.html" target="_blank" rel="external">Lua虚拟机</a> 通过C语言编写的，一般是通过C\C++来拓展Lua的函数，这样接口兼容速度更快。</p>
+<p>Lua 虚拟机与 C/C++ 之间的数据交换基本都是通过 Lua 构建虚拟 <a href="https://link.jianshu.com?t=https://cloudwu.github.io/lua53doc/manual.html#4.1" target="_blank" rel="external"><strong>栈*</strong></a> 来交互的，无论何时 Lua 调用 C，被调用的函数都得到一个新的栈， 这个栈独立于 C 函数本身的栈，也独立于之前的 Lua 栈。它里面包含了Lua传递给 C 函数的所有参数，而 C 函数则把要返回的结果放入这个栈以返回给调用者。即这里记住 Lua 和 C 之间的数据传递交互是通过虚拟栈进行的，主要通过数据的压栈和出栈进行，虚拟栈里面的数据模型如下：</p>
+<p><img src="https://github.com/yongyu0102/WeeklyBlogImages/blob/master/androidLua/lua_stack.png?raw=true" alt="lua_stack"></p>
+<p> 如图 Lua的 栈的访问索引分为正索引和负索引。正的索引指的是栈上的绝对位置（从1开始），负的索引则指从栈顶开始的偏移量，加入栈里有 n 个元素，那么栈顶元素表示为 -1 或者 n。</p>
+<p><strong>初始化 Lua 裤子</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">  <span class="comment">//创建 LuaState 对象，lua 与 java 交互主要是通过这个类来完成</span></div><div class="line">mLuaState = LuaStateFactory.newLuaState();</div><div class="line"><span class="comment">//加载Lua 自身类库 </span></div><div class="line">        mLuaState.openLibs();</div></pre></td></tr></table></figure>
+<p>###2.2 <strong>调用 Lua 启动新的 Activity 界面 </strong></p>
+<figure class="highlight lua"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="comment">--activity.lua 代码</span></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">startCreateViewActivity</span><span class="params">(context)</span></span></div><div class="line">   <span class="comment">-- 创建 intent，luajava 是内置全局的，android.content.Intent 是类名</span></div><div class="line">    intent = luajava.newInstance(<span class="string">"android.content.Intent"</span>)</div><div class="line">    <span class="comment">--创建 ComponentName，第一个参数是类名，其他参数是这个类构造函数所需要的参数，这里 com.nightfarmer.luabridge.sample 是包名字， CreateViewAndAnimationActivity 是类名</span></div><div class="line">    componentName = luajava.newInstance(<span class="string">"android.content.ComponentName"</span>,<span class="string">"com.nightfarmer.luabridge.sample"</span>,<span class="string">"com.example.zhangpeng.androidlua.UI.CreateViewAndAnimationActivity"</span>)</div><div class="line">    intent:setFlags(intent.FLAG_ACTIVITY_NEW_TASK)</div><div class="line">    intent:setComponent(componentName)</div><div class="line">    context:startActivity(intent)</div><div class="line"><span class="keyword">end</span></div></pre></td></tr></table></figure>
+<p>这里用到了 <code>luajava</code> 的一个重要方法 <code>newInstance(className, ......)</code> 函数可以创建一个新 java 对象，同时返回一个真正的 <code>java</code> 对象的引用，这样就可以在 Lua 语言中使用语法糖通过面向对象的方式访问该对象，其中第一个参数是要创建的类名，后面的是这个类构造方法所需要的参数。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//java 代码</span></div><div class="line"><span class="comment">//将一个 lua 的一个全局变量压入共享堆栈中，该值可能是一个全局变量或者一个函数，即将一个全局变量或者一个函数压入共享堆栈中，获取 lua startCreateViewActivity 函数</span></div><div class="line">        mLuaState.getGlobal(<span class="string">"startCreateViewActivity"</span>);</div><div class="line"><span class="comment">//将 MainActivity.this 对象压栈</span></div><div class="line">        mLuaState.pushJavaObject(<span class="keyword">this</span>);</div><div class="line">        <span class="comment">// 调用 lua startCreateViewActivity 函数 有一个参数 MainActivity.this ，返回值 0 个</span></div><div class="line">        mLuaState.call(<span class="number">1</span>, <span class="number">0</span>);</div></pre></td></tr></table></figure>
+<p>经过这两个步骤我们就可以启动 <code>CreateViewAndAnimationActivity</code>  这个 <code>Activity</code> 界面了</p>
+<h3 id="2-3-调用-Lua-创建-TextView-添加布局"><a href="#2-3-调用-Lua-创建-TextView-添加布局" class="headerlink" title="2.3 调用 Lua 创建 TextView 添加布局"></a>2.3 调用 Lua 创建 TextView 添加布局</h3><figure class="highlight lua"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="comment">--lua 方法，layout 为父布局，des  String类型描述文字，color 色值</span></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">createTextViewByLua</span><span class="params">(context,layout,des,color)</span></span></div><div class="line">    <span class="comment">--创建 TextView 对象</span></div><div class="line">    tv = luajava.newInstance(<span class="string">"android.widget.TextView"</span>,context)</div><div class="line">    <span class="comment">--调用方法</span></div><div class="line">    tv:setText(des..<span class="string">"..追加中文"</span>)</div><div class="line">    layout:addView(tv)</div><div class="line">    <span class="comment">--负数的负数，这个值为绿色，也就是说二进制取反+1再加上负号</span></div><div class="line">    tv:setTextColor(<span class="number">-16711936</span>)</div><div class="line">   <span class="comment">-- 返回 TextView 对象</span></div><div class="line">    <span class="keyword">return</span> tv</div><div class="line"><span class="keyword">end</span></div></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">  <span class="comment">// java 方法</span></div><div class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">createTextViewByLua</span><span class="params">()</span></span>&#123;</div><div class="line">       <span class="comment">// 将 lua createTextViewByLua 函数压如入栈顶</span></div><div class="line">       mLuaState.getGlobal(<span class="string">"createTextViewByLua"</span>);</div><div class="line">       <span class="comment">//将 lua 函数需要参数压栈</span></div><div class="line">       mLuaState.pushJavaObject(getApplicationContext());</div><div class="line">   <span class="comment">// llParent 为父布局 layout</span></div><div class="line">       mLuaState.pushJavaObject(llParent);</div><div class="line">       mLuaState.pushString(<span class="string">"android 传递到 lua 的数据"</span>);</div><div class="line">       <span class="comment">//调用 createTextViewByLua 函数，该函数共需要 3 个参数，并且有1个返回值</span></div><div class="line">       mLuaState.call(<span class="number">3</span>, <span class="number">1</span>);</div><div class="line">       <span class="keyword">try</span> &#123;</div><div class="line"><span class="comment">//           取出 lua 返回值 即 返回的 TextView,-1 位置为栈顶</span></div><div class="line">           TextView tv = (TextView) mLuaState.toJavaObject(-<span class="number">1</span>);</div><div class="line">           tv.setBackgroundColor(getResources().getColor(R.color.colorPrimary));</div><div class="line">       &#125; <span class="keyword">catch</span> (LuaException e) &#123;</div><div class="line">           e.printStackTrace();</div><div class="line">       &#125;</div><div class="line">   &#125;</div></pre></td></tr></table></figure>
+<h3 id="2-4-调用-Lua-执行-Android-属性动画"><a href="#2-4-调用-Lua-执行-Android-属性动画" class="headerlink" title="2.4 调用 Lua 执行 Android 属性动画"></a>2.4 调用 Lua 执行 Android 属性动画</h3><figure class="highlight lua"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="comment">--lua 方法</span></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">startAnimation</span><span class="params">(animationView)</span></span></div><div class="line">     <span class="comment">--bindClass 接受一个class类. 然后返回一个对象可以访问该对象的静态知道和该类的方法</span></div><div class="line">    ObjectAnimator = luajava.bindClass(<span class="string">"com.example.zhangpeng.androidlua.ObjectAnimator"</span>)</div><div class="line">    <span class="keyword">local</span> animator = ObjectAnimator:ofFloat(animationView, <span class="string">"rotation"</span>,<span class="number">0</span>,<span class="number">360</span>)</div><div class="line">    animator:setDuration(<span class="number">1000</span>)</div><div class="line">    animator:start()</div><div class="line"><span class="keyword">end</span></div></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">  <span class="comment">//java 方法</span></div><div class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">startAnimationByLua</span><span class="params">()</span> </span>&#123;</div><div class="line">       mLuaState.getGlobal(<span class="string">"startAnimation"</span>);</div><div class="line">       mLuaState.pushJavaObject(btnStartAnimation);</div><div class="line">       mLuaState.call(<span class="number">1</span>,<span class="number">0</span>);</div><div class="line">    &#125;</div></pre></td></tr></table></figure>
+<p>通过上面几个小例子，对通过使用 Lua 代码布局 Android View 有了感性上的认识，更多小栗子请见 <a href="https://github.com/yongyu0102/AndroidLua" target="_blank" rel="external">AndroidLua</a>。</p>
+<h2 id="三、Android-和-Lua-之间多参数传递及回调操作"><a href="#三、Android-和-Lua-之间多参数传递及回调操作" class="headerlink" title="三、Android 和 Lua 之间多参数传递及回调操作"></a>三、Android 和 Lua 之间多参数传递及回调操作</h2><p><strong>注：注意 lua 存储数据的结构只有一种就是表</strong>。</p>
+<h3 id="3-1-Lua-传递参数给-Adroid"><a href="#3-1-Lua-传递参数给-Adroid" class="headerlink" title="3.1 Lua 传递参数给 Adroid"></a>3.1 Lua 传递参数给 Adroid</h3><figure class="highlight lua"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="comment">--lua 代码</span></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">pushDataToAndroid</span><span class="params">()</span></span></div><div class="line">   <span class="comment">--创建表</span></div><div class="line">    <span class="keyword">local</span> luaData=&#123;fromLua1=<span class="string">"来自 lua 1"</span>,fromLua2=<span class="string">"来自 lua 2"</span>&#125;</div><div class="line">   <span class="comment">--调用 android 代码</span></div><div class="line">    androidLua:getDataFromLua(luaData);</div><div class="line"><span class="keyword">end</span></div></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div><div class="line">107</div><div class="line">108</div><div class="line">109</div><div class="line">110</div><div class="line">111</div><div class="line">112</div><div class="line">113</div><div class="line">114</div><div class="line">115</div><div class="line">116</div><div class="line">117</div><div class="line">118</div><div class="line">119</div><div class="line">120</div><div class="line">121</div><div class="line">122</div><div class="line">123</div><div class="line">124</div><div class="line">125</div><div class="line">126</div><div class="line">127</div><div class="line">128</div><div class="line">129</div><div class="line">130</div><div class="line">131</div><div class="line">132</div><div class="line">133</div><div class="line">134</div><div class="line">135</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//java 代码，将 AndroidLua 对象 push 到 lua 内部</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">registerObject</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">try</span> &#123;</div><div class="line">           AndroidLua androidLua = <span class="keyword">new</span> AndroidLua();</div><div class="line">           luaState.pushObjectValue(<span class="string">"androidLua"</span>);</div><div class="line">            luaState.setGlobal(name);</div><div class="line">        &#125; <span class="keyword">catch</span> (LuaException e) &#123;</div><div class="line">            e.printStackTrace();</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"><span class="comment">//AndroidLua 类中代码</span></div><div class="line">   <span class="comment">/**</span></div><div class="line">     *  lua 传递数据给 android</div><div class="line">     * <span class="doctag">@param</span> luaObject</div><div class="line">     */</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">getDataFromLua</span><span class="params">(LuaObject luaObject)</span></span>&#123;</div><div class="line">        LuaState luaState=luaObject.getLuaState();</div><div class="line">        Map&lt;String, String&gt; stringStringMap = (Map&lt;String, String&gt;) LuaUtil.parseLuaTable(luaState);</div><div class="line">        <span class="keyword">for</span> (Map.Entry&lt;String, String&gt; entry :stringStringMap.entrySet())&#123;</div><div class="line">            Log.d(TAG,entry.getKey());</div><div class="line">            Log.d(TAG,entry.getValue());</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"><span class="comment">// LuaUtil 中代码，解析 lua 表中数据</span></div><div class="line"> <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Object <span class="title">parseLuaTable</span><span class="params">(LuaState luaState)</span></span>&#123;</div><div class="line">        Object luaData=<span class="keyword">null</span>;</div><div class="line"><span class="comment">//        取出栈里面元素个数</span></div><div class="line">        <span class="keyword">int</span> top = luaState.getTop();</div><div class="line"><span class="comment">//        判断栈定是否为表元素</span></div><div class="line">        <span class="keyword">if</span> (luaState.isTable(top)) &#123;</div><div class="line"><span class="comment">//            向栈顶部 push 一个 nil 元素</span></div><div class="line">            luaState.pushNil();</div><div class="line">            <span class="keyword">while</span> (luaState.next(top) != <span class="number">0</span>) &#123;</div><div class="line"><span class="comment">//                key type</span></div><div class="line"><span class="comment">//                -2 位置为 key</span></div><div class="line">                <span class="keyword">int</span> keyType = luaState.type(-<span class="number">2</span>);</div><div class="line">                String keyName=luaState.typeName(keyType);</div><div class="line"><span class="comment">//                -1 位置为值，即栈顶了</span></div><div class="line">                <span class="keyword">int</span> valueType = luaState.type(-<span class="number">1</span>);</div><div class="line">                String valueName = luaState.typeName(valueType);</div><div class="line">                <span class="comment">//数组</span></div><div class="line">                <span class="keyword">if</span> (keyName.equals(<span class="string">"number"</span>)) &#123;</div><div class="line">                    <span class="keyword">if</span>(luaData==<span class="keyword">null</span>)&#123;</div><div class="line">                        luaData=<span class="keyword">new</span> ArrayList&lt;&gt;();</div><div class="line">                    &#125;</div><div class="line">                    <span class="keyword">if</span>(luaData <span class="keyword">instanceof</span> List)&#123;</div><div class="line">                        parseTableValueList(luaState, valueName, (List&lt;Object&gt;) luaData);</div><div class="line">                    &#125;<span class="keyword">else</span> &#123;</div><div class="line">                        parseTableValueMap(luaState, valueName, (Map&lt;String, Object&gt;) luaData);</div><div class="line">                    &#125;</div><div class="line">                    </div><div class="line">                    <span class="comment">//map 键值对</span></div><div class="line">                &#125;</div><div class="line">                <span class="keyword">else</span> <span class="keyword">if</span> (keyName.equals(<span class="string">"string"</span>)) &#123;</div><div class="line">                    <span class="keyword">if</span>(luaData==<span class="keyword">null</span>)&#123;</div><div class="line">                        luaData = <span class="keyword">new</span> HashMap&lt;&gt;();</div><div class="line">                    &#125;</div><div class="line">                    <span class="keyword">if</span>(luaData <span class="keyword">instanceof</span> Map)&#123;</div><div class="line">                        parseTableValueMap(luaState, valueName, (Map&lt;String, Object&gt;) luaData);</div><div class="line">                    &#125;<span class="keyword">else</span> &#123;</div><div class="line">                        parseTableValueList(luaState, valueName, (List&lt;Object&gt;) luaData);</div><div class="line">                    &#125;</div><div class="line">                &#125;</div><div class="line">                <span class="keyword">if</span>(!<span class="string">"function"</span>.equals(valueName))&#123;</div><div class="line">                    luaState.pop(<span class="number">1</span>);</div><div class="line">                &#125;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">return</span> luaData;</div><div class="line">    &#125;</div><div class="line"><span class="comment">//解析 map 结构</span></div><div class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">parseTableValueMap</span><span class="params">(LuaState mLuaState, String valueName, Map&lt;String, Object&gt; objectMap)</span> </span>&#123;</div><div class="line">        <span class="keyword">switch</span> (valueName) &#123;</div><div class="line">            <span class="keyword">case</span> <span class="string">"null"</span>:</div><div class="line">                <span class="keyword">break</span>;</div><div class="line">            <span class="keyword">case</span> <span class="string">"number"</span>:</div><div class="line">                objectMap.put(mLuaState.toString(-<span class="number">2</span>), mLuaState.toNumber(-<span class="number">1</span>));</div><div class="line">                <span class="keyword">break</span>;</div><div class="line">            <span class="keyword">case</span> <span class="string">"string"</span>:</div><div class="line">                objectMap.put(mLuaState.toString(-<span class="number">2</span>), mLuaState.toString(-<span class="number">1</span>));</div><div class="line">                <span class="keyword">break</span>;</div><div class="line">            <span class="keyword">case</span> <span class="string">"boolean"</span>:</div><div class="line">                objectMap.put(mLuaState.toString(-<span class="number">2</span>), mLuaState.toBoolean(-<span class="number">1</span>));</div><div class="line">                <span class="keyword">break</span>;</div><div class="line">            <span class="keyword">case</span> <span class="string">"int"</span>:</div><div class="line">            <span class="keyword">case</span> <span class="string">"integer"</span>:</div><div class="line">                objectMap.put(mLuaState.toString(-<span class="number">2</span>), mLuaState.toInteger(-<span class="number">1</span>));</div><div class="line">                <span class="keyword">break</span>;</div><div class="line">            <span class="keyword">case</span> <span class="string">"function"</span> :</div><div class="line">                String key=mLuaState.toString(-<span class="number">2</span>);</div><div class="line">                <span class="keyword">int</span> value=mLuaState.Lref(LuaState.LUA_REGISTRYINDEX);</div><div class="line">                objectMap.put(key,value);</div><div class="line">                <span class="keyword">break</span>;</div><div class="line">            <span class="keyword">case</span> <span class="string">"table"</span>:</div><div class="line">                objectMap.put(mLuaState.toString(-<span class="number">2</span>), parseLuaTable(mLuaState));</div><div class="line">                <span class="keyword">break</span>;</div><div class="line">            <span class="keyword">default</span>:</div><div class="line">                <span class="keyword">break</span>;</div><div class="line">        &#125;</div><div class="line"></div><div class="line">    &#125;</div><div class="line"><span class="comment">// 解析数组结构</span></div><div class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">parseTableValueList</span><span class="params">(LuaState mLuaState, String valueName, List&lt;Object&gt; objectMap)</span> </span>&#123;</div><div class="line">        <span class="keyword">switch</span> (valueName) &#123;</div><div class="line">            <span class="keyword">case</span> <span class="string">"null"</span>:</div><div class="line">                <span class="keyword">break</span>;</div><div class="line">            <span class="keyword">case</span> <span class="string">"number"</span>:</div><div class="line">                objectMap.add( mLuaState.toNumber(-<span class="number">1</span>));</div><div class="line">                <span class="keyword">break</span>;</div><div class="line">            <span class="keyword">case</span> <span class="string">"string"</span>:</div><div class="line">                objectMap.add(mLuaState.toString(-<span class="number">1</span>));</div><div class="line">                <span class="keyword">break</span>;</div><div class="line">            <span class="keyword">case</span> <span class="string">"boolean"</span>:</div><div class="line">                objectMap.add( mLuaState.toBoolean(-<span class="number">1</span>));</div><div class="line">                <span class="keyword">break</span>;</div><div class="line">            <span class="keyword">case</span> <span class="string">"int"</span>:</div><div class="line">            <span class="keyword">case</span> <span class="string">"integer"</span>:</div><div class="line">                objectMap.add(mLuaState.toInteger(-<span class="number">1</span>));</div><div class="line">                <span class="keyword">break</span>;</div><div class="line">            <span class="keyword">case</span> <span class="string">"function"</span> :</div><div class="line">                <span class="keyword">int</span> value=mLuaState.Lref(LuaState.LUA_REGISTRYINDEX);</div><div class="line">                objectMap.add(value);</div><div class="line">                <span class="keyword">break</span>;</div><div class="line">            <span class="keyword">case</span> <span class="string">"table"</span>:</div><div class="line">                objectMap.add(parseLuaTable(mLuaState)) ;</div><div class="line">                <span class="keyword">break</span>;</div><div class="line">            <span class="keyword">default</span>:</div><div class="line">                <span class="keyword">break</span>;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"><span class="comment">//java 代码，调用 lua 函数</span></div><div class="line">   <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">getDataFromLua</span><span class="params">()</span> </span>&#123;</div><div class="line">        luaState.getGlobal(<span class="string">"pushDataToAndroid"</span>);</div><div class="line">        luaState.call(<span class="number">0</span>, <span class="number">0</span>);</div><div class="line">    &#125;</div></pre></td></tr></table></figure>
+<p>###3.2 Android 传递数据给 Lua</p>
+<figure class="highlight lua"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="comment">-- lua 代码</span></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">getMapDataFromAndroid</span><span class="params">(map)</span></span></div><div class="line">    <span class="keyword">for</span> k, v <span class="keyword">in</span> <span class="built_in">pairs</span>(map) <span class="keyword">do</span></div><div class="line">        Log(TAG, k)</div><div class="line">        Log(TAG, v)</div><div class="line">    <span class="keyword">end</span></div><div class="line"><span class="keyword">end</span></div></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//java 代码</span></div><div class="line">    <span class="comment">/**</span></div><div class="line">     * push android map data to lua</div><div class="line">     */</div><div class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">pushAndroidMapDataToLua</span><span class="params">()</span> </span>&#123;</div><div class="line">        luaState.getGlobal(<span class="string">"getMapDataFromAndroid"</span>);</div><div class="line">        Map&lt;String, String&gt; mapDta = <span class="keyword">new</span> HashMap&lt;&gt;();</div><div class="line">        mapDta.put(<span class="string">"formAndroid1"</span>, <span class="string">"I am from Android map1"</span>);</div><div class="line">        mapDta.put(<span class="string">"formAndroid2"</span>, <span class="string">"I am from Android map2"</span>);</div><div class="line">        mapDta.put(<span class="string">"formAndroid3"</span>, <span class="string">"I am from Android map3"</span>);</div><div class="line">        LuaUtil.pushDataToLua(luaState, mapDta);</div><div class="line">    &#125;</div><div class="line"><span class="comment">// LuaUtil 中代码</span></div><div class="line">  <span class="comment">/**</span></div><div class="line">     *</div><div class="line">     * <span class="doctag">@param</span> mLuaState lua</div><div class="line">     * <span class="doctag">@param</span> obj map or list data</div><div class="line">     */</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">pushDataToLua</span><span class="params">(LuaState mLuaState, Object obj)</span> </span>&#123;</div><div class="line">        <span class="keyword">try</span> &#123;</div><div class="line">            <span class="keyword">int</span> top = mLuaState.getTop();</div><div class="line">            <span class="keyword">if</span> (mLuaState.isFunction(top)) &#123;</div><div class="line">                <span class="keyword">if</span> (obj <span class="keyword">instanceof</span> Map) &#123;</div><div class="line">                    Map&lt;String, Object&gt; map = (Map&lt;String, Object&gt;) obj;</div><div class="line"><span class="comment">//                    创建一个新表， lua 中存储数据的结果为表</span></div><div class="line">                    mLuaState.newTable();</div><div class="line">                    <span class="keyword">for</span> (Map.Entry&lt;String, Object&gt; entry : map.entrySet()) &#123;</div><div class="line">                        mLuaState.pushString(entry.getKey());</div><div class="line">                        mLuaState.pushObjectValue(entry.getValue());</div><div class="line">                        mLuaState.setTable(-<span class="number">3</span>);</div><div class="line">                    &#125;</div><div class="line">                &#125; <span class="keyword">else</span> <span class="keyword">if</span> (obj <span class="keyword">instanceof</span> List) &#123;</div><div class="line">                    List&lt;Object&gt; list = (List&lt;Object&gt;) obj;</div><div class="line"><span class="comment">//                    键表</span></div><div class="line">                    mLuaState.createTable(<span class="number">0</span>, <span class="number">0</span>);</div><div class="line">                    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; list.size(); i++) &#123;</div><div class="line">                        <span class="comment">//将数组中的第 i个数据入栈</span></div><div class="line">                        mLuaState.pushObjectValue(list.get(i));</div><div class="line">                        <span class="comment">//将刚刚入栈在栈顶的数据存入表中（-2 表示表在栈内的位置，（i+1)表示数据在表中存储位置），同时这个数据会自动从栈顶pop</span></div><div class="line">                        mLuaState.rawSetI(-<span class="number">2</span>, i + <span class="number">1</span>);</div><div class="line">                    &#125;</div><div class="line">                &#125;</div><div class="line">                <span class="comment">//          调用函数，  一个参数，0 个返回值</span></div><div class="line">                mLuaState.call(<span class="number">1</span>, <span class="number">0</span>);</div><div class="line">            &#125;</div><div class="line">        &#125; <span class="keyword">catch</span> (Exception e) &#123;</div><div class="line">            e.printStackTrace();</div><div class="line">        &#125;</div><div class="line">    &#125;</div></pre></td></tr></table></figure>
+<h3 id="3-3-Lua-传递参数给-Android，并带有回调函数，复杂数据结构"><a href="#3-3-Lua-传递参数给-Android，并带有回调函数，复杂数据结构" class="headerlink" title="3.3 Lua 传递参数给 Android，并带有回调函数，复杂数据结构"></a>3.3 Lua 传递参数给 Android，并带有回调函数，复杂数据结构</h3><figure class="highlight lua"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div></pre></td><td class="code"><pre><div class="line"><span class="comment">--lua 代码</span></div><div class="line"></div><div class="line">mapDataWithFunction = &#123;</div><div class="line">    aaa = <span class="number">234</span>,</div><div class="line">    bbbb = <span class="number">23232</span>,</div><div class="line">    <span class="number">23</span>,</div><div class="line">    <span class="keyword">true</span>,</div><div class="line">    &#123;</div><div class="line">        success = <span class="function"><span class="keyword">function</span><span class="params">(map)</span></span></div><div class="line">            <span class="keyword">for</span> k, v <span class="keyword">in</span> <span class="built_in">pairs</span>(map) <span class="keyword">do</span></div><div class="line">                Log(TAG, k)</div><div class="line">                Log(TAG, v)</div><div class="line">            <span class="keyword">end</span></div><div class="line">        <span class="keyword">end</span>,</div><div class="line">        failed = <span class="function"><span class="keyword">function</span><span class="params">(map)</span></span></div><div class="line">            <span class="keyword">for</span> k, v <span class="keyword">in</span> <span class="built_in">pairs</span>(map) <span class="keyword">do</span></div><div class="line">                Log(TAG, k)</div><div class="line">                Log(TAG, v)</div><div class="line">            <span class="keyword">end</span></div><div class="line">        <span class="keyword">end</span></div><div class="line">    &#125;,</div><div class="line">    &#123;</div><div class="line">        <span class="number">23</span>, <span class="string">"sdfsdf"</span>,</div><div class="line">        &#123; aaa = <span class="number">234</span>, addd = <span class="string">"23233jjjjsdOK"</span> &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"> <span class="function"><span class="keyword">function</span> <span class="title">pushMapDataWithFun</span><span class="params">()</span></span></div><div class="line">   androidLua:getDataWithFun(mapDataWithFunction)</div><div class="line"> <span class="keyword">end</span></div></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//java 代码</span></div><div class="line">   <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">getDataFromLuaWithFuncion</span><span class="params">()</span></span>&#123;</div><div class="line">        luaState.getGlobal(<span class="string">"pushMapDataWithFun"</span>);</div><div class="line">        luaState.call(<span class="number">0</span>,<span class="number">0</span>);</div><div class="line">    &#125;</div><div class="line"><span class="comment">// AndroidLua 代码</span></div><div class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">getDataWithFun</span><span class="params">(<span class="keyword">final</span> LuaObject luaObject)</span></span>&#123;</div><div class="line">        <span class="keyword">final</span> Object objectMap = LuaUtil.parseLuaTable(luaObject.getLuaState());</div><div class="line">        <span class="keyword">if</span> (objectMap == <span class="keyword">null</span>) <span class="keyword">return</span>;</div><div class="line">        <span class="keyword">new</span> Thread(<span class="keyword">new</span> Runnable() &#123;</div><div class="line">            <span class="meta">@Override</span></div><div class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</div><div class="line">                <span class="keyword">try</span> &#123;</div><div class="line"><span class="comment">//                    延迟 500ms，模拟网络请求回调成功，哈哈</span></div><div class="line">                    Thread.sleep(<span class="number">500</span>);</div><div class="line">                    <span class="keyword">if</span>(objectMap <span class="keyword">instanceof</span> ArrayList)&#123;</div><div class="line">                        ArrayList o = ((ArrayList) objectMap);</div><div class="line">                        <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;o.size();i++)&#123;</div><div class="line">                            Object ob=o.get(i);</div><div class="line">                            <span class="keyword">if</span>(ob!=<span class="keyword">null</span>&amp;&amp;ob <span class="keyword">instanceof</span> Map)&#123;</div><div class="line">                                Map map1= (Map) ob;</div><div class="line">                                Object indext= map1.get(<span class="string">"success"</span>);</div><div class="line">                                <span class="keyword">if</span>(indext!=<span class="keyword">null</span>)&#123;</div><div class="line">                                    <span class="keyword">int</span> position= (<span class="keyword">int</span>) indext;</div><div class="line">                                    LuaState luaState = luaObject.getLuaState();</div><div class="line">                                    luaState.rawGetI(LuaState.LUA_REGISTRYINDEX,position);</div><div class="line">                                    Map&lt;String,String&gt; map2 = <span class="keyword">new</span> HashMap&lt;&gt;();</div><div class="line">                                    map2.put(<span class="string">"网络请求"</span>, <span class="string">"网络请求值成功"</span>);</div><div class="line">                                    LuaUtil.pushDataToLua(luaState, map2);</div><div class="line">                                &#125;</div><div class="line">                            &#125;</div><div class="line">                        &#125;</div><div class="line">                    &#125;</div><div class="line">                &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</div><div class="line">                    e.printStackTrace();</div><div class="line">                &#125;</div><div class="line">            &#125;</div><div class="line">        &#125;).start();</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>结语：以上为本次学习内容，如有错误，还望指正，谢谢！</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Android-Lua/" rel="tag"># Android Lua</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/04/16/yongyu_20180416_lua_android_one/" rel="next" title="Lua 在 Android 中应用上,如何引入 Lua">
+                <i class="fa fa-chevron-left"></i> Lua 在 Android 中应用上,如何引入 Lua
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2018/04/16/yongyu_20180416_lua_android_two/"
+           data-title="Lua 在 Android 中应用下,具体使用" data-url="http://yoursite.com/2018/04/16/yongyu_20180416_lua_android_two/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="https://github.com/yongyu0102/Images/blob/master/avatar/avatar.png?raw=true"
+               alt="Yongyu" />
+          <p class="site-author-name" itemprop="name">Yongyu</p>
+          <p class="site-description motion-element" itemprop="description">这里记录你的故事！</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">13</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">7</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">7</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+          <div class="links-of-blogroll motion-element links-of-blogroll-inline">
+            <div class="links-of-blogroll-title">
+              <i class="fa  fa-fw fa-globe"></i>
+              Links
+            </div>
+            <ul class="links-of-blogroll-list">
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://extremej.itscoder.com/" title="Joe" target="_blank">Joe</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://jaeger.itscoder.com/" title="写代码的猴子" target="_blank">写代码的猴子</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://brucezz.itscoder.com/" title="Brucezz" target="_blank">Brucezz</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://allenwu.itscoder.com/" title="小刚" target="_blank">小刚</a>
+                </li>
+              
+            </ul>
+          </div>
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#一、概要"><span class="nav-number">1.</span> <span class="nav-text">一、概要</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-一些知识点储备"><span class="nav-number">1.1.</span> <span class="nav-text">2.1 一些知识点储备</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-调用-Lua-创建-TextView-添加布局"><span class="nav-number">1.2.</span> <span class="nav-text">2.3 调用 Lua 创建 TextView 添加布局</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-4-调用-Lua-执行-Android-属性动画"><span class="nav-number">1.3.</span> <span class="nav-text">2.4 调用 Lua 执行 Android 属性动画</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#三、Android-和-Lua-之间多参数传递及回调操作"><span class="nav-number">2.</span> <span class="nav-text">三、Android 和 Lua 之间多参数传递及回调操作</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-Lua-传递参数给-Adroid"><span class="nav-number">2.1.</span> <span class="nav-text">3.1 Lua 传递参数给 Adroid</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-3-Lua-传递参数给-Android，并带有回调函数，复杂数据结构"><span class="nav-number">2.2.</span> <span class="nav-text">3.3 Lua 传递参数给 Android，并带有回调函数，复杂数据结构</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Yongyu</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+  <script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+  document.write(unescape("%3Cspan id='cnzz_stat_icon_1260579440'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s11.cnzz.com/z_stat.php%3Fid%3D1260579440%26show%3Dpic' type='text/javascript'%3E%3C/script%3E"));
+  </script>
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+ </script>
+ </br>本站总访问量<span id="busuanzi_value_site_pv"></span>次，本站访客数<span id="busuanzi_value_site_uv"></span>人次，本文总阅读量<span id="busuanzi_value_page_pv"></span>次
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.0"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"yongyu"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+    
+    <script src="/lib/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+    <script src="/js/src/hook-duoshuo.js"></script>
+  
+
+
+
+
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+
+</body>
+</html>
