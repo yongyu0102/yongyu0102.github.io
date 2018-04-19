@@ -355,7 +355,7 @@
         
           
           3.2 View 的滑动View 的基础知识 学习笔记中记录了 View 的基础知识和概念，本次笔记内容源于Android 开发艺术探索第3章 3.2-3.3 View 滑动和弹性滑动读书笔记，我们就可以根据需要对 View 做一些操作，在 Android 设备上，最常见的一个操作就是滑动，如此可见滑动是很重要的知识，只有具备了滑动的基础知识才能做出更复杂炫酷的滑动效果，复杂的效果是由不同的滑动基础组成，通常 View 的滑动可以由三种方式：使用 scrollTo 或 scrollBy、通过动画给 View  添加平移效果实现滑动、通过改变 View 的布局参数 LayoutParams 实现滑动，下面进行逐一分析。
-3.2.1 使用 scrollTo 或 scrollBy 进行滑动Android 中 View 为我们提供了两个专门的方法  scrollTo 或 scrollBy 来实现  View 的滑动，scrollTo 是滑动到某一坐标，是绝对滑动，View 调用的时候只能进行一次滑动，比如将 View 从 A 点滑动到 B 点；而 scrollBy是滑动一段距离，是相对滑动，可
+3.2.1 使用 scrollTo 或 scrollBy 进行滑动Android 中 View 为我们提供了两个专门的方法  scrollTo 或 scrollBy 来实现 
           ...
           <!--noindex-->
           <div class="post-button text-center">
@@ -516,10 +516,7 @@
           转载请附原文链接：Android View 基础知识读 
 内容源于Android 开发艺术探索第 3 章 3.1 View 基础知识读书笔记：View 的位置参数、MotionEvent 和 TouchSlop对象、VelocityTracker, GestureDetector 和 Scroller对象。
 1 什么是 ViewView 是Android中所有控件的基类，例如Button和TextView、ViewGroup 等常见控件他们的基类都是View，View是一种界面层的控件的一种抽象，代表了一个控件。View 本身可以是单个控件也可以是由多个控件组成的一组控件，通过这种关系就形成了View 树的结构，与Web前端中的DOM树概念相似。
-1.1 View的位置参数View 的位置主要有四个顶点决定的， top（左上角纵坐标）、left（左上角横坐标）、right（右下角横坐标）、bottom（右下角纵坐标），这些顶点的坐标是相对于 View 的父容器来说，是一种相对坐标。
-
-根据上图View的坐标位置关系可以得出以下view的宽度（width)和高度（height)：
-Vie
+1.1 View的位置参数View 的位置主要有四个顶点决定的， top（左上角纵坐标）、left（左上角横坐标）、right（右下角横坐标）、
           ...
           <!--noindex-->
           <div class="post-button text-center">
@@ -678,8 +675,7 @@ Vie
         
           
           转载请附原文链接：Volley学习笔记之简单使用及部分源码详解 
-一、使用背景简介现在大多数手机 App 几乎都离不开网络技术，需要手机端与网络服务端进行数据交互，Android 系统中主要提供了两种方式来进行HTTP通信，HttpURLConnection 和 HttpClient，在初学 Android 的时候，这两个类是我们最开始学着使用的，但是在使用过程中需要调取各种API，进行封，然后请求到的结果需要自己去解析，最后再将解析到的数据进行封装存到数据库，整个过程，相当复杂，而且重复性很高，于是针对这种情况，网络上就有大神封装了各种第三方框架供我们使用，将这些复杂冗余操作进行组合优化，使得整个编写过程得以简化，只需简单配置几行代码就可以完成整个流程操作。今天我们介绍的 Volley  就是其中一个优秀第三方框架。笔者所在公司目前项目使用的就是Volley ，所以在使用的同时决定写一系列笔记分析，从学会简单使用，到最后的 Volley 源码分析一系列循序渐进的流程来理解Volley的实现原理。
-二、Volley简介Volley 是 Google在 Google I/O 2013 大
+一、使用背景简介现在大多数手机 App 几乎都离不开网络技术，需要手机端与网络服务端进行数据交互，Android 系统中主要提供了两种方式来进行HTTP通信，HttpURLConnection 和 HttpClient，在初学 Android 的时候，这两个类是我们最开始学着使用的，但是在使用过程中需要调取各种API，进行封，然后请求到的结果需要自己去解析，最后再将解析到的数据进行封装存到数据库，整个过程，相当复杂，而且重复性很高，于是针对这种情况，网络上就有大神封装了各种第三方框架供我们使用，将这些复杂冗余操作进行组合优化，使得整个编写过程得以简化，只需简单配置几行代码就可以完成整个流程操作。今天我们介绍的 Volley  就是其中一个优秀第三方框架。笔者所在公司目前项目使用的就是Volley ，所以在使用的同时决定写一系
           ...
           <!--noindex-->
           <div class="post-button text-center">
