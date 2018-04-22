@@ -335,7 +335,7 @@
                   <i class="fa fa-comment-o"></i>
                 </span>
                 <a href="/2018/04/16/yongyu_20180416_lua_android_one/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2018/04/16/yongyu_20180416_lua_android_one/" itemprop="commentCount"></span>
+                  <span class="post-comments-count gitment-comments-count" data-xid="/2018/04/16/yongyu_20180416_lua_android_one/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -477,9 +477,9 @@
 
   
     <div class="comments" id="comments">
-      <div class="ds-thread" data-thread-key="2018/04/16/yongyu_20180416_lua_android_one/"
-           data-title="Lua 在 Android 中应用上,如何引入 Lua" data-url="http://yoursite.com/2018/04/16/yongyu_20180416_lua_android_one/">
-      </div>
+      
+        <div id="gitment-container"></div>
+      
     </div>
 
   
@@ -775,35 +775,67 @@
 
   
 
+
   
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+<!-- LOCAL: You can save these files to your site and update links -->
     
-  
+        
+        <link rel="stylesheet" href="https://aimingoo.github.io/gitmint/style/default.css">
+        <script src="https://aimingoo.github.io/gitmint/dist/gitmint.browser.js"></script>
+    
+<!-- END LOCAL -->
 
-  <script type="text/javascript">
-    var duoshuoQuery = {short_name:"yongyu"};
-    (function() {
-      var ds = document.createElement('script');
-      ds.type = 'text/javascript';ds.async = true;
-      ds.id = 'duoshuo-script';
-      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
-      ds.charset = 'UTF-8';
-      (document.getElementsByTagName('head')[0]
-      || document.getElementsByTagName('body')[0]).appendChild(ds);
-    })();
-  </script>
+    
 
-  
+    
+      <script type="text/javascript">
+      function renderGitment(){
+        var gitment = new Gitmint({
+            id: window.location.pathname, 
+            owner: 'yongyu0102',
+            repo: 'BlogComments',
+            
+            lang: "zh-Hans" || navigator.language || navigator.systemLanguage || navigator.userLanguage,
+            
+            oauth: {
+            
+            
+                client_secret: '3b994f3d7dd5d0cc6fd7e7b93d90807562962a32',
+            
+                client_id: '245421c604cf647c690f'
+            }});
+        gitment.render('gitment-container');
+      }
 
-
-
-
-
-
-
-
-
-
-
+      
+      renderGitment();
+      
+      </script>
+    
 
 
 
