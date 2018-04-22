@@ -1,0 +1,868 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="other," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="转载请附原文链接：为 hexo 添加 gitment 评论
+一、前言2015年开始写博客，用的是 hexo 搭建，主题采用的是 next，当时博客的评论功能采用的是多说，后来用了一段时间多说评论关闭无法使用，自己的博客就没有了评论，而去年一年各种原因没怎么折腾博客就没在意这事，最近准备重新开始继续坚持写，在 itsCoder 老司机的推荐下决定使用 Gitment 评论功能，但是在集成 的过程中自">
+<meta property="og:type" content="article">
+<meta property="og:title" content="为 hexo 添加 gitment 评论">
+<meta property="og:url" content="http://yoursite.com/2018/04/22/yongyu_20180422_hexo_gitment/index.html">
+<meta property="og:site_name" content="一个写代码的地方">
+<meta property="og:description" content="转载请附原文链接：为 hexo 添加 gitment 评论
+一、前言2015年开始写博客，用的是 hexo 搭建，主题采用的是 next，当时博客的评论功能采用的是多说，后来用了一段时间多说评论关闭无法使用，自己的博客就没有了评论，而去年一年各种原因没怎么折腾博客就没在意这事，最近准备重新开始继续坚持写，在 itsCoder 老司机的推荐下决定使用 Gitment 评论功能，但是在集成 的过程中自">
+<meta property="og:image" content="https://github.com/yongyu0102/WeeklyBlogImages/blob/master/gitment/gitment.PNG?raw=true">
+<meta property="og:image" content="http://yoursite.com/file:///C:\Users\ZHANGP~1\AppData\Local\Temp\SGPicFaceTpBq\2628\2821E7FE.png">
+<meta property="og:updated_time" content="2018-04-22T04:42:15.621Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="为 hexo 添加 gitment 评论">
+<meta name="twitter:description" content="转载请附原文链接：为 hexo 添加 gitment 评论
+一、前言2015年开始写博客，用的是 hexo 搭建，主题采用的是 next，当时博客的评论功能采用的是多说，后来用了一段时间多说评论关闭无法使用，自己的博客就没有了评论，而去年一年各种原因没怎么折腾博客就没在意这事，最近准备重新开始继续坚持写，在 itsCoder 老司机的推荐下决定使用 Gitment 评论功能，但是在集成 的过程中自">
+<meta name="twitter:image" content="https://github.com/yongyu0102/WeeklyBlogImages/blob/master/gitment/gitment.PNG?raw=true">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/04/22/yongyu_20180422_hexo_gitment/"/>
+
+
+
+
+
+  <title>为 hexo 添加 gitment 评论 | 一个写代码的地方</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">一个写代码的地方</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">记录你的学习</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/04/22/yongyu_20180422_hexo_gitment/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Yongyu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="https://github.com/yongyu0102/Images/blob/master/avatar/avatar.png?raw=true">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="一个写代码的地方">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">为 hexo 添加 gitment 评论</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-22T12:42:44+08:00">
+                2018-04-22
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/other/" itemprop="url" rel="index">
+                    <span itemprop="name">other</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/04/22/yongyu_20180422_hexo_gitment/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count gitment-comments-count" data-xid="/2018/04/22/yongyu_20180422_hexo_gitment/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>转载请附原文链接：<a href="">为 hexo 添加 gitment 评论</a></p>
+<h2 id="一、前言"><a href="#一、前言" class="headerlink" title="一、前言"></a>一、前言</h2><p>2015年开始写博客，用的是 <a href="https://hexo.io/zh-cn/docs/index.html" target="_blank" rel="external">hexo</a> 搭建，主题采用的是 <a href="https://theme-next.iissnan.com/" target="_blank" rel="external">next</a>，当时博客的评论功能采用的是多说，后来用了一段时间多说评论关闭无法使用，自己的博客就没有了评论，而去年一年各种原因没怎么折腾博客就没在意这事，最近准备重新开始继续坚持写，在 itsCoder 老司机的推荐下决定使用 <a href="https://github.com/imsun/gitment" target="_blank" rel="external">Gitment</a> 评论功能，但是在集成 的过程中自己一不留意踩了个大坑，折腾了好久，昨晚折腾到半夜一点半，本来很简单的一个事件让自己搞的这么复杂，浪费这么多时间，实在不应该，在此记录下，也希望能帮助到一些人。</p>
+<h2 id="二、搭建-Gitment-评论"><a href="#二、搭建-Gitment-评论" class="headerlink" title="二、搭建 Gitment 评论"></a>二、搭建 Gitment 评论</h2><h3 id="Gitment-介绍"><a href="#Gitment-介绍" class="headerlink" title="Gitment 介绍"></a>Gitment 介绍</h3><p><a href="https://link.zhihu.com/?target=https%3A//github.com/imsun/gitment" target="_blank" rel="external">Gitment</a> 是作者实现的一款基于 GitHub Issues 的评论系统。主要面向程序员群体，尤为适合各种静态博客和项目页面。</p>
+<p>Gitment 包括以下特性：</p>
+<ul>
+<li>在前端直接引入，不需要任何后端代码</li>
+<li>使用 GitHub 账号登录</li>
+<li>可以在页面进行查看、发送评论，点赞，@ 等操作</li>
+<li>可以在 GitHub 进行编辑、删除评论等操作</li>
+<li>有完整的 Markdown / GFM 支持</li>
+<li>支持代码高亮</li>
+<li>基于 GitHub 的通知</li>
+<li>易于自定义</li>
+</ul>
+<h3 id="开始采坑之路"><a href="#开始采坑之路" class="headerlink" title="开始采坑之路"></a>开始采坑之路</h3><h4 id="升级-next-主题"><a href="#升级-next-主题" class="headerlink" title="升级 next 主题"></a>升级 next 主题</h4><p>其实关于搭建 Gitment 评论已经有好多博客写了，但是都是基于作者搭建时候使用的 hexo 和 next 主题版本，有的可能当时使用主题版本比较低，没有支持 Gitment 评论功能，所以需要你配置很多代码，开始我自己也没注意，也是配置了一堆代码，后来发现有人提到升级 next 主题到最新版本已经支持 Gitment 评论了，于是就决定升级 next 主题，而且做技术的本该拥有一颗拥抱新鲜的事物的心态，但是这里升级 next 主题会有一个问题需要思考一下就是，当初你使用主题的时候会修改一些配置，比如添加统计代码，页面样式修改等待，那么如果直接拉去代码去升级一定会有很多冲突，所以想好自己怎么升级比较合理，网上也有一些解决方案自己可以查查，我开始是直接拉去代码然后解决冲突升级，但是解决完后发现很多地方报错，折腾几次后放弃了，采用直接拉去最新 next 代码，然后将原来的配置修改通过 git log 功能对比修改，粘贴到最新 next 代码中完成了升级，目前我使用的版本是 next 5.1.4 已经支持 gitment 评论功能，hexo 版本是 3.2.2 也是没毛病的。</p>
+<h4 id="注册-OAuth-Application"><a href="#注册-OAuth-Application" class="headerlink" title="注册 OAuth Application"></a>注册 OAuth Application</h4><ol>
+<li><p>登录 Github。</p>
+</li>
+<li><p>前往 <a href="https://github.com/settings/profile" target="_blank" rel="external">https://github.com/settings/profile</a></p>
+</li>
+<li><p>点击左侧下方的 <code>Developer settings</code></p>
+</li>
+<li><p>点击绿色 <code>Register a new application</code></p>
+</li>
+<li><p>填写以下内容：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">Application name：Gitment #自己随便起名字</div><div class="line">Homepage URL：http://yongyu.itscoder.com/ #这个是你自己博客主页地址，这个地址一定要写正确了，否则授权登录就会失败</div><div class="line">Application description：Blog comment system #随便写</div><div class="line">Authorization callback URL：http://yongyu.itscoder.com/ #这个是回调地址，一般写自己博客主页地址就行</div></pre></td></tr></table></figure>
+</li>
+<li><p>点击 <code>Register application</code>得到下面两条信息将来用于配置：</p>
+</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">Client ID:b8bad0ebxxxxx</div><div class="line">Client Secret:bcee560c6xxxxxxd042b</div></pre></td></tr></table></figure>
+<h4 id="创建存放-Gitment-评论仓库-repository"><a href="#创建存放-Gitment-评论仓库-repository" class="headerlink" title="创建存放 Gitment 评论仓库  repository"></a>创建存放 Gitment 评论仓库  repository</h4><p>这个仓库就是用于存储我们博客的评论，博客的评论会显示在仓库的 issue 中。</p>
+<p><img src="https://github.com/yongyu0102/WeeklyBlogImages/blob/master/gitment/gitment.PNG?raw=true" alt="gitment"></p>
+<ol>
+<li>在自己的 Github 创建 repository 项目。名字自己随便起，例如我的 Repository name 为 <strong>BlogComments</strong></li>
+<li>地址：<a href="https://github.com/yongyu0102/BlogComments.git" target="_blank" rel="external">https://github.com/yongyu0102/BlogComments.git</a></li>
+<li>但是稍后填的配置信息是 <code>BlogComments</code>，不是全地址路径，这里一定要注意。</li>
+</ol>
+<h4 id="配置-next-主题参数"><a href="#配置-next-主题参数" class="headerlink" title="配置 next 主题参数"></a>配置 next 主题参数</h4><p>打开 D:\Android\hexo\themes\next 文件夹下的 _config.yml 文件，配置信息如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">gitment:   </div><div class="line">  enable:  true</div><div class="line">  mint: true  </div><div class="line">  count: true </div><div class="line">  lazy: false  </div><div class="line">  cleanly: false  </div><div class="line">  language: zh-Hans</div><div class="line">  github_user: yongyu0102</div><div class="line">  github_repo: BlogComments</div><div class="line">  client_id: b8bad0exxxx #上面注册 OAuth Application 申请的 id</div><div class="line">  client_secret: bcee560xxxxxx #上面注册 OAuth Application 申请的 client_secret</div><div class="line">  proxy_gateway: # Address of api proxy, See: https://github.com/aimingoo/intersect</div><div class="line">  redirect_protocol: # Protocol of redirect_uri with force_redirect_protocol when mint enabled</div></pre></td></tr></table></figure>
+<p>正常完成这一步，直接进行  <code>hexo g -d</code>之后生成并且部署就会生效，博客下面就会显示评论框，但是我的就是死活不显示啊，而且也没有任何报错信息啊，尴尬了。</p>
+<h4 id="采的坑"><a href="#采的坑" class="headerlink" title="采的坑"></a>采的坑</h4><h5 id="配置完成不显示-Gitment-评论框"><a href="#配置完成不显示-Gitment-评论框" class="headerlink" title="配置完成不显示 Gitment 评论框"></a>配置完成不显示 Gitment 评论框</h5><p>遇到问题就开始查问题吧，可是没有报错信息，蛋疼，然后把网上的教程大概都看了一遍也都试过也没找到解决办法，然后想到是不是当前的 hexo 版本过低的原因，查看了下了下 hexo 版本是 3.2.2 ，然后试着把 hexo 也升级到最新，结果还是没好使，然后就折腾到半夜一点半，睡觉。</p>
+<p>今天早上醒来回头想想，感觉自己的问题肯定是出在配置参数上面，然后就打开 next 主题查看关于评论的参数文件，在 D:\Android\hexo\themes\next\layout_partials 目录下找到一个文件 comments.swig 文件，虽然自己只是一个搞 Android 的，但是打开也能看个大概，看名字就知道是有关评论的（可见自己写代码的时候一定要考虑下看代码人的感受，名字。）代码如下：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div></pre></td><td class="code"><pre><div class="line">&#123;% if page.comments %&#125;</div><div class="line">  &#123;% if (theme.duoshuo and theme.duoshuo.shortname) or theme.duoshuo_shortname %&#125;</div><div class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"comments"</span> <span class="attr">id</span>=<span class="string">"comments"</span>&gt;</span></div><div class="line">      <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"ds-thread"</span> <span class="attr">data-thread-key</span>=<span class="string">"&#123;&#123; page.path &#125;&#125;"</span></span></div><div class="line">           <span class="attr">data-title</span>=<span class="string">"&#123;&#123; page.title &#125;&#125;"</span> <span class="attr">data-url</span>=<span class="string">"&#123;&#123; page.permalink &#125;&#125;"</span>&gt;</div><div class="line">      <span class="tag">&lt;/<span class="name">div</span>&gt;</span></div><div class="line">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></div><div class="line"></div><div class="line">  &#123;% elseif theme.facebook_sdk.enable and theme.facebook_comments_plugin.enable %&#125;</div><div class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"comments"</span> <span class="attr">id</span>=<span class="string">"comments"</span>&gt;</span></div><div class="line">      <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"fb-comments"</span></span></div><div class="line">           <span class="attr">data-href</span>=<span class="string">"&#123;&#123; page.permalink &#125;&#125;"</span></div><div class="line">           <span class="attr">data-numposts</span>=<span class="string">"&#123;&#123; theme.facebook_comments_plugin.num_of_posts &#125;&#125;"</span></div><div class="line">           <span class="attr">data-width</span>=<span class="string">"&#123;&#123; theme.facebook_comments_plugin.width &#125;&#125;"</span></div><div class="line">           <span class="attr">data-colorscheme</span>=<span class="string">"&#123;&#123; theme.facebook_comments_plugin.scheme &#125;&#125;"</span>&gt;</div><div class="line">      <span class="tag">&lt;/<span class="name">div</span>&gt;</span></div><div class="line">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></div><div class="line"></div><div class="line">  &#123;% elseif theme.vkontakte_api.enable and theme.vkontakte_api.comments %&#125;</div><div class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"comments"</span> <span class="attr">id</span>=<span class="string">"comments"</span>&gt;</span></div><div class="line">      <span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">"vk_comments"</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></div><div class="line">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></div><div class="line"></div><div class="line">  &#123;% elseif theme.disqus.enable %&#125;</div><div class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"comments"</span> <span class="attr">id</span>=<span class="string">"comments"</span>&gt;</span></div><div class="line">      <span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">"disqus_thread"</span>&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">noscript</span>&gt;</span></div><div class="line">          Please enable JavaScript to view the</div><div class="line">          <span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"https://disqus.com/?ref_noscript"</span>&gt;</span>comments powered by Disqus.<span class="tag">&lt;/<span class="name">a</span>&gt;</span></div><div class="line">        <span class="tag">&lt;/<span class="name">noscript</span>&gt;</span></div><div class="line">      <span class="tag">&lt;/<span class="name">div</span>&gt;</span></div><div class="line">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></div><div class="line"></div><div class="line">  &#123;% elseif theme.hypercomments_id %&#125;</div><div class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"comments"</span> <span class="attr">id</span>=<span class="string">"comments"</span>&gt;</span></div><div class="line">      <span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">"hypercomments_widget"</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></div><div class="line">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></div><div class="line"></div><div class="line">  &#123;% elseif theme.youyan_uid %&#125;</div><div class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"comments"</span> <span class="attr">id</span>=<span class="string">"comments"</span>&gt;</span></div><div class="line">      <span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">"uyan_frame"</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></div><div class="line">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></div><div class="line"></div><div class="line">  &#123;% elseif theme.livere_uid %&#125;</div><div class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"comments"</span> <span class="attr">id</span>=<span class="string">"comments"</span>&gt;</span></div><div class="line">      <span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">"lv-container"</span> <span class="attr">data-id</span>=<span class="string">"city"</span> <span class="attr">data-uid</span>=<span class="string">"&#123;&#123; theme.livere_uid &#125;&#125;"</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></div><div class="line">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></div><div class="line"></div><div class="line">  &#123;% elseif theme.changyan.appid and theme.changyan.appkey %&#125;</div><div class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"comments"</span> <span class="attr">id</span>=<span class="string">"comments"</span>&gt;</span></div><div class="line">      <span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">"SOHUCS"</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></div><div class="line">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></div><div class="line"></div><div class="line">  &#123;% elseif theme.gitment.enable %&#125;</div><div class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"comments"</span> <span class="attr">id</span>=<span class="string">"comments"</span>&gt;</span></div><div class="line">      &#123;% if theme.gitment.lazy %&#125;</div><div class="line">        <span class="tag">&lt;<span class="name">div</span> <span class="attr">onclick</span>=<span class="string">"showGitment()"</span> <span class="attr">id</span>=<span class="string">"gitment-display-button"</span>&gt;</span>&#123;&#123; __('gitmentbutton') &#125;&#125;<span class="tag">&lt;/<span class="name">div</span>&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">"gitment-container"</span> <span class="attr">style</span>=<span class="string">"display:none"</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></div><div class="line">      &#123;% else %&#125;</div><div class="line">        <span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">"gitment-container"</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></div><div class="line">      &#123;% endif %&#125;</div><div class="line">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></div><div class="line"></div><div class="line">  &#123;% elseif theme.valine.appid and theme.valine.appkey %&#125;</div><div class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"comments"</span> <span class="attr">id</span>=<span class="string">"comments"</span>&gt;</span></div><div class="line">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></div><div class="line">  &#123;% endif %&#125;</div><div class="line"></div><div class="line">&#123;% endif %&#125;</div></pre></td></tr></table></figure>
+<p>一看原来这个文件是配置 next 主题使用哪个评论功能的，因为 next 主题支持很多种类评论，需要自己配置自己使用哪一种，其中关键的一句是 <code>elseif theme.gitment.enable</code> 如果  <code>theme.gitment.enable</code> 配置为 <code>true</code>  就会显示 gitment 评论功能，然后看了下自己的配置是正确的呀：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">gitment:   </div><div class="line">  enable:  true</div><div class="line">  mint: true  </div><div class="line">  count: true</div></pre></td></tr></table></figure>
+<p>然后从头到尾自己看了下代码，最上面这行 <code>theme.duoshuo and theme.duoshuo.shortname) or theme.duoshuo_shortname</code></p>
+<p>这是配置显示多说的，如果配置了多说参数就会显示多说评论，想一下自己之前使用的就是多说，那是不是可能是因为自己配置了多说，但是现在多说关闭了，所以没显示。然后查看  D:\Android\hexo\themes\next 文件夹下的 _config.yml 文件 关于多说的配置，然后把关于所有关于多说的配置全部设置为 <code>false</code>， 然后重新生成部署，结果还是没好使，尴尬，继续查找，打开 D:\Android\hexo 文件夹下的 _config.yml 配置信息，然后看见了一行关于多说的配置 <code>duoshuo_shortname: yongyu</code> ，原来这里也配置了多说信息，直接给注释掉，重新生成部署，终于成功显示 Gitment 评论框了。</p>
+<h5 id="点击评论框登录按钮没有跳转到授权登录页面"><a href="#点击评论框登录按钮没有跳转到授权登录页面" class="headerlink" title="点击评论框登录按钮没有跳转到授权登录页面"></a>点击评论框登录按钮没有跳转到授权登录页面</h5><p>终于显示评论框了，然后点击<strong>登录</strong>测试下评论，结果没有正确跳转到登录授权页面，报错信息 </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">?error=redirect_uri_mismatch&amp;error_description=The redirect_uri MUST match the registered callback URL for this application.&amp;error_uri=https://developer.github.com/apps/managing-oauth-apps/troubleshooting-authorization-request-errors/#redirect-uri-mismatch</div></pre></td></tr></table></figure>
+<p>看报错信息是注册回到 callback 的错误，查看一下因为我在注册 OAuth Application 时候填写的  Authorization callback 不是我博客主页地址域名 <a href="http://yongyu.itscoder.com/" target="_blank" rel="external">http://yongyu.itscoder.com/</a> ，而是之前为了测试评论框不显示的功能填写的 <a href="https://yongyu0102.github.io" target="_blank" rel="external">https://yongyu0102.github.io</a> 没有绑定域名地址导致回调找不到报错，改成自己博客域名，一切正常了。</p>
+<p>结语：折腾 Gitment 很简单的事情，用了我那么多时间，好气<img src="file:///C:\Users\ZHANGP~1\AppData\Local\Temp\SGPicFaceTpBq\2628\2821E7FE.png" alt="img"></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/other/" rel="tag"># other</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/04/16/yongyu_20180416_lua_android_two/" rel="next" title="Lua 在 Android 中应用下,具体使用">
+                <i class="fa fa-chevron-left"></i> Lua 在 Android 中应用下,具体使用
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      
+        <div id="gitment-container"></div>
+      
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="https://github.com/yongyu0102/Images/blob/master/avatar/avatar.png?raw=true"
+                alt="Yongyu" />
+            
+              <p class="site-author-name" itemprop="name">Yongyu</p>
+              <p class="site-description motion-element" itemprop="description">这里记录你的故事！</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-inline">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://extremej.itscoder.com/" title="Joe" target="_blank">Joe</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://jaeger.itscoder.com/" title="写代码的猴子" target="_blank">写代码的猴子</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://brucezz.itscoder.com/" title="Brucezz" target="_blank">Brucezz</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://allenwu.itscoder.com/" title="小刚" target="_blank">小刚</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#一、前言"><span class="nav-number">1.</span> <span class="nav-text">一、前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二、搭建-Gitment-评论"><span class="nav-number">2.</span> <span class="nav-text">二、搭建 Gitment 评论</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Gitment-介绍"><span class="nav-number">2.1.</span> <span class="nav-text">Gitment 介绍</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#开始采坑之路"><span class="nav-number">2.2.</span> <span class="nav-text">开始采坑之路</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#升级-next-主题"><span class="nav-number">2.2.1.</span> <span class="nav-text">升级 next 主题</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#注册-OAuth-Application"><span class="nav-number">2.2.2.</span> <span class="nav-text">注册 OAuth Application</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#创建存放-Gitment-评论仓库-repository"><span class="nav-number">2.2.3.</span> <span class="nav-text">创建存放 Gitment 评论仓库  repository</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#配置-next-主题参数"><span class="nav-number">2.2.4.</span> <span class="nav-text">配置 next 主题参数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#采的坑"><span class="nav-number">2.2.5.</span> <span class="nav-text">采的坑</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#配置完成不显示-Gitment-评论框"><span class="nav-number">2.2.5.1.</span> <span class="nav-text">配置完成不显示 Gitment 评论框</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#点击评论框登录按钮没有跳转到授权登录页面"><span class="nav-number">2.2.5.2.</span> <span class="nav-text">点击评论框登录按钮没有跳转到授权登录页面</span></a></li></ol></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Yongyu</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4
+<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+  document.write(unescape("%3Cspan id='cnzz_stat_icon_1260579440'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s11.cnzz.com/z_stat.php%3Fid%3D1260579440%26show%3Dpic' type='text/javascript'%3E%3C/script%3E"));
+  </script>
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+ </script>
+ </br>本站总访问量<span id="busuanzi_value_site_pv"></span>次，本站访客数<span id="busuanzi_value_site_uv"></span>人次，本文总阅读量<span id="busuanzi_value_page_pv"></span>次
+</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+<!-- LOCAL: You can save these files to your site and update links -->
+    
+        
+        <link rel="stylesheet" href="https://aimingoo.github.io/gitmint/style/default.css">
+        <script src="https://aimingoo.github.io/gitmint/dist/gitmint.browser.js"></script>
+    
+<!-- END LOCAL -->
+
+    
+
+    
+      <script type="text/javascript">
+      function renderGitment(){
+        var gitment = new Gitmint({
+            id: window.location.pathname, 
+            owner: 'yongyu0102',
+            repo: 'BlogComments',
+            
+            lang: "zh-Hans" || navigator.language || navigator.systemLanguage || navigator.userLanguage,
+            
+            oauth: {
+            
+            
+                client_secret: 'bcee560c6cee81f46ce7eea0e34b47455a8d042b',
+            
+                client_id: 'b8bad0eb807c1e361691'
+            }});
+        gitment.render('gitment-container');
+      }
+
+      
+      renderGitment();
+      
+      </script>
+    
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
