@@ -83,15 +83,15 @@
 需求最近公司开了一个新项目，在搭建项目的时候，我们希望将服务端返回列表数据直接与我们的 List 控件绑定，高度封装，方便使用，所以与服务端定义了请求返回数据格式，当一个页面含有列表 List 数据，第一次进入页面数据格式如下：
 1234567891011121314151617181">
 <meta property="og:type" content="article">
-<meta property="og:title" content="自定义Retrofit的Convert统一处理返回结果为Observable<T>">
+<meta property="og:title" content="自定义Retrofit的Convert统一处理返回结果为‘Observable<T>’">
 <meta property="og:url" content="http://yoursite.com/2018/05/27/yongyu_20180527_retrofit_convert/index.html">
 <meta property="og:site_name" content="一个写代码的地方">
 <meta property="og:description" content="转载请附原文链接：自定义Retrofit的Convert统一处理返回结果为Observable&amp;lt;T&amp;gt;
 需求最近公司开了一个新项目，在搭建项目的时候，我们希望将服务端返回列表数据直接与我们的 List 控件绑定，高度封装，方便使用，所以与服务端定义了请求返回数据格式，当一个页面含有列表 List 数据，第一次进入页面数据格式如下：
 1234567891011121314151617181">
-<meta property="og:updated_time" content="2018-05-27T10:21:08.155Z">
+<meta property="og:updated_time" content="2018-05-27T10:28:53.079Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="自定义Retrofit的Convert统一处理返回结果为Observable<T>">
+<meta name="twitter:title" content="自定义Retrofit的Convert统一处理返回结果为‘Observable<T>’">
 <meta name="twitter:description" content="转载请附原文链接：自定义Retrofit的Convert统一处理返回结果为Observable&amp;lt;T&amp;gt;
 需求最近公司开了一个新项目，在搭建项目的时候，我们希望将服务端返回列表数据直接与我们的 List 控件绑定，高度封装，方便使用，所以与服务端定义了请求返回数据格式，当一个页面含有列表 List 数据，第一次进入页面数据格式如下：
 1234567891011121314151617181">
@@ -130,7 +130,7 @@
 
 
 
-  <title>自定义Retrofit的Convert统一处理返回结果为Observable<T> | 一个写代码的地方</title>
+  <title>自定义Retrofit的Convert统一处理返回结果为‘Observable<T>’ | 一个写代码的地方</title>
   
 
 
@@ -274,7 +274,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">自定义Retrofit的Convert统一处理返回结果为Observable<T></h1>
+          <h1 class="post-title" itemprop="name headline">自定义Retrofit的Convert统一处理返回结果为‘Observable<T>’</h1>
         
 
         <div class="post-meta">
@@ -356,7 +356,7 @@
       
 
       
-        <p>转载请附原文链接：<a href="">自定义Retrofit的Convert统一处理返回结果为<code>Observable&lt;T&gt;</code></a></p>
+        <p>转载请附原文链接：<a href="http://yongyu.itscoder.com/2018/05/27/yongyu_20180527_retrofit_convert/" target="_blank" rel="external">自定义Retrofit的Convert统一处理返回结果为<code>Observable&lt;T&gt;</code></a></p>
 <h1 id="需求"><a href="#需求" class="headerlink" title="需求"></a>需求</h1><p>最近公司开了一个新项目，在搭建项目的时候，我们希望将服务端返回列表数据直接与我们的 List 控件绑定，高度封装，方便使用，所以与服务端定义了请求返回数据格式，当一个页面含有列表 List 数据，第一次进入页面数据格式如下：</p>
 <figure class="highlight json"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">    <span class="attr">"code"</span>:<span class="number">2000</span>,</div><div class="line">    <span class="attr">"message"</span>:<span class="string">"请求成"</span>,</div><div class="line">    <span class="attr">"data"</span>:&#123;</div><div class="line">        <span class="attr">"lsit1"</span>:&#123;</div><div class="line">            <span class="attr">"load_more_url"</span>:<span class="string">"xxxxx"</span>,</div><div class="line">            <span class="attr">"refresh_url"</span>:<span class="string">"xxxx"</span>,</div><div class="line">            <span class="attr">"key1"</span>:<span class="string">"value1"</span>,</div><div class="line">            <span class="attr">"key2"</span>:<span class="string">"value2"</span>,</div><div class="line">            <span class="attr">"data"</span>:[</div><div class="line">                &#123;</div><div class="line">                    <span class="attr">"name"</span>:<span class="string">"小米"</span></div><div class="line">                &#125;,</div><div class="line">                &#123;</div><div class="line">                    <span class="attr">"name"</span>:<span class="string">"华为"</span></div><div class="line">                &#125;,</div><div class="line">                &#123;</div><div class="line">                    <span class="attr">"name"</span>:<span class="string">"蓝绿"</span></div><div class="line">                &#125;</div><div class="line">            ]</div><div class="line">        &#125;,</div><div class="line">        <span class="attr">"lsit2"</span>:&#123;</div><div class="line">            <span class="attr">"load_more_url"</span>:<span class="string">"xxxxx"</span>,</div><div class="line">            <span class="attr">"refresh_url"</span>:<span class="string">"xxxx"</span>,</div><div class="line">            <span class="attr">"key1"</span>:<span class="string">"value1"</span>,</div><div class="line">            <span class="attr">"key2"</span>:<span class="string">"value2"</span>,</div><div class="line">            <span class="attr">"data"</span>:[</div><div class="line">                &#123;</div><div class="line">                    <span class="attr">"name"</span>:<span class="string">"小米2"</span></div><div class="line">                &#125;,</div><div class="line">                &#123;</div><div class="line">                    <span class="attr">"name"</span>:<span class="string">"华为2"</span></div><div class="line">                &#125;,</div><div class="line">                &#123;</div><div class="line">                    <span class="attr">"name"</span>:<span class="string">"蓝绿2"</span></div><div class="line">                &#125;</div><div class="line">            ]</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p>当我们对 list1 进行下拉刷新或者上拉加载更多的时候服务端返回数据格式如下：</p>
