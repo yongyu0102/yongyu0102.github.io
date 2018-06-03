@@ -251,6 +251,160 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/06/03/yongyu_20180502_tablayout_helper/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Yongyu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="https://github.com/yongyu0102/Images/blob/master/avatar/avatar.png?raw=true">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="一个写代码的地方">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/06/03/yongyu_20180502_tablayout_helper/" itemprop="url">TabLayout 自定义 Indicator 指示线宽度样式</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-06-03T16:18:24+08:00">
+                2018-06-03
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/View/" itemprop="url" rel="index">
+                    <span itemprop="name">View</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          转载请附原文链接：TabLayout 自定义 Indicator 指示线宽度样式
+需求最近写公司项目的时候遇到一个需求是两个界面滑动左右切换，点击标题界面也切换，效果如下：
+
+这个 UI 界面第一想法就是用 TabLayout+Fragment去做，但是仔细观察这个 UI 效果你会发现一个比较蛋疼的问题，就是选中标题的指示线 Indicator 长度问题， TabLayout 默认情况下指示线会比标题文字长出一部分，并且没有设置指示线长度的 API 可调用。下面是 TabLayout  原生效果图：
+
+解决方案既然原生的 TabLayout  没有可以设置指示线宽度的 API ，我们有两种方案去实现这个效果：
+方案 1 自定义 View不用系统的 TabLayout  ，自定义一个 View，然后给 View 设置点击事件并结合监听 ViewPager 的滑动，计算指示线的滑动位置，再给添
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/06/03/yongyu_20180502_tablayout_helper/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/05/27/yongyu_20180527_retrofit_convert/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1630,164 +1784,6 @@ itsCoder主页：http://itscoder.com/
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/10/05/view_layout_and_draw/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Yongyu">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="https://github.com/yongyu0102/Images/blob/master/avatar/avatar.png?raw=true">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="一个写代码的地方">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2016/10/05/view_layout_and_draw/" itemprop="url">View 的工作原理下 View 的 layout 和 draw 过程</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-10-05T00:00:00+08:00">
-                2016-10-05
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Android-View/" itemprop="url" rel="index">
-                    <span itemprop="name">Android View</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          
--文章来源：itsCoder 的 WeeklyBolg 项目
-
-itsCoder主页：http://itscoder.com/
-作者：yongyu0102
-审阅者：melodyxxx
-
-
-一、概要笔记内容源于Android 开发艺术探索。
-本次介绍的主要内容是 View 的工作原理下 View 的 layout 和 draw 过程，同时介绍自定义 View 的注意事项并结合一个小的 Demo 进行说明，其中涉及到的 onMeasre  测量部分知识可以看上一篇文章View 的工作原理上 View 绘制流程梳理及 Measure 过程详解 ，以下开始正文：
-二、 layout 过程详解 layout 的作用是 ViewGroup 来确定子元素的位置，当 ViewGroup 的位置被确定后，在  layout 中会调用 onLayout ，在 onLayout 中会遍历所有的子元素并调用子元
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2016/10/05/view_layout_and_draw/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1842,7 +1838,7 @@ itsCoder主页：http://itscoder.com/
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">15</span>
+                  <span class="site-state-item-count">16</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1853,7 +1849,7 @@ itsCoder主页：http://itscoder.com/
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-count">10</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -1864,7 +1860,7 @@ itsCoder主页：http://itscoder.com/
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-count">10</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
